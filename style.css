@@ -1,0 +1,36 @@
+body
+{
+    /* limit page width */
+    text-align: left;
+    /* background-color:#3b5998; */
+    background-color: white;
+    font-family: Helvetica, Verdana, Arial, sans-serif;
+    margin: 30px;
+}
+
+#content-wrapper
+{
+    max-width: 800px;
+    width: 800px;
+    height: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+    padding: 10px;
+    border: 1px solid #aaaaaa;
+}
+
+#content
+{
+    border: none;
+    font-size: 14px;
+    float: right;
+    width: 500px;
+}
+
+img#logo
+{
+    margin-right: 10px;
+    float: left;
+    width: 260px;
+}
