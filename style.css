@@ -20,6 +20,10 @@ body
     border: 1px solid #aaaaaa;
     -moz-border-radius: 15px;
     border-radius: 15px;
+
+   -moz-box-shadow: 5px 5px 5px #ccc;
+   -webkit-box-shadow: 5px 5px 5px #ccc;
+   box-shadow: 5px 5px 5px #ccc;
 }
 
 #content
