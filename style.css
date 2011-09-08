@@ -26,6 +26,11 @@ body
    box-shadow: 5px 5px 5px #ccc;
 }
 
+.float-right
+{
+    float: right;
+}
+
 #content
 {
     padding: 15px;

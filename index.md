@@ -21,6 +21,10 @@ For information about our monthly meetings, see the
 
 We're active and we're growing. Join us!
 
+<div class="float-right" markdown="1">
+[Contact us.](contact@scala-phase.org)
+</div>
+
 [meetup-page]: http://www.meetup.com/scala-phase
 [Scala]: http://www.scala-lang.org/
 [Scalathon]: http://scalathon.org/
