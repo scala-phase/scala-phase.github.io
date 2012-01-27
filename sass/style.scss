@@ -1,0 +1,72 @@
+/* -*- Ruby Sass -*- */
+
+body {
+  /* limit page width */
+  text-align: left;
+  /* background-color:#3b5998; */
+  background-color: white;
+  font-family: Helvetica, Verdana, Arial, sans-serif;
+  margin: 30px;
+}
+
+#content-wrapper {
+  max-width: 800px;
+  width: 800px;
+  height: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: white;
+  padding: 10px;
+  border: 1px solid #aaaaaa;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+
+  -moz-box-shadow: 5px 5px 5px #ccc;
+  -webkit-box-shadow: 5px 5px 5px #ccc;
+  box-shadow: 5px 5px 5px #ccc;
+}
+
+@mixin a-hover {
+  background: #7777ff;
+  color: white;
+}
+
+@mixin link-color {
+  color: blue;
+}
+
+a {
+  text-decoration: none;
+  color: blue;@include link-color;
+
+  &:hover {
+    @include a-hover;
+  }
+
+  &:visited {
+    @include link-color;
+
+    &:hover {
+      @include a-hover;
+    }
+  }
+}
+
+.floating-footer {
+  float: right;
+  padding-bottom: 20px;
+}
+
+#content {
+  padding: 15px;
+  border: none;
+  font-size: 14px;
+  float: right;
+  width: 500px;
+}
+
+img#logo {
+  margin-right: 10px;
+  float: left;
+  width: 260px;
+}
