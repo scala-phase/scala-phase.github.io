@@ -6,7 +6,7 @@ layout: main
 # PHASE: Philly Area Scala Enthusiasts
 
 The Philly Area Scala Enthusiasts (PHASE) is a user group for people in the
-Philadelphia, PA, area who are interested in the [Scala][] programming
+Philadelphia, PA, region who are interested in the [Scala][] programming
 language. If you're interested in Scala, programming on the Java VM, or
 functional programming in general, feel free to join us.
 
