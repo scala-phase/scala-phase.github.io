@@ -13,4 +13,4 @@ layout: main
 ^
 * September 20, 2011: **Eric Osheim**, _Scala Type Classes_. [Meetup Event Page](http://www.meetup.com/scala-phase/events/31595792/), [Slides (HTML + Javascript)](http://plastic-idolatry.com/typcls/)
 ^
-* August 10, 2011: **Jamie Allen**, _Disrupters_. [Meetup Event Page](http://www.meetup.com/scala-phase/events/26666971/), [Slides (HTML + Javascript)](talks/jamie-allen-sdisruptor/index.html)
+* August 10, 2011: **Jamie Allen**, _Disrupters_. [Meetup Event Page](http://www.meetup.com/scala-phase/events/26666971/), [Slides (HTML + Javascript)](talks/jamie-allen-sdisruptor/index.html), [Code](https://github.com/jamie-allen/sdisruptor)
