@@ -5,7 +5,7 @@ layout: main
 
 # Selected Previous PHASE Talks
 
-* January 26, 2012: **Mads Hartmann Jensen**, _Building SBT Plugins_. [Meetup Event Page](http://www.meetup.com/scala-phase/events/47857352/), [Slides (PDF)](mads-sbt-plugins.pdf), [Code](https://github.com/mads379/sbt-plugin-examples)
+* January 26, 2012: **Mads Hartmann Jensen**, _Building SBT Plugins_. [Meetup Event Page](http://www.meetup.com/scala-phase/events/47857352/), [Slides (PDF)](talks/mads-sbt-plugins.pdf), [Code](https://github.com/mads379/sbt-plugin-examples)
 ^
 * November 15, 2011: **Yuvi Masory**, _Scala on the Android Platform_. [Meetup Event Page](http://www.meetup.com/scala-phase/events/39391912/), [Video](http://vimeo.com/32516782)
 ^
