@@ -1,15 +1,13 @@
+/* AUTOMATICALLY GENERATED FROM sass/style.scss on Fri Jan 27 10:52:31 -0500 2012 */
 /* -*- Ruby Sass -*- */
-
 /* Requires the SASS gem. */
-
 body {
   /* limit page width */
   text-align: left;
   /* background-color:#3b5998; */
   background-color: white;
   font-family: Helvetica, Verdana, Arial, sans-serif;
-  margin: 30px;
-}
+  margin: 30px; }
 
 #content-wrapper {
   max-width: 800px;
@@ -22,53 +20,35 @@ body {
   border: 1px solid #aaaaaa;
   -moz-border-radius: 15px;
   border-radius: 15px;
-
   -moz-box-shadow: 5px 5px 5px #ccc;
   -webkit-box-shadow: 5px 5px 5px #ccc;
-  box-shadow: 5px 5px 5px #ccc;
-}
-
-@mixin a-hover {
-  background: #7777ff;
-  color: white;
-}
-
-@mixin link-color {
-  color: blue;
-}
+  box-shadow: 5px 5px 5px #ccc; }
 
 a {
   text-decoration: none;
-  color: blue;@include link-color;
-
-  &:hover {
-    @include a-hover;
-  }
-
-  &:visited {
-    @include link-color;
-
-    &:hover {
-      @include a-hover;
-    }
-  }
-}
+  color: blue;
+  color: blue; }
+  a:hover {
+    background: #7777ff;
+    color: white; }
+  a:visited {
+    color: blue; }
+    a:visited:hover {
+      background: #7777ff;
+      color: white; }
 
 .floating-footer {
   float: right;
-  padding-bottom: 20px;
-}
+  padding-bottom: 20px; }
 
 #content {
   padding: 15px;
   border: none;
   font-size: 14px;
   float: right;
-  width: 500px;
-}
+  width: 500px; }
 
 img#logo {
   margin-right: 10px;
   float: left;
-  width: 260px;
-}
+  width: 260px; }
