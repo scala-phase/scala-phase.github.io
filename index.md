@@ -23,9 +23,6 @@ We're active and we're growing. Join us!
 
 **You'll find links to videos and slides from some previous talks [here](talks.html).**
 
-[Contact us.](mailto:contact@scala-phase.org)
-{: .floating-footer}
-
 [meetup-page]: http://www.meetup.com/scala-phase
 [Scala]: http://www.scala-lang.org/
 [Scalathon]: http://scalathon.org/
