@@ -1,0 +1,77 @@
+@import "../bootstrap/less/custom.less";
+
+body {
+  background-color: white;
+  font-family: Helvetica, Verdana, Arial, sans-serif;
+}
+
+.navbar {
+  #banner-image {
+    img.logo {
+      height: @navbarHeight - 10px;
+    }
+  }
+}
+
+#content-wrapper {
+  margin-top: @navbarHeight + 10px;
+  padding-top: 10px;
+  background-color: white;
+}
+
+.a-hover () {
+  background: #7777ff;
+  color: white;
+}
+
+.link-color () {
+  color: blue;
+}
+
+a {
+  text-decoration: none;
+  color: blue;
+
+  .link-color();
+
+  &:hover {
+    .a-hover();
+  }
+
+  &:visited {
+    .link-color();
+
+    &:hover {
+      .a-hover();
+    }
+  }
+}
+
+#sidebar {
+  .logo {
+    width: 100px !important;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+  }
+  ul {
+    list-style-type: none;
+    margin-left: 10px;
+
+    li {
+      margin-left: 0;
+    }
+  }
+
+  a {
+    color: black;
+    &.active {
+      color: red;
+    }
+  }
+}
+
+.floating-footer {
+  float: right;
+  padding-bottom: 20px;
+}
