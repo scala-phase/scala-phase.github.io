@@ -1,0 +1,753 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>CQRS / ES Presentation</title>
+
+		<meta name="description" content="A presentation about CQRS/ES">
+		<meta name="author" content="Duncan K. DeVore">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<div class="slides">
+
+				<section>
+					<h1>CQRS/ES</h2>
+					<p>Command and Query Responsibility Segregation</p>
+					<p>&amp;</p>
+					<p>Event Sourcing</p>
+				</section>
+
+				<section style="text-align:left">
+					<h2>Kudos</h2>
+					<ul>
+						<li>Thanks Viridity ;-)</li>
+						<li>Thanks Brian Clapper.</li>
+						<li>Thanks whoever bought the food.</li>
+						<li>Thanks to ByWord!</li>
+						<li>Thanks to Viktor Klang.</li>
+						<li>Thanks to Craig Young.</li>
+						<li>Thanks to reveal.js.</li>
+					</ul>
+				</section>
+
+				<section style="text-align:left">
+					<h2>Disclaimer</h2>
+					<ul>
+						<li class="fragment">I am not an expert @ CQRS.</li>
+						<li class="fragment">I am not an expert @ ES.</li>
+						<li class="fragment">The Legend of Klang (Immutable Domain Model).</li>
+						<li class="fragment">Focus on theory and philosophy.</li>
+						<li class="fragment">Some divisive content.</li>
+					</ul>
+				</section>
+
+				<section style="text-align:left">
+					<h2>Overview</h2>
+					<ul>
+						<li><i>Domain Driven Design: Tackling Complexity in the Heart of Software</i> by Eric Evans.</li>
+						<li>CQRS - Command and Query Responsibility Segregation.</li>
+						<li>ES - Event Sourcing.</li>
+					</ul>
+				</section>
+
+				<section style="text-align:left">
+					<h2>What is Domain Driven Design?</h2>
+					<ul>
+						<li class="fragment">For developing complex software.</li>
+						<li class="fragment">Connects implementation to an evolving model.</li>
+						<li class="fragment">Not a technology or methodology.</li>
+						<li class="fragment">A structure of practices and terminology.</li>
+						<li class="fragment">Domain Model, Ubiquitous Language, Model Driven Design.</li>
+					</ul>
+				</section>
+
+				<section style="text-align:left">
+					<h2>Domain Model</h2>
+					<ul>
+						<li class="fragment">The model of core business constructs.</li>
+						<li class="fragment">Vocabulary and key concepts of the problem domain.</li>
+						<li class="fragment">Identifies the relationships among entities.</li>
+						<li class="fragment">Identifies their attributes.</li>
+					</ul>
+				</section>
+
+				<section style="text-align:left">
+					<h2>Ubiquitous Language</h2>
+					<ul>
+						<li class="fragment">A language structured around the domain model.</li>
+						<li class="fragment">Used by all team members.</li>
+						<li class="fragment">Connects activities of the team with the software.</li>
+						<li class="fragment">Fully exercised throughout the modeling process.</li>
+						<li class="fragment">Facilitates communication w/ domain experts.</li>
+						<li class="fragment">Discovers key domain concepts used in the model.</li>
+					</ul>
+				</section>
+
+				<section style="text-align:left">
+					<h2>Model Driven Design</h2>
+					<ul>
+						<li class="fragment">Entities</li>
+						<li class="fragment">Value Objects</li>
+						<li class="fragment">Services</li>
+						<li class="fragment">Modules</li>
+						<li class="fragment">Aggregates and Aggregate Roots</li>
+						<li class="fragment">Bounded Contexts</li>
+						<li class="fragment">Context Maps</li>
+						<li class="fragment">And more ...</li>
+					</ul>
+				</section>
+
+				<section style="text-align:left">
+					<h2>What is CQRS?</h2>
+					Has its origins in a concept called Command Query Separation.</p><br/>
+					<ul>
+						<li class="fragment"><i>Object Oriented Software Construction</i> by Bertrand Meyer.</li>
+						<li class="fragment">Methods should be either commands or queries.</li>
+						<li class="fragment">A query returns data, does not alter the state.</li>
+						<li class="fragment">A command changes the state, does not return data.</li>
+						<li class="fragment">Becomes clear what does and does not change state.</li>
+					</ul>
+				</section>
+
+				<section style="text-align:left">
+					<h2>A Step Further</h2>
+					CQRS takes this principle a step further to define a simple pattern.</p><br/>
+<blockquote style="width:100%;font-size:80%">CQRS is simply the creation of two objects where there was previously only one. The separation occurs based upon whether the methods are a command or a query (the same definition that is used by Meyer in Command and Query Separation: a command is any method that mutates state and a query is any method that returns a value). —Greg Young</blockquote>
+				</section>
+
+				<section style="text-align:left">
+					<h2>Two Distinct Paths</h2>
+					<ul>
+						<li class="fragment">One for writes (commands).</li>
+						<li class="fragment">One for reads (queries).</li>
+						<li class="fragment">Allows separate optimization of each of these concerns.</li>
+					</ul>
+				</section>
+
+				<section style="text-align:left">
+					<h2>Two Distinct Paths</h2>
+					<img class="fragment" src="images/CQRS_1.png" width="400px">
+				</section>
+
+				<section style="text-align:left">
+					<h2>Reason for Segregation</h2>
+					<ul>
+						<li class="fragment">Large imbalance between the number of reads and writes.</li>
+						<li class="fragment">Domain (command side) involves complex business logic.</li>
+						<li class="fragment">A single model encapsulating reads/writes does neither well.</li>
+						<li class="fragment">
+							Segregation can also occur at the data store level.
+							<ul>
+								<li>Write side may use 3NF - optimized for writes.</li>
+								<li>Read side uses denormalized 1NF store for fast queries.</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+
+				<section style="text-align:left">
+					<h2>The Q in CQRS</h2>
+					<h3 class="fragment">CRUD = PAIN</h3>
+					<ul>
+						<li class="fragment">DTOs are handled by projecting off the domain.</li>
+						<li class="fragment">DTOs are a different model than the domain.</li>
+						<li class="fragment">They usually require extensive mapping.</li>
+						<li class="fragment">Large numbers of read methods on repositories.</li>
+						<li class="fragment">Getters exposing the internal state of domain objects.</li>
+						<li class="fragment">Use of prefetch paths on the read use cases.</li>
+						<li class="fragment">Optimization of queries become extremely difficult.</li>
+						<li class="fragment">Queries use an object model then translated to a data model.</li>
+						<li class="fragment">Impedance Mismatch.</li>
+					</ul>
+				</section>
+
+				<section style="text-align:left">
+					CQRS applies a natural boundary as separate paths have been made explicit. The domain no longer projects DTOs.</p><br/>
+					<table>
+						<tr>
+							<td style="padding-right:40px">
+								<img class="fragment" src="images/CQRS_Read.png" width="300px">
+							</td>
+							<td style="vertical-align:top">
+								<h3 class="fragment">Thin Read Layer</h3>
+								<ul>
+									<li class="fragment">Reads from the data store.</li>
+									<li class="fragment">Projects the DTOs.</li>
+									<li class="fragment">No longer need a complex ORM.</li>
+									<li class="fragment">Data fetched screen form.</li>
+									<li class="fragment">No more Impedance Mismatch!</li>
+									<li class="fragment">Queries much easier to optimize.</li>
+									<li class="fragment">Queries much faster.</li>
+									<li class="fragment">No more looping!</li>
+								</ul>
+							</td>
+						</tr>
+					</table>
+				</section>
+
+				<section style="text-align:left">
+					<h2>The C in CQRS</h2>
+					On the command side its all about behavior rather than data centricity. This leads to a more true implementation of DDD.<p/><br/>
+					Commands are a request of the system to perform a task or action. A sample command would be <i>register client x</i> or <i>change client x’s locale</i>.
+					<p/>
+				</section>
+
+				<section style="text-align:left">
+					<h2>Commands</h2>
+					<ul>
+						<li class="fragment">Commands are imperative.</li>
+						<li class="fragment">They are a request to mutate state.</li>
+						<li class="fragment">They represent an action the client would like to take.</li>
+						<li class="fragment">They transfer in the form of messages rather than DTOs.</li>
+						<li class="fragment">Implies a tasked-based UI.</li>
+						<li class="fragment">Conceptually not editing data, rather performing a task.</li>
+						<li class="fragment">Can be thought of as serializable method calls.</li>
+						<li class="fragment">Process transaction vs projecting data.</li>
+						<li class="fragment">The command handler can say NO.</li>
+						<li class="fragment">No longer do you have to expose internal state.</li>
+						<li class="fragment">Your repository layer is greatly simplified.</li>
+					</ul>
+				</section>
+
+				<section style="text-align:left">
+					<h2>Command Handler</h2>
+					In CQRS command handlers are the objects that process commands.<p/><br/>
+					<ul>
+						<li class="fragment">Client sends a command in the form of a message.</li>
+						<li class="fragment">That message will be processed by a command handler.</li>
+						<li class="fragment">In a CRUD application this = application service layer.</li>
+						<li class="fragment">
+							They key difference is:
+							<ul>
+								<li>CRUD application service layer represents state mutation.</li>
+								<li>CQRS command handlers represents behavioral tracking.</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+
+				<section style="text-align:left">
+					<h2>Sample Command Handler</h2>
+<pre class="fragment"><code>sealed trait ClientCommand
+case object RegisterClient(clientJson: String) extends ClientCommand
+case object ChangeClientLocale(localJson: String) extends ClientCommand
+case object RaiseClientCreditLimit(limit: Double) extends ClientCommand
+
+class ClientCommandActor extends Actor {
+  def receive = {
+    case RegisterClient => …
+    case ChangeClientLocale => …
+    case RaiseClientCreditLimit => …
+  }
+}</code></pre>
+				</section>
+
+				<section style="text-align:left">
+						CQRS Command side can now be optimize specifically for writes.<p/>
+					<img class="fragment" src="images/CQRS_Write.png" width="300px">
+				</section>
+
+				<section style="text-align:left">
+					<h2>Eventual Consistency</h2>
+					By applying CQRS the concepts of Reads and Writes have been separated. If we keep the paths segregated, how do we keep them consistent?<p/><br/>
+					<ul>
+						<li class="fragment">Eventual Consistency.</li>
+						<li class="fragment">How long between synchronizations? Business determines.</li>
+						<li class="fragment">Pushed asynchronously from the write side.</li>
+						<li class="fragment">Read side has listeners.</li>
+						<li class="fragment">Queue can be used.</li>
+						<li class="fragment">Two phased commits not needed. </li>
+						<li class="fragment">Use the Event Store as your queue.</li>
+					</ul>
+				</section>
+
+				<section style="text-align:left">
+					<h2>What is Event Sourcing (ES)?</h2>
+					The majority of business applications today rely on storing current state in order to process transactions. As a result in order to track history or implement audit capabilities additional coding or frameworks are required.
+				</section>
+
+				<section style="text-align:left">
+					<h2>This was not always the Case</h2>
+					<ul>
+						<li class="fragment">Side-effect of the adoption of RDBMS systems.</li>
+						<li class="fragment">High performance, mission critical systems do not do this.</li>
+						<li class="fragment">RDBMS’s do not do this internally!</li>
+						<li class="fragment">SCADA (System Control and Data Acquisition) Systems.</li>
+					</ul>
+				</section>
+
+				<section style="text-align:left">
+					<h2>Event Sourcing is about Capturing Events</h2>
+					<ul>
+						<li class="fragment">Its behavioral by nature.</li>
+						<li class="fragment">Tracks behavior by transactions.</li>
+						<li class="fragment">It does not maintain current state.</li>
+						<li class="fragment">Current state is derived.</li>
+					</ul>
+				</section>
+
+				<section style="text-align:left">
+					<h2>CRUD Shopping Cart</h2>
+					CRUD application example for processing a shopping cart order:
+					<p/><br/>
+					<ol>
+						<li class="fragment">Cart created.</li>
+						<li class="fragment">Item 1 @ $30 added.</li>
+						<li class="fragment">Item 2 @ $15 added.</li>
+						<li class="fragment">Item 3 @ $12 added.</li>
+						<li class="fragment">Item 4 @ $5 added.</li>
+						<li class="fragment">Shipping information added.</li>
+						<li class="fragment">Total @ $62 generated.</li>
+						<li class="fragment">Order 123 inserted.</li>
+					</ol>
+				</section>
+
+				<section style="text-align:left">
+					<h2>CRUD Shopping Cart</h2>
+					Now at some time in the future before the order is shipped, the customer changes their mind and wants to delete an item.
+					<p/><br/>
+					<ol>
+						<li class="fragment">Order 123 fetched.</li>
+						<li class="fragment">Item 2 @ $15 removed.</li>
+						<li class="fragment">Total @ $47 regenerated.</li>
+						<li class="fragment">Order 123 updated.</li>
+					</ol>
+				</section>
+
+				<section style="text-align:left">
+					<h2>CRUD Shopping Cart</h2>
+					This is the current state persisted.
+					<p/><br/>
+					<img class="fragment" src="images/CRUD_Order.png" width="400px">
+					<p class="fragment">
+						The result of these transactions the current state of the order is 3 items with a total of $47.
+					</p>
+				</section>
+
+				<section style="text-align:left">
+					<h2>CRUD Shopping Cart</h2>
+					Now the manager ask the development team to give him a report of all orders where customers have removed items. Since only the current state of the data is recorded this cant be done.
+					<p/><br/>
+					<ul>
+						<li class="fragment">The development team will add in a future sprint?</li>
+						<li class="fragment">Once added it will only work from now forward.</li>
+						<li class="fragment">Substantial implications to the value of the data.</li>
+					</ul>
+				</section>
+
+				<section style="text-align:left">
+					<h2>Impedance Mismatch</h2>
+					Another problem typical CRUD applications must deal with is Impedance Mismatch as mentioned earlier.<p/><br/>
+<blockquote class="fragment" style="width:100%;font-size:80%">Why does this impedance mismatch exist? The object-oriented paradigm is based on proven software engineering principles. The relational paradigm, however, is based on proven mathematical principles. Because the underlying paradigms are different the two technologies do not work together seamlessly. The impedance mismatch becomes apparent when you look at the preferred approach to access: With the object paradigm you traverse objects via their relationships whereas with the relational paradigm you join the data rows of tables. This fundamental difference results in a non-ideal combination of object and relational technologies, although when have you ever used two different things together without a few hitches?”
+—Scott Ambler</blockquote>
+				</section>
+
+				<section style="text-align:left">
+					<h2>ORMs</h2>
+					A tool often used to minimize some of these difficulties between an object oriented system and a relational database is an Object Relational Mapper (ORM).
+					<p/><br/>
+					<ul>
+						<li class="fragment">Work well in most situations, come at a fairly large cost.</li>
+						<li class="fragment">Does not ultimately does not solve the problem.</li>
+						<li class="fragment">You still have impedance mismatch and non-durable data.</li>
+						<li class="fragment">Query and persist current state to database.</li>
+						<li class="fragment">Tightly couple domain and data model.</li>
+						<li class="fragment">Leaky abstraction.</li>
+						<li class="fragment">Anemic domain model.</li>
+						<li class="fragment">Lossy and the intent of the user is not captured.</li>
+						<li class="fragment">High cost of understanding ORM framework.</li>
+					</ul>
+				</section>
+
+				<section style="text-align:left">
+					<h2>This will Piss People Off!</h2>
+<blockquote style="width:100%;font-size:80%">Inexperienced programmers love magic because it saves their time. Experienced programmers hate magic because it wastes their time. —@natpryce</blockquote>
+				</section>
+
+				<section style="text-align:left">
+					<h2>Tracking Behavior w/ Events</h2>
+					In a typical CRUD application the behavior of the system is create, read, update and delete. This is not the only way the data can be viewed.<p/><br/>
+					Consider for a moment the notion of a transaction.<p/><br/>
+					<ul>
+						<li class="fragment">Represent change between two points.</li>
+						<li class="fragment">Commonly referred to as <i>Deltas</i>.</li>
+						<li class="fragment">In static state models <i>Deltas</i> are implicit.</li>
+						<li class="fragment">They are left to frameworks such as an ORM.</li>
+						<li class="fragment">ORMs save state, calculate differences, update backing model.</li>
+						<li class="fragment">As a result much of the intent or behavior is lost.</li>
+					</ul>
+				</section>
+
+				<section style="text-align:left">
+					<h2>The Canonical Example</h2>
+					In mature business models the notion of tracking behavior is very common. Consider for example an accounting system.
+					<p/><br/>
+					<img class="fragment" src="images/Simplified_Ledger.png" width="600px">
+				</section>
+
+				<section style="text-align:left">
+					<h2>The Canonical Example</h2>
+					<ul>
+						<li class="fragment">Each transaction or delta is being recorded.</li>
+						<li class="fragment">Next to it is a denormalized total of the state of the account.</li>
+						<li class="fragment">To calculate, the delta is applied to the last known value.</li>
+						<li class="fragment">The last known value can be trusted.</li>
+						<li class="fragment">Its recreated by replaying all the transactions (events).</li>
+						<li class="fragment">Its can be reconciled to ensure validity.</li>
+						<li class="fragment">The data itself is a verifiable audit log.</li>
+						<li class="fragment">The <i>Current Balance</i> at any point can be derived.</li>
+						<li class="fragment">State can be derived for any point in time.</li>
+					</ul>
+				</section>
+
+				<section style="text-align:left">
+					<h2>Events</h2>
+					These Deltas produced from a system built around Domain Driven Design are captured in the form of Events.<p/><br/>
+					<ul>
+						<li class="fragment">Events are notifications.</li>
+						<li class="fragment">They report on something that has already happened.</li>
+						<li class="fragment">An event would be something like <i>client x has registered</i> or <i>client x locale has changed</i>.</li>
+					</ul>
+				</section>
+
+				<section style="text-align:left">
+					<h2>Shopping Cart Redux</h2>
+					Lets go back and take a look at Shopping Cart example and see how we manage the data from an event based perspective.<p/><br/>
+					<ol>
+						<li class="fragment">Cart created.</li>
+						<li class="fragment">Item 1 @ $30 added.</li>
+						<li class="fragment">Item 2 @ $15 added.</li>
+						<li class="fragment">Item 3 @ $12 added.</li>
+						<li class="fragment">Item 4 @ $5 added.</li>
+						<li class="fragment">Shipping information added.</li>
+						<li class="fragment">Order 123 event stream inserted.</li>
+					</ol>
+				</section>
+
+				<section style="text-align:left">
+					<h2>Shopping Cart Redux</h2>
+					<img src="images/Order_123_Insert.png" width="600px">
+				</section>
+
+				<section style="text-align:left">
+					<h2>Shopping Cart Redux</h2>
+					Now at some time in the future before the order is shipped, the customer changes their mind and wants to delete an item.
+					<p/><br/>
+					<ol>
+						<li class="fragment">Order 123 event stream fetched.</li>
+						<li class="fragment">Item 2 @ $15 removed event.</li>
+						<li class="fragment">Order 123 event stream appended.</li>
+					</ol>
+				</section>
+
+				<section style="text-align:left">
+					<h2>Shopping Cart Redux</h2>
+					<img src="images/Order_123_Appended.png" width="600px">
+				</section>
+
+				<section style="text-align:left">
+					<h2>Shopping Cart Redux</h2>
+					This event based approach can be applied to any type of object. By replaying the event stream the object can be returned to the last known state.
+					<p/><br/>
+					<ul>
+						<li class="fragment">There is a structural representation of the object.</li>
+						<li class="fragment">It exists only by replaying previous transactions.</li>
+						<li class="fragment">Data is not persisted structural.</li>
+						<li class="fragment">It is a series of transactions.</li>
+						<li class="fragment">There is no coupling between current state in the domain and storage.</li>
+					</ul>
+				</section>
+
+				<section style="text-align:left">
+					<h2>No CRUD except Create &amp; Read</h2>
+					<ul>
+						<li class="fragment">There are no updates or deletes.</li>
+						<li class="fragment">Everything is an event.</li>
+						<li class="fragment">Its stored in append only fashion.</li>
+						<li class="fragment">Delete is simply another event that gets appended.</li>
+					</ul>
+				</section>
+
+				<section style="text-align:left">
+					<h2>Technology Implications</h2>
+					<ul>
+						<li class="fragment">The storage system becomes an additive only architecture.</li>
+						<li class="fragment">Append-only architectures distribute.</li>
+						<li class="fragment">Far fewer locks to deal with.</li>
+					</ul>
+				</section>
+
+				<section style="text-align:left">
+					<h2>Business Implications</h2>
+					<ul>
+						<li class="fragment">Criteria is tracked from inception as an event stream.</li>
+						<li class="fragment">You can answer questions form the beginning of time.</li>
+						<li class="fragment">You can answer questions not asked yet!</li>
+						<li class="fragment">Natural audit log.</li>
+					</ul>
+				</section>
+
+				<section style="text-align:left">
+					<h2>Partitioning</h2>
+					<ul>
+						<li class="fragment">Horizontal Partitioning is difficult for a relational model.</li>
+						<li class="fragment">What key do you partition on in a complex relational model?</li>
+						<li class="fragment">When using an Event Store there is only 1 key!</li>
+					</ul>
+				</section>
+
+				<section style="text-align:left">
+					<h2>Saving Objects</h2>
+					<ul>
+						<li class="fragment">CRUD applications generally require complex tools.</li>
+						<li class="fragment">Use ORM’s to track changes (Deltas).</li>
+						<li class="fragment">They keep two copies of the model to compare.</li>
+						<li class="fragment">Event based systems have no need of such complex tools.</li>
+						<li class="fragment">Each delta is captured as an event and persisted.</li>
+					</ul>
+				</section>
+
+				<section style="text-align:left">
+					<h2>Loading Objects</h2>
+					<ul>
+						<li class="fragment">CRUD Applications require complex object graphs.</li>
+						<li class="fragment">Lazy Loading amortizes the cost of loading an Aggregate.</li>
+					</ul>
+					<p/><br/>
+<blockquote class="fragment" style="width:100%;font-size:80%">Aggregates are considered as a whole represented by the Aggregate Root. Conceptually an Aggregate is loaded and saved in its entirety. —Evans, 2001</blockquote><br/>
+					<ul>
+						<li class="fragment">Event stores != complex object graphs.</li>
+						<li class="fragment">Event stores do not require ORMs!</li>
+						<li class="fragment">No amortizing for loading domain via Lazy Loading.</li>
+						<li class="fragment">One simply loads the Aggregate and replays its events.</li>
+						<li class="fragment">Current state is derived.</li>
+					</ul>
+				</section>
+
+				<section style="text-align:left">
+					<h2>Structure</h2>
+					<ul>
+						<li class="fragment">Event Stores generally have very simple structures.</li>
+						<li class="fragment">Generally require only two tables.</li>
+						<li class="fragment">One for the Aggregates.</li>
+					</ul>
+					</p><br/>
+					<img class="fragment" src="images/Aggregate_Table.png" width="600px">
+				</section>
+
+				<section style="text-align:left">
+					<h2>Structure</h2>
+					<ul>
+						<li class="fragment">One for the Aggregate Events.</li>
+					</ul>
+					<p/><br/>
+					<img class="fragment" src="images/Aggregate_Event_Table.png" width="600px">
+				</section>
+
+				<section style="text-align:left">
+					<h2>Operation</h2>
+					<ul>
+						<li class="fragment">Operations are equally as simple.</li>
+						<li class="fragment">Generally have only two actions.</li>
+						<li class="fragment">Get events for an Aggregate.</li>
+					</ul>
+					<p/><br/>
+<pre class="fragment"><code>SELECT * FROM aggregate_event
+	WHERE aggregate_id = ‘123’
+	ORDER BY version</code></pre>
+				</section>
+
+				<section style="text-align:left">
+					<h2>Operation</h2>
+					<ul>
+						<li class="fragment">Persist Aggregate w/ its events.</li>
+					</ul>
+					<p/><br/>
+<pre class="fragment"><code>BEGIN
+
+  version = SELECT version FROM aggregates WHERE aggregate_id = ‘123’
+
+  IF version IS NULL
+    INSERT INTO aggregates // generates a new aggregate_id
+    version = 0
+  END
+
+  IF expectedversion != version
+    RAISE concurrency problem
+  FOREACH event
+    INSERT event WITH incremented version number
+  UPDATE aggregate with last version number
+
+END TRANSACTION</code></pre>
+				</section>
+
+				<section style="text-align:left">
+					<h2>Rolling Snapshots</h2>
+					<ul>
+						<li class="fragment">What about when I have millions of events?</li>
+						<li class="fragment">Replay from the beginning?</li>
+						<li class="fragment">Isn't this inefficient?</li>
+					</ul>
+				</section>
+
+				<section style="text-align:left">
+					<h2>Rolling Snapshots</h2>
+					This represents the current state view of an Aggregate from the beginning of time.<p/><br/>
+					<img src="images/Event_Stream.png" width="200px">
+				</section>
+
+				<section style="text-align:left">
+					<h2>Rolling Snapshots</h2>
+						<ul>
+						<li class="fragment">The solution is to use rolling snapshots.</li>
+						<li class="fragment">Denormalized state of an aggregate at a given point in time.</li>
+						<li class="fragment">Heuristic to prevent loading the entire event stream.</li>
+						</ul>
+				</section>
+
+				<section style="text-align:left">
+					<h2>Rolling Snapshots</h2>
+					Now we use snapshot to prevent the need to load all events.<p/><br/>
+					<img src="images/Event_Stream_with_Snapshot.png" width="200px">
+				</section>
+
+				<section style="text-align:left">
+					<h2>Rolling Snapshots</h2>
+					<ul>
+						<li class="fragment">Rebuilding Aggregates change with Rolling Snapshots.</li>
+						<li class="fragment">We do not read from the beginning of time forward.</li>
+						<li class="fragment">We read backwards putting the events onto a stack.</li>
+						<li class="fragment">Done until there are no events or a snapshot was found.</li>
+						<li class="fragment">Snapshot applied, events are popped off the stack.</li>
+						<li class="fragment">This continues until the stack was empty.</li>
+					</ul>
+				</section>
+
+				<section style="text-align:left">
+					<h2>Snapshot Table</h2>
+					Because of optimistic concurrency and versioning issues a separate table should be used for snapshots.<p/><br/>
+					<img src="images/Snapshot_Table.png" width="400px"><br/>
+					<ul>
+						<li class="fragment">[data] = serialized version of Aggregate for a point in time.</li>
+						<li class="fragment">The data could be stored in JSON, XML, etc.</li>
+						<li class="fragment">[version] = version of Aggregate when snapshot was taken.</li>
+					</ul>
+				</section>
+
+				<section style="text-align:left">
+					<h2>The SnapShotter</h2>
+					In order to have snapshots, created a process that handles the task of creating the snapshots needs to be introduced.<p/><br/>
+					<img class="fragment" src="images/SnapShotter.png" width="400px">
+				</section>
+
+				<section style="text-align:left">
+					<h2>The SnapShotter</h2>
+					<ul>
+						<li class="fragment">This process can live outside of the Application Server.</li>
+						<li class="fragment">A single process or many depending on throughput needs.</li>
+						<li class="fragment">All snapshots happen asynchronously.</li>
+					</ul>
+				</section>
+
+				<section style="text-align:left">
+					<h2>Conclusion</h2>
+					When combined together CQRS and Event Sourcing provide a very powerful platform for complex domains.<p/><br/>
+					<ul>
+						<li class="fragment">Structured separation of read and write concerns.</li>
+						<li class="fragment">Allowing distinct read / write optimization.</li>
+						<li class="fragment">Explicitly it represents a behavioral based architecture.</li>
+						<li class="fragment">More clearly represents a Domain Driven Design approach.</li>
+						<li class="fragment">It demands a complete Event Log.</li>
+						<li class="fragment">Has a derived state model rather than a static state model.</li>
+						<li class="fragment">It implies an immutable domain model.</li>
+						<li class="fragment">Allows for a distributed concurrent domain model.</li>
+					</ul>
+				</section>
+
+				<section style="text-align:left">
+					<h2>Conclusion</h2>
+					So what does it all look like when put together. CQRS, Eventual Consistency, ES, Rolling Snapshots?<p/><br/>
+					<img class="fragment" src="images/CQRS_ES.png" width="700px"><br/>
+				</section>
+
+				<section style="text-align:left">
+					<h2>References &amp; Event Sourcing Frameworks</h2>
+					<ul>
+						<li><a href="http://www.amazon.com/Domain-Driven-Design-Tackling-Complexity-Software/dp/0321125215/ref=sr_1_1?ie=UTF8&qid=1354684043&sr=8-1&keywords=domain+driven+design">Domain Driven Design: Tackling Complexity in the Heart of Software by Eric Evans</a>
+						<li><a href="http://cqrs.wordpress.com/documents/a-stereotypical-architecture/">Stereotypical Architecture</a>
+						<li><a href="http://cqrs.wordpress.com/documents/task-based-ui/">Task-Base UI</a>
+						<li><a href="http://cqrs.wordpress.com/documents/cqrs-introduction/">CQRS Introduction</a>
+						<li><a href="http://cqrs.wordpress.com/documents/events-as-storage-mechanism/">Events as a Storage Mechanism</a>
+						<li><a href="http://cqrs.wordpress.com/documents/building-event-storage/">Building and Event Storage</a>
+						<li><a href="http://cqrs.wordpress.com/documents/cqrs-and-event-sourcing-synergy/">CQRS and Event Sourcing</a>
+						<li><a href="http://www.youtube.com/watch?v=KXqrBySgX-s">CQRS Video (1:49 Long)</a>
+						<li><a href="http://cqrs.wordpress.com/video/">CQRS Video (6 Hours Long)</a>
+						<li><a href="https://github.com/eligosource/eventsourced">eligosource/eventsourced</a>
+						<li><a href="https://github.com/krasserm/eventsourced">krasserm/eventsourced</a>
+				</section>
+
+				<section>
+					<h1>THE END</h1>
+					<h3>BY Duncan K. DeVore</h3>
+				</section>
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/none
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+					// { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
