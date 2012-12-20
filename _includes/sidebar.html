@@ -29,10 +29,8 @@
 
     var loc = window.location.pathname;
     $(".sidebar-link").removeClass("active");
-    console.log("loc=" + loc);
     $(".sidebar-link").each(function() {
       if ($(this).attr("href") == loc) {
-        console.log($(this).attr("id") + " is active");
         $(this).addClass("active");
       }
     });
