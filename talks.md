@@ -5,6 +5,11 @@ layout: main
 
 ## Selected Previous PHASE Talks
 
+* April 16, 2013: **Dimitriy Setrakyan**,
+  _Pearls of Distributed Programming with Scala and GridGain_.
+  [Meetup Event Page](http://www.meetup.com/scala-phase/events/112878592/)
+* There were no talks January through March, largely because the
+  [2013 Northeast Scala Symposium](http://nescala.org/) was in Philly.
 * December 4, 2012: **Duncan DeVore**, _CQRS and Event Sourcing_.
   [Meetup Event Page](http://www.meetup.com/scala-phase/events/88673682/),
   [Slides (HTML+Javascript)](talks/duncan-devore-cqrs/)
