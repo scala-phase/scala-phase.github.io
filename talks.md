@@ -5,9 +5,9 @@ layout: main
 
 ## Selected Previous PHASE Talks
 
-* July 9, 2013: **Jason Feingold**,
-  [Gradle](talks/jason-feingold-gradle/).
-  [Meetup Event Page](http://www.meetup.com/scala-phase/events/125411192/)
+* July 9, 2013: **Jason Feingold**, _Gradle_.
+  [Meetup Event Page](http://www.meetup.com/scala-phase/events/125411192/),
+  [Slides (HTML + Javascript)](talks/jason-feingold-gradle/).
 * April 16, 2013: **Dimitriy Setrakyan**,
   _Pearls of Distributed Programming with Scala and GridGain_.
   [Meetup Event Page](http://www.meetup.com/scala-phase/events/112878592/)
