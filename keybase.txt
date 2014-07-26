@@ -1,0 +1,70 @@
+==================================================================
+https://keybase.io/bmc
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of http://scala-phase.org
+  * I am bmc (https://keybase.io/bmc) on keybase.
+  * I have a public key with fingerprint B57B 6B4B 451A F540 4D21  BEA4 1588 40B4 A8A7 FD98
+
+To claim this, I am signing this object:
+
+{
+    "body": {
+        "client": {
+            "name": "keybase.io node.js client",
+            "version": "0.4.11"
+        },
+        "key": {
+            "fingerprint": "b57b6b4b451af5404d21bea4158840b4a8a7fd98",
+            "host": "keybase.io",
+            "key_id": "158840B4A8A7FD98",
+            "uid": "6723d2273cd1040e0ec7012e623e3500",
+            "username": "bmc"
+        },
+        "merkle_root": {
+            "ctime": 1406398085,
+            "hash": "284dc28e5ce5c3779099be2c73a3c808a5d9ae13923a0fcae0c60d8cf5f96f8a2d87cf15009ac7f42dc5a6564f307375bc7b6b93bf717b95543522df06dd4d91",
+            "seqno": 31301
+        },
+        "service": {
+            "hostname": "scala-phase.org",
+            "protocol": "http:"
+        },
+        "type": "web_service_binding",
+        "version": 1
+    },
+    "ctime": 1406401423,
+    "expire_in": 157680000,
+    "prev": "cabfc90625e846cc495de38ac690aa2ab38272ecba52529cfcb855a8d9f1edaa",
+    "seqno": 17,
+    "tag": "signature"
+}
+
+with the aforementioned key, yielding the PGP signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: GnuPG v1
+
+owFVkr9rFEEUx88YhSiCKWId1sImHvNzZ+YEMSoptVCwEc43M2/u1lx2z93NmRDT
+pxGtxEoRCy1ELfwDrBUrLfwHLNJZWCkBZ86IcdliZ99nvu/7fTMPTxzuzMwv7Fx4
+9/LF3uNDH3dt59rnXw+2Mlv5zay3lblRgWWbvkpYw6yXreKmhQa7RbVYVh67t5vF
+fWYpm2DdFFUZKdIVXUqz7aXEp92hKAdYj+siiWVWKptbYYWkEKQgwjNqEQSVWgti
+BWhQwRsdNYdV0/7XNptq9gsf//7hL4plvaxWLk/59WkhV4x7xhR3nhJBkKBThDLM
+GUcuCUlgg/V+JrvmktU1rFdH2K+rahrYtUWqUkFybjTRMpqBZhh5poV3TKN08eVK
+GWKMReYUB+4iCdIbQMoN40CCAyQuJ167IIPJgwbmtXKBRh8GnAqCeSchl7kInCiu
+pHVpPIbboKiyRkrBJWM+kNx74Q2N7hu8U1ZZj1NO6HZa1pPCYbKdBrafq3EwgrPj
+YRpcVQ/itnFdtZWrRrE4bNtxL8VuN8cJvou23+CrqU7fFqWPJ3bwTFObAyMRhArG
+lzLcGBc19otESJVrEp/UBydR04ENzpCcSdQid04Y6ZFrcLkhAAws10wxdBYkk8y4
+4KyWErQ3gaIH+BeUqmgUBilUMSihXa8x295Zme3Mz3SOHplJl7ZzbO7k35t8X3ae
+jjdeiy+zz358O/X1ut972y48/3Sl8+TM8bl7+v3uz3Nvbnz/cOv01UvnH938DQ==
+=N9me
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/bmc
+
+==================================================================
