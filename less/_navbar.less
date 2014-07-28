@@ -1,0 +1,66 @@
+@import "_defs.less";
+@import "_mixins.less";
+
+.navbar {
+  background-color: @navbarBackgroundColor;
+  height:           @navbarHeight;
+
+  .banner {
+    span {
+      display: table-cell;
+      padding-left: 20px;
+
+      &.banner-image {
+        padding-left: 0;
+      }
+    }
+
+    .banner-image {
+      img.logo {
+        height: @navbarHeight - 20px;
+        vertical-align: middle;
+      }
+    }
+  }
+
+  .title {
+    color: white;
+    white-space: wrap;
+
+    @media @phone {
+      font-size: @phoneFontSize * 1.2;
+    }
+
+    @media @tablet {
+      font-size: @tabletFontSize * 1.5;
+    }
+
+    @media @desktop {
+      font-size: @desktopFontSize * 2;
+    }
+
+    @media @wideDesktop {
+      font-size: @desktopFontSize * 2;
+    }
+
+    margin-left: 20px;
+  }
+}
+
+.navlinks {
+  margin-top: 20px;
+  a {
+    color: black;
+    font-size: @baseFontSize + 5px;
+    vertical-align: bottom;
+
+    &:hover {
+      background-color: @navbarBackgroundColor;
+      color:            white;
+    }
+
+    &:active {
+      color: red;
+    }
+  }
+}

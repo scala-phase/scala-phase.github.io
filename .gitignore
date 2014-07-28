@@ -1,2 +1,3 @@
 _site
 .envrc
+node_modules

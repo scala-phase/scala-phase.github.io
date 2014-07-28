@@ -1,26 +1,37 @@
-@import "../bootstrap/less/custom.less";
+@import "_defs.less";
+@import "_buttons.less";
+@import "_mixins.less";
 
 body {
-  background-color: white;
-  font-family: Helvetica, Verdana, Arial, sans-serif;
-}
+  background-color: #D9EBFC;
+  font-family:      @fontFamily;
+  font-size:        @baseFontSize;
 
-.navbar {
-  #banner-image {
-    img.logo {
-      height: @navbarHeight - 10px;
-    }
+  @media @phone {
+    font-size: @phoneFontSize;
+  }
+
+  @media @tablet {
+    font-size: @tabletFontSize;
+  }
+
+  @media @desktop {
+    font-size: @desktopFontSize;
+  }
+
+  @media @wideDesktop {
+    font-size: @desktopFontSize;
   }
 }
 
-#content-wrapper {
-  margin-top: @navbarHeight + 10px;
-  padding-top: 10px;
-  background-color: white;
+
+.section {
+  width: 95%;
+  margin-left: 30px;
 }
 
 .a-hover () {
-  background: #7777ff;
+  background: @anchorHoverBackgroundColor;
   color: white;
 }
 
@@ -47,27 +58,13 @@ a {
   }
 }
 
-#sidebar {
-  .logo {
-    width: 100px !important;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 20px;
-  }
-  ul {
-    list-style-type: none;
-    margin-left: 10px;
-
-    li {
-      margin-left: 0;
-    }
-  }
+.back-to-top {
+  font-size:   @baseFontSize;
+  margin-left: 20px;
+  white-space: nowrap;
 
   a {
-    color: black;
-    &.active {
-      color: red;
-    }
+    color: #999999;
   }
 }
 
@@ -75,3 +72,21 @@ a {
   float: right;
   padding-bottom: 20px;
 }
+
+@import "_navbar.less";
+
+/*
+#top-section {
+  background-color: @navbarBackgroundColor;
+}
+
+#about {
+  background-color: #FCFFC1;
+}
+
+#talks {
+  background-color: #FCE8EC;
+}
+*/
+
+@import "_table.less";

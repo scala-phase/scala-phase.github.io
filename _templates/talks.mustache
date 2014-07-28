@@ -1,0 +1,48 @@
+<h1>
+  Selected Previous PHASE Talks
+  {% include back-to-top.html %}
+</h1>
+
+<table class="talks-table">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Speaker</th>
+      <th>Title</th>
+      <th>Meetup Event Page</th>
+      <th>Slides</th>
+      <th>Code</th>
+      <th>Other</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {{! In the loop, you have access to each element's fields, implicitly.}}
+    {{#talks}}
+      <tr>
+        <td class="date">{{date}}</td>
+        <td class="speaker">{{speaker}}</td>
+        <td class="title">{{title}}</td>
+        <td class="meetup-link"><a href="{{meetup}}">{{meetup_id}}</a></td>
+        <td class="slides">
+          {{#slides}}
+            <a class="slides-link" href="{{slides.link}}">Slides</a>
+            {{#slides.comment}}
+              <span class="slides-comment">({{slides.comment}})</span>
+            {{/slides.comment}}
+          {{/slides}}
+        </td>
+        <td class="code">
+          {{#code}}
+            <a class="code-link" href="{{code}}">{{code}}</a>
+          {{/code}}
+        </td>
+        <td class="other">
+          {{#video}}
+            <a class="video-link" href="{{video}}">Video</a>
+          {{/video}}
+        </td>
+      </tr>
+    {{/talks}}
+  </tbody>
+</table

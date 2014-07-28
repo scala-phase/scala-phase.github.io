@@ -4,6 +4,7 @@ require 'rubygems'
 require 'rake/clean'
 require 'git'
 require 'tmpdir'
+require 'fssm'
 
 # ---------------------------------------------------------------------------
 # Functions used outside tasks
@@ -21,31 +22,18 @@ end
 # Constants
 # ---------------------------------------------------------------------------
 
-TWITTER_BOOTSTRAP_MASTER = 'https://github.com/twitter/bootstrap'
 FONT_AWESOME_MASTER = 'https://github.com/FortAwesome/Font-Awesome'
-
-BOOTSTRAP_URL = ENV['BOOTSTRAP_URL'] || TWITTER_BOOTSTRAP_MASTER
-FONT_AWESOME_URL = ENV['FONT_AWESOME_URL'] || FONT_AWESOME_MASTER
-
-_bootstrap_git_temp = nil
-def bootstrap_git_temp
-  _bootstrap_git_temp ||= git_temp
-end
-
-def local_bootstrap?
-  ! ENV['BOOTSTRAP_SOURCE'].nil?
-end
-
-def bootstrap_source
-  ENV['BOOTSTRAP_SOURCE'] || bootstrap_git_temp
-end
-
-BOOTSTRAP_SUBDIR = 'bootstrap'
-
+FONT_AWESOME_URL    = ENV['FONT_AWESOME_URL'] || FONT_AWESOME_MASTER
 FONT_AWESOME_SUBDIR = 'font-awesome'
 
-BOOTSTRAP_CUSTOM_LESS = 'bootstrap/less/custom.less'
-BOOTSTRAP_LESS = 'bootstrap/less/bootstrap.less'
+LESS_DIR            = 'less'
+LESS_FILES          = FileList["#{LESS_DIR}/*.less"].select do |f|
+                        f !~ %r|^less/_|
+                      end
+TEMPLATES_DIR       = '_templates'
+TALKS_YAML          = 'talks.yml'
+TALKS_TEMPLATE      = '_templates/talks.mustache'
+TALKS_HTML          = '_includes/talks.html'
 
 CLEAN << ['css', '_site']
 
@@ -56,21 +44,59 @@ CLEAN << ['css', '_site']
 task :default => :jekyll
 
 desc "Format the site."
-task :jekyll => :css do |t|
-  sh 'jekyll'
+task :jekyll => [:css, :talks] do |t|
+  sh 'jekyll build'
 end
 
 task :preview => :run
 task :server => :run
 
 desc "Format the blog, then fire up a local HTTP server."
-task :run => :css do |t|
-  sh "jekyll", "--server"
+task :run => [:css, :talks] do |t|
+  watch_less_files
+  watch_talks
+  sh "jekyll server --watch"
+end
+
+task :talks => TALKS_HTML
+
+file TALKS_HTML => [TALKS_YAML, TALKS_TEMPLATE, 'Rakefile'] do
+  puts "Rebuilding #{TALKS_HTML}"
+  convert_talks
 end
 
 # ---------------------------------------------------------------------------
 # CSS/SASS
 # ---------------------------------------------------------------------------
+
+class Lesser
+  include FileUtils
+
+  def initialize
+  end
+
+  def convert(lessfile)
+    css = css_for_less lessfile
+    puts "Converting #{lessfile} to #{css}"
+    lessc_full lessfile, css
+  end
+
+  private
+
+  def lessc_full(input, output)
+    sh 'lessc', input, output
+  end
+
+  def lessc_min
+    sh 'lessc', '--compress', input, output
+  end
+
+  def css_for_less(less)
+    dir = File.dirname(File.dirname(File.absolute_path(less)))
+    base = File.basename(less, ".less")
+    "#{dir}/css/#{base}.css"
+  end
+end
 
 # Generate CSS files from LESS files
 
@@ -78,8 +104,6 @@ CSS_DIR = 'css'
 
 directory 'stylesheets'
 
-LESS_DIR = 'less'
-LESS_FILES = FileList["#{LESS_DIR}/*.less"]
 CSS_OUTPUT_FILES = LESS_FILES.map do |f|
   f.gsub(/^#{LESS_DIR}/, CSS_DIR).gsub(/\.less$/, '.css')
 end
@@ -89,114 +113,20 @@ def css_to_less
   Proc.new {|task| task.sub(/^#{CSS_DIR}/, LESS_DIR).sub(/\.css$/, '.less')}
 end
 
-rule %r{^#{CSS_DIR}/.*\.css$} => [css_to_less, 'Rakefile'] + LESS_FILES do |t|
+lessc = Lesser.new
+
+rule %r{^#{CSS_DIR}/[^_].*\.css$} => [css_to_less, 'Rakefile'] + LESS_FILES do |t|
   mkdir_p CSS_DIR
   puts("#{t.source} -> #{t.name}")
   Dir.chdir('less') do
     less_input = File.basename(t.source)
     css_output = File.join('..', t.name)
-    lessc_full less_input, css_output
+    lessc.convert less_input
   end
 end
 
 desc "Run SASS to produce the stylesheets."
 task :css => CSS_OUTPUT_FILES
-
-
-desc "Rebuild the Twitter Bootstrap and Sass Twitter Bootstrap stuff."
-task :bootstrap => [
-  :bootstrap_git,
-  :bootstrap_js,
-  :bootstrap_css,
-  :bootstrap_clean
-]
-
-desc "Generate bootstrap.min.css"
-task :bootstrap_css => [:bootstrap_css_copy, :bootstrap_css_edit, :bootstrap_css_compile]
-
-task :bootstrap_css_copy do
-  puts "Copying LESS files"
-  mkdir_p "bootstrap/less"
-  Dir.glob(File.join(bootstrap_source, 'less', '*.less')).each do |source|
-    target = File.join('bootstrap/less', File.basename(source))
-    cp source, target if different?(source, target)
-  end
-
-  mkdir_p 'bootstrap/img'
-  Dir.glob(File.join(bootstrap_source, 'img', '*')).each do |image|
-    target = File.join('bootstrap/img', File.basename(image))
-    cp image, target if different?(image, target)
-  end
-end
-
-task :bootstrap_css_edit do
-  temp = "temp.less"
-  begin
-    puts "Editing Bootstrap LESS file(s)."
-    Dir.glob(File.join("bootstrap", "less", "*.less")).each do |less|
-
-      t = File.open(temp, "w")
-      t.write(File.open(less).read.each_line.map do |line|
-        r = %r{"\.\./img\/}
-        line = line.sub(r, '"/bootstrap/img/') if line =~ r
-        line
-      end.join(""))
-      t.close
-      cp temp, less if different?(temp, less)
-    end
-  ensure
-    rm_f temp
-  end
-end
-
-task :bootstrap_css_compile do
-  puts "Compiling #{BOOTSTRAP_CUSTOM_LESS}"
-  mkdir_p "bootstrap/css"
-  lessc_min BOOTSTRAP_CUSTOM_LESS, 'bootstrap/css/bootstrap.min.css'
-  lessc_full BOOTSTRAP_CUSTOM_LESS, 'bootstrap/css/bootstrap.css'
-end
-
-task :bootstrap_js do
-  require 'uglifier'
-  require 'erb'
-
-  template = ERB.new %q{
-  <!-- AUTOMATICALLY GENERATED. DO NOT EDIT. -->
-  <% paths.each do |path| %>
-  <script type="text/javascript" src="/bootstrap/js/<%= path %>"></script>
-  <% end %>
-  }
-
-  mkdir_p 'bootstrap/js'
-  paths = []
-  minifier = Uglifier.new
-  Dir.glob(File.join(bootstrap_source, 'js', '*.js')).each do |source|
-    base = File.basename(source).sub(/^(.*)\.js$/, '\1.min.js')
-    paths << base
-    target = File.join('bootstrap/js', base)
-    if different?(source, target)
-      File.open(target, 'w') do |out|
-        out.write minifier.compile(File.read(source))
-      end
-    end
-  end
-
-  mkdir_p '_includes'
-  File.open('_includes/bootstrap.js.html', 'w') do |f|
-    f.write template.result(binding)
-  end
-end
-
-# Do not invoke this directly. It will fail.
-task :bootstrap_clean do
-  rm_r bootstrap_git_temp unless local_bootstrap?
-end
-
-task :bootstrap_git do
-  unless local_bootstrap?
-    git_clone BOOTSTRAP_URL, bootstrap_git_temp, BOOTSTRAP_SUBDIR
-  end
-end
 
 desc "Update Font-Awesome"
 task :font_awesome do
@@ -216,16 +146,146 @@ task :font_awesome do
   end
 end
 
-# ---------------------------------------------------------------------------
+#############################################################################
 # Functions used within tasks
+#############################################################################
+
+# ---------------------------------------------------------------------------
+# Mustache template handling, for talks
 # ---------------------------------------------------------------------------
 
-def lessc_full(input, output)
-  sh 'lessc', input, output
+require 'mustache'
+class Talk
+  attr_reader :title, :speaker, :date, :meetup, :slides, :video, :code,
+              :meetup_id
+
+  def initialize(title, speaker, date_str, meetup, slides, video, code)
+    @title      = title
+    @speaker    = speaker
+    @date       = Date.parse(date_str)
+    @meetup     = meetup
+    @meetup_id  = meetup.split('/').last
+    @slides     = slides
+    @video      = video
+    @code       = code
+  end
 end
-def lessc_min(input, output)
-  sh 'lessc', '--compress', input, output
+
+class Talks < Mustache
+  attr_reader :talks
+  def initialize(talks)
+    @talks = talks
+  end
 end
+
+class TalkRenderer
+  def initialize(yaml_path, template_path, html_out)
+    @yaml     = yaml_path
+    @template = template_path
+    @html_out = html_out
+  end
+
+  def render
+    require 'yaml'
+    require 'mustache'
+
+    # Mustache is just simpler than Liquid.
+
+    talks = Talks.new(load_yaml(@yaml).sort { |t1, t2| t2.date <=> t1.date })
+    render_template @template, talks, @html_out
+  end
+
+  private
+
+  def render_template(template, talks, html_out)
+    File.open(html_out, 'w') do |f|
+      template = File.open(template).read
+      f.write(talks.render(template))
+    end
+  end
+
+  def load_yaml(yaml)
+    File.open yaml do |f|
+      data = YAML.load f
+      data['talks'].map do |h|
+        slides = if h['slides']
+                   OpenStruct.new(link:    h['slides']['link'],
+                                  comment: h['slides']['comment'])
+                 else
+                   nil
+                 end
+
+        Talk.new(h['title'], h['speaker'], h['date'], h['meetup_link'], slides,
+                 h['video'], h['code'])
+      end
+    end
+  end
+end
+
+def convert_talks
+  TalkRenderer.new(TALKS_YAML, TALKS_TEMPLATE, TALKS_HTML).render
+end
+
+def watch_talks
+  def watch_templates
+    fork do
+      FSSM.monitor(TEMPLATES_DIR) do
+        glob '*.mustache'
+
+        update { |base, relative| convert_talks }
+        create { |base, relative| convert_talks }
+        delete { |base, relative| convert_talks }
+      end
+    end
+  end
+
+  def watch_yaml
+    fork do
+      FSSM.monitor(".", TALKS_YAML) do
+        update { |base, relative| convert_talks }
+        create { |base, relative| convert_talks }
+        delete { |base, relative| convert_talks }
+      end
+    end
+  end
+
+  watch_templates
+  watch_yaml
+end
+
+# ---------------------------------------------------------------------------
+# LESS (CSS) handling
+# ---------------------------------------------------------------------------
+
+def rebuild_less_files
+  lessc = Lesser.new
+  Dir.glob("#{LESS_DIR}/[^_]*.less").each do |less|
+    lessc.convert less
+  end
+rescue Exception => ex
+  puts ex.message
+end
+
+def watch_less_files
+  fork do
+    FSSM.monitor(LESS_DIR) do
+      update do |base, relative|
+        # For now, it doesn't matter what changed. Update them all.
+        rebuild_less_files
+      end
+      create do |base, relative|
+        rebuild_less_files
+      end
+      delete do |base, relative|
+        rebuild_less_files
+      end
+    end
+  end
+end
+
+# ---------------------------------------------------------------------------
+# Misc.
+# ---------------------------------------------------------------------------
 
 def git_clone(url, parent_dir, child_dir)
   FileUtils.mkdir_p parent_dir

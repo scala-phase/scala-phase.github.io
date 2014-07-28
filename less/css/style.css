@@ -1,3 +1,4 @@
+/* Simple gradient from one color (at the top) to another color (at the bottom). */
 .btn {
   border-radius: 5px 5px 5px 5px;
   padding: 10px;
@@ -105,9 +106,8 @@
 .btn.btn-borderless.save {
   color: green !important;
 }
-/* Simple gradient from one color (at the top) to another color (at the bottom). */
 body {
-  background-color: #D9EBFC;
+  background-color: white;
   font-family: Helvetica, Verdana, Arial, sans-serif;
   font-size: 20px;
 }
@@ -131,9 +131,16 @@ body {
     font-size: 20px;
   }
 }
-.section {
-  width: 95%;
-  margin-left: 30px;
+#content-wrapper {
+  margin-top: 210px;
+  margin-left: 0px;
+  margin-right: 0px;
+  padding-top: 10px;
+  padding-left: 20px;
+  background-color: white;
+}
+#content-wrapper #main-content {
+  width: 100%;
 }
 a {
   text-decoration: none;
@@ -166,20 +173,12 @@ a:visited:hover {
   background-color: #4681bb;
   height: 200px;
 }
-.navbar .banner span {
-  display: table-cell;
-  padding-left: 20px;
-}
-.navbar .banner span.banner-image {
-  padding-left: 0;
-}
-.navbar .banner .banner-image img.logo {
+.navbar .banner-image img.logo {
   height: 180px;
   vertical-align: middle;
 }
 .navbar .title {
   color: white;
-  white-space: wrap;
   margin-left: 20px;
 }
 @media only screen and (min-width: 241px) and (max-width: 719px) {
@@ -217,19 +216,15 @@ a:visited:hover {
 .navlinks a:active {
   color: red;
 }
-/*
 #top-section {
-  background-color: @navbarBackgroundColor;
+  background-color: #4681bb;
 }
-
 #about {
   background-color: #FCFFC1;
 }
-
 #talks {
   background-color: #FCE8EC;
 }
-*/
 table {
   width: 100%;
   margin-top: 20px;
@@ -239,46 +234,35 @@ table {
   border-collapse: collapse;
 }
 table thead {
-  background: rgba(255, 255, 255, 0.3);
-}
-table thead tr {
-  border-bottom: 1px solid #808080;
-  border-top: 1px solid #808080;
+  background: #ffffff;
 }
 table thead th {
   border-width: 0;
   padding: 5px;
   border-style: none;
-  background: rgba(255, 255, 255, 0.3);
+  background: #ffffff;
   text-align: left;
 }
 table tbody tr {
   vertical-align: top;
-  border-bottom: 1px solid #cccccc;
 }
-table tbody tr:nth-child(odd) {
-  background: transparent;
+table tbody tr.odd {
+  background: #f9f9f9;
 }
-table tbody tr:nth-child(even) {
-  background: rgba(255, 255, 255, 0.3);
+table tbody tr.even {
+  background: #ffffff;
 }
 table tbody td {
   border-width: 0;
   padding: 5px;
   border-style: none;
 }
-table.talks-table .date {
-  padding-right: 10px;
-}
 table.talks-table .title {
-  font-style: italic;
-  max-width: 200px;
+  font-style: italics;
 }
 table.talks-table .code-link {
   font-family: monospace;
-  font-size: smaller;
 }
 table.talks-table .slides .slides-comment {
-  font-style: italic;
-  display: block;
+  font-style: italics;
 }

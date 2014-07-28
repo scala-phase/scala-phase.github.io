@@ -1,0 +1,91 @@
+talks:
+  - title:       The Scala-Graph Library
+    speaker:     Brad Miller
+    date:        2014/07/24
+    meetup_link: http://www.meetup.com/scala-phase/events/179613752/
+
+  - title:       Haskell and React.js
+    speaker:     Jason Feingold
+    date:        2014/06/12
+    meetup_link: http://www.meetup.com/scala-phase/events/179229002/
+    code:        https://github.com/wafna/
+
+  - title:       React.js and functional Javascript
+    speaker:     Dustin Getz & Daniel Miladinov
+    date:        2014/05/20
+    meetup_link: http://www.meetup.com/scala-phase/events/167318632/
+
+  - title:       "Roland Kuhn leads a Q&A and live coding session"
+    speaker:     Roland Kuhn
+    date:        2014/04/24
+    meetup_link: http://www.meetup.com/scala-phase/events/167166802/
+
+  - title:       "Viridity's Scala Units of Measure and Quantities API"
+    speaker:     Gary Keorkunian
+    date:        2014/03/20
+    meetup_link: http://www.meetup.com/scala-phase/events/167166322/
+    code:        http://www.squants.com/
+    slides:
+      link:      http://www.squants.com/squants-phase-mar2014.pdf
+      comment:   PDF
+
+  - title:       Gradle
+    speaker:     Jason Feingold
+    date:        2013/07/09
+    meetup_link: http://www.meetup.com/scala-phase/events/125411192/
+    slides:
+      link:      talks/jason-feingold-gradle/
+      comment:   HTML + Javascript
+
+  - title:       Pearls of Distributed Programming with Scala and GridGain
+    speaker:     Dmitriy Setrakyan
+    date:        2013/04/16
+    meetup_link: http://www.meetup.com/scala-phase/events/112878592/
+
+  - title:       CQRS and Event Sourcing
+    speaker:     Duncan Devore
+    date:        2012/12/04
+    meetup_link: http://www.meetup.com/scala-phase/events/88673682/
+    slides:
+      link:      talks/duncan-devore-cqrs/
+      comment:   HTML + Javascript
+
+  - title:       The Play! Framework
+    speaker:     Brian Clapper
+    date:        2012/10/02
+    meetup_link: http://www.meetup.com/scala-phase/events/82990972/
+    slides:
+      link:      http://www.ardentex.com/publications/the-play-framework/slides.html
+      comment:   HTML + Javascript
+
+  - title:       Building SBT Plugins
+    speaker:     Mads Hartmann Jenson
+    date:        2013/07/09
+    meetup_link: http://www.meetup.com/scala-phase/events/47857352
+    slides:
+      link:      talks/mads-sbt-plugins.pdf
+      comment:   PDF
+    code:        https://github.com/mads379/sbt-plugin-examples
+
+  - title:       Scala on the Android Platform
+    speaker:     Yuvi Masory
+    date:        2011/11/15
+    meetup_link: http://www.meetup.com/scala-phase/events/39391912/
+    video:       http://vimeo.com/32516782
+
+  - title:       Scala Type Classes
+    speaker:     Erik Osheim
+    date:        2011/9/20
+    meetup_link: http://www.meetup.com/scala-phase/events/31595792/
+    slides:
+      link:      http://plastic-idolatry.com/typcls/
+      comment:   HTML + Javascript
+
+  - title:       Disrupters
+    speaker:     Jamie Allen
+    date:        2011/08/10
+    meetup_link: http://www.meetup.com/scala-phase/events/31595792/
+    slides:
+      link:      talks/jamie-allen-sdisruptor/index.html
+      comment:   HTML + Javascript
+    code:        https://github.com/jamie-allen/sdisruptor

@@ -1,0 +1,80 @@
+@import "_defs.less";
+@import "_mixins.less";
+
+@tableHeaderBackground:  rgba(255, 255, 255, 0.3);
+@tableOddRowBackground:  transparent;
+@tableEvenRowBackground: @tableHeaderBackground;
+@tableRowBorderColor:    #ccc;
+@tableHeaderBorderColor: darken(@tableRowBorderColor, 30%);
+
+table {
+  width:            100%;
+  margin-top:       20px;
+  border-width:     0;
+  border-spacing:   2px;
+  border-style:     none;
+  border-collapse:  collapse;
+
+  thead {
+    background: @tableHeaderBackground;
+    tr {
+      border-bottom: 1px solid @tableHeaderBorderColor;
+      border-top: 1px solid @tableHeaderBorderColor;
+    }
+
+    th {
+      border-width: 0;
+      padding:      5px;
+      border-style: none;
+      background:   @tableHeaderBackground;
+      text-align:   left;
+    }
+  }
+
+  tbody {
+    tr {
+      vertical-align: top;
+      border-bottom: 1px solid @tableRowBorderColor;
+
+      &:nth-child(odd) {
+        background: @tableOddRowBackground;
+      }
+
+      &:nth-child(even) {
+        background: @tableEvenRowBackground;
+      }
+    }
+
+    td {
+      border-width: 0;
+      padding:      5px;
+      border-style: none;
+    }
+  }
+}
+
+table.talks-table {
+  .date {
+    padding-right: 10px;
+  }
+
+  .title {
+    font-style: italic;
+    max-width: 200px;
+  }
+
+  .speaker {
+  }
+
+  .code-link {
+    font-family: monospace;
+    font-size:   smaller;
+  }
+
+  .slides {
+    .slides-comment {
+      font-style: italic;
+      display: block;
+    }
+  }
+}

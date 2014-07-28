@@ -1,35 +1,37 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>{{ page.title }}</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-    {% include bootstrap.js.html %}
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Philly Area Scala Enthusiasts</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.0/themes/smoothness/jquery-ui.css"/>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.0/jquery-ui.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="third-party/css/gridism.css"/>
+    <link rel="stylesheet" href="third-party/css/normalize.css"/>
+    <script src="third-party/js/animatedScrollTo.js"></script>
 
     <link rel="stylesheet" type="text/css" href="css/style.css" media="screen">
-
-
+    <script src="js/main.js" type="text/javascript"></script>
   </head>
 
   <body>
 
-    <div id="page">
+    <div id="top">
       {% include navbar.html %}
 
-      <div id="content-wrapper">
-        <div class="container-fluid">
-          <div class="row-fluid">
-            <div class="span2">
-              {% include sidebar.html %}
-            </div>
-
-            <div class="span9" id="main-content">
-              {{ content }}
-            </div>
-          </div>
-        </div>
+      <noscript><a name="about"></a></noscript>
+      <div class="section" id="about">
+        {% include about.html %}
       </div>
+
+      <noscript><a name="talks"></a></noscript>
+      <div class="section" id="talks">
+        {% include talks.html %}
+      </div>
+
     </div>
 
-</body>
+  </body>
 </html>
