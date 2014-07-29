@@ -156,18 +156,18 @@ end
 
 require 'mustache'
 class Talk
-  attr_reader :title, :speaker, :date, :meetup, :slides, :video, :code,
-              :meetup_id
+  attr_reader :title, :speaker, :date, :meeting_link, :slides, :video, :code,
+              :meeting_id
 
-  def initialize(title, speaker, date_str, meetup, slides, video, code)
-    @title      = title
-    @speaker    = speaker
-    @date       = Date.parse(date_str)
-    @meetup     = meetup
-    @meetup_id  = meetup.split('/').last
-    @slides     = slides
-    @video      = video
-    @code       = code
+  def initialize(title, speaker, date_str, meeting_link, slides, video, code)
+    @title        = title
+    @speaker      = speaker
+    @date         = Date.parse(date_str)
+    @meeting_link = meeting_link
+    @meeting_id   = meeting_link.sub(%r|^https?://|, "")
+    @slides       = slides
+    @video        = video
+    @code         = code
   end
 end
 
@@ -215,7 +215,7 @@ class TalkRenderer
                    nil
                  end
 
-        Talk.new(h['title'], h['speaker'], h['date'], h['meetup_link'], slides,
+        Talk.new(h['title'], h['speaker'], h['date'], h['meeting_link'], slides,
                  h['video'], h['code'])
       end
     end

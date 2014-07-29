@@ -1,3 +1,4 @@
+/* Simple gradient from one color (at the top) to another color (at the bottom). */
 .btn {
   border-radius: 5px 5px 5px 5px;
   padding: 10px;
@@ -105,7 +106,6 @@
 .btn.btn-borderless.save {
   color: green !important;
 }
-/* Simple gradient from one color (at the top) to another color (at the bottom). */
 body {
   background-color: #D9EBFC;
   font-family: Helvetica, Verdana, Arial, sans-serif;
