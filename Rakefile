@@ -4,6 +4,7 @@ require 'rubygems'
 require 'rake/clean'
 require 'git'
 require 'tmpdir'
+require 'jekyll-helpers'
 require 'fssm'
 
 # ---------------------------------------------------------------------------
@@ -41,6 +42,12 @@ CLEAN << ['css', '_site']
 # Main tasks
 # ---------------------------------------------------------------------------
 
+JekyllHelpers::Tasks.new.install do |config|
+  config.less_dir      = LESS_DIR
+  config.css_dir       = 'stylesheets'
+  config.less_compress = true
+end
+
 task :default => :jekyll
 
 desc "Format the site."
@@ -52,8 +59,7 @@ task :preview => :run
 task :server => :run
 
 desc "Format the blog, then fire up a local HTTP server."
-task :run => [:css, :talks] do |t|
-  watch_less_files
+task :run => [:css, :talks, 'jekyll_helpers:watch_less'] do |t|
   watch_talks
   sh "jekyll server --watch"
 end
@@ -65,86 +71,7 @@ file TALKS_HTML => [TALKS_YAML, TALKS_TEMPLATE, 'Rakefile'] do
   convert_talks
 end
 
-# ---------------------------------------------------------------------------
-# CSS/SASS
-# ---------------------------------------------------------------------------
-
-class Lesser
-  include FileUtils
-
-  def initialize
-  end
-
-  def convert(lessfile)
-    css = css_for_less lessfile
-    puts "Converting #{lessfile} to #{css}"
-    lessc_full lessfile, css
-  end
-
-  private
-
-  def lessc_full(input, output)
-    sh 'lessc', input, output
-  end
-
-  def lessc_min
-    sh 'lessc', '--compress', input, output
-  end
-
-  def css_for_less(less)
-    dir = File.dirname(File.dirname(File.absolute_path(less)))
-    base = File.basename(less, ".less")
-    "#{dir}/css/#{base}.css"
-  end
-end
-
-# Generate CSS files from LESS files
-
-CSS_DIR = 'css'
-
-directory 'stylesheets'
-
-CSS_OUTPUT_FILES = LESS_FILES.map do |f|
-  f.gsub(/^#{LESS_DIR}/, CSS_DIR).gsub(/\.less$/, '.css')
-end
-
-# Figure out the name of the LESS file necessary make a CSS file.
-def css_to_less
-  Proc.new {|task| task.sub(/^#{CSS_DIR}/, LESS_DIR).sub(/\.css$/, '.less')}
-end
-
-lessc = Lesser.new
-
-rule %r{^#{CSS_DIR}/[^_].*\.css$} => [css_to_less, 'Rakefile'] + LESS_FILES do |t|
-  mkdir_p CSS_DIR
-  puts("#{t.source} -> #{t.name}")
-  Dir.chdir('less') do
-    less_input = File.basename(t.source)
-    css_output = File.join('..', t.name)
-    lessc.convert less_input
-  end
-end
-
-desc "Run SASS to produce the stylesheets."
-task :css => CSS_OUTPUT_FILES
-
-desc "Update Font-Awesome"
-task :font_awesome do
-  temp = git_temp
-  begin
-    rm_r FONT_AWESOME_SUBDIR
-    mkdir FONT_AWESOME_SUBDIR
-    git_clone FONT_AWESOME_URL, temp, "."
-    font_dir = FONT_AWESOME_SUBDIR
-    mkdir_p font_dir
-    css_dir = File.join(FONT_AWESOME_SUBDIR, "css")
-    mkdir_p css_dir
-    cp_r File.join(temp, "font"), font_dir
-    cp File.join(temp, "css", "font-awesome.css"), css_dir
-  ensure
-    rm_r temp
-  end
-end
+task :css => 'jekyll_helpers:css'
 
 #############################################################################
 # Functions used within tasks
@@ -251,36 +178,6 @@ def watch_talks
 
   watch_templates
   watch_yaml
-end
-
-# ---------------------------------------------------------------------------
-# LESS (CSS) handling
-# ---------------------------------------------------------------------------
-
-def rebuild_less_files
-  lessc = Lesser.new
-  Dir.glob("#{LESS_DIR}/[^_]*.less").each do |less|
-    lessc.convert less
-  end
-rescue Exception => ex
-  puts ex.message
-end
-
-def watch_less_files
-  fork do
-    FSSM.monitor(LESS_DIR) do
-      update do |base, relative|
-        # For now, it doesn't matter what changed. Update them all.
-        rebuild_less_files
-      end
-      create do |base, relative|
-        rebuild_less_files
-      end
-      delete do |base, relative|
-        rebuild_less_files
-      end
-    end
-  end
 end
 
 # ---------------------------------------------------------------------------

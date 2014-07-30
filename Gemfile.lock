@@ -4,6 +4,13 @@ GIT
   specs:
     grizzled-rake (0.1.2)
 
+GIT
+  remote: git://github.com/bmc/jekyll-helpers.git
+  revision: c07158998bb65bf5b689a4cc91e41522a17acf7c
+  specs:
+    jekyll-helpers (0.0.2)
+      fssm (~> 0.2, >= 0.2.10)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -97,6 +104,7 @@ DEPENDENCIES
   git
   grizzled-rake!
   jekyll
+  jekyll-helpers!
   kramdown
   mustache
   pry

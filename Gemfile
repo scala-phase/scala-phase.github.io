@@ -11,6 +11,7 @@ gem 'git'
 gem 'yui-compressor', '>=0.9.6'
 gem 'grizzled-rake', github: 'bmc/grizzled-rake'
 gem 'fssm'
+gem 'jekyll-helpers', github: 'bmc/jekyll-helpers'
 
 group :development do
   gem 'pry'
