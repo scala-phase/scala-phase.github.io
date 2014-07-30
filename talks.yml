@@ -80,6 +80,9 @@ talks:
     speaker:      Yuvi Masory
     date:         2012/06/12
     meeting_link: http://www.meetup.com/scala-phase/events/63156772/
+    slides:
+      link:       talks/yuvi-masory-scalaz.pdf
+      comment:    PDF
 
   - title:        "Dispatch, Unfiltered, Blue Eyes and Play: A Comparison"
     speaker:      Adam Hinz and George Adams
