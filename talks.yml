@@ -39,6 +39,14 @@ talks:
     video:        http://vimeo.com/75591447
     code:         https://github.com/MartinSnyder/scala-jdbc
 
+  - title:        Gradle and Scala
+    speaker:      Jason Feingold
+    date:         2013/07/09
+    meeting_link: http://www.meetup.com/scala-phase/events/125411192/
+    slides:
+      link:       http://scala-phase.org/talks/jason-feingold-gradle/
+      comment:    HTML + Javascript
+
   - title:        Pearls of Distributed Programming with Scala and GridGain
     speaker:      Dmitriy Setrakyan
     date:         2013/04/16
@@ -52,6 +60,14 @@ talks:
       link:       talks/duncan-devore-cqrs/
       comment:    HTML + Javascript
 
+  - title:        Typesafe Slick
+    speaker:      Nick McAvoy
+    date:         2012/10/23
+    meeting_link: http://www.meetup.com/scala-phase/events/85382662/
+    slides:
+      link:       http://ohbadiah.github.io/phase_slick/
+      comment:    HTML + Javascript
+
   - title:        The Play! Framework
     speaker:      Brian Clapper
     date:         2012/10/02
@@ -60,9 +76,19 @@ talks:
       link:       http://www.ardentex.com/publications/the-play-framework/slides.html
       comment:    HTML + Javascript
 
+  - title:        "Scalaz, Monads, Functors and You"
+    speaker:      Yuvi Masory
+    date:         2012/06/12
+    meeting_link: http://www.meetup.com/scala-phase/events/63156772/
+
+  - title:        "Dispatch, Unfiltered, Blue Eyes and Play: A Comparison"
+    speaker:      Adam Hinz and George Adams
+    date:         2012/05/15
+    meeting_link: http://www.meetup.com/scala-phase/events/60768832/
+
   - title:        Building SBT Plugins
     speaker:      Mads Hartmann Jenson
-    date:         2013/07/09
+    date:         2012/01/26
     meeting_link: http://www.meetup.com/scala-phase/events/47857352
     slides: 
       link:       talks/mads-sbt-plugins.pdf
@@ -75,9 +101,17 @@ talks:
     meeting_link: http://www.meetup.com/scala-phase/events/39391912/
     video:        http://vimeo.com/32516782
 
+  - title:        SBT 0.10 and 0.11 Overview
+    speaker:      Brian Clapper
+    date:         2011/10/18
+    meeting_link: http://www.meetup.com/scala-phase/events/35297532/
+    slides: 
+      link:       http://www.ardentex.com/publications/intro-sbt/slides.html
+      comment:    HTML + Javascript
+
   - title:        Scala Type Classes
     speaker:      Erik Osheim
-    date:         2011/9/20
+    date:         2011/09/20
     meeting_link: http://www.meetup.com/scala-phase/events/31595792/
     slides: 
       link:       http://plastic-idolatry.com/typcls/
@@ -86,7 +120,7 @@ talks:
   - title:        Disrupters
     speaker:      Jamie Allen
     date:         2011/08/10
-    meeting_link: http://www.meetup.com/scala-phase/events/31595792/
+    meeting_link: http://www.meetup.com/scala-phase/events/26666971/
     slides: 
       link:       talks/jamie-allen-sdisruptor/index.html
       comment:    HTML + Javascript
