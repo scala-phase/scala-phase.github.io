@@ -29,6 +29,12 @@
     };
 
     resizeSections();
+
+    $(".resources-link").click(function(e) {
+      var id = $(this).data("resources-id")
+      $("#" + id).toggle();
+    });
+
   });
 
 }(jQuery));

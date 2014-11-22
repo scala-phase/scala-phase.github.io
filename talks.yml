@@ -1,4 +1,16 @@
 talks: 
+  - title:        "Escape From Hadoop: Spark Streaming, Cassandra, Scala & Akka"
+    speaker:      Helena Edelson
+    date:         2014/10/21
+    meeting_link: http://www.meetup.com/scala-phase/events/200903832/
+    resources:    talks/helena/resources.html
+
+  - title:        Live coding a CRUD database in Scala
+    speaker:      Martin Snyder
+    date:         2014/09/16
+    meeting_link: http://www.meetup.com/scala-phase/events/196933482/
+    code:         https://github.com/MartinSnyder/scala-transactional-datastore
+
   - title:        The Scala-Graph Library
     speaker:      Brad Miller
     date:         2014/07/24

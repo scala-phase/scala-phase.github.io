@@ -50,6 +50,8 @@ end
 
 task :default => :jekyll
 
+task :generate => :jekyll
+
 desc "Format the site."
 task :jekyll => [:css, :talks] do |t|
   sh 'jekyll build'
@@ -73,6 +75,13 @@ end
 
 task :css => 'jekyll_helpers:css'
 
+task :gen_deploy => [:generate, :deploy]
+
+desc "Deploy the site to the VPS."
+task :deploy do
+  sh 'wwwpush', 'phase'
+end
+
 #############################################################################
 # Functions used within tasks
 #############################################################################
@@ -84,17 +93,23 @@ task :css => 'jekyll_helpers:css'
 require 'mustache'
 class Talk
   attr_reader :title, :speaker, :date, :meeting_link, :slides, :video, :code,
-              :meeting_id
+              :meeting_id, :resources, :id
 
-  def initialize(title, speaker, date_str, meeting_link, slides, video, code)
+  @@next_id = 0
+
+  def initialize(title, speaker, date_str, meeting_link, slides, video, code,
+                 resources)
+    @id           = @@next_id
+    @@next_id    += 1
     @title        = title
     @speaker      = speaker
     @date         = Date.parse(date_str)
     @meeting_link = meeting_link
-    @meeting_id   = meeting_link.sub(%r|^https?://|, "")
+    @meeting_id   = meeting_link.sub(%r|^https?://.*events/|, "").gsub("/", "")
     @slides       = slides
     @video        = video
     @code         = code
+    @resources    = resources
   end
 end
 
@@ -136,14 +151,14 @@ class TalkRenderer
       data = YAML.load f
       data['talks'].map do |h|
         slides = if h['slides']
-                   OpenStruct.new(link:    h['slides']['link'],
-                                  comment: h['slides']['comment'])
+                   OpenStruct.new(link:      h['slides']['link'],
+                                  comment:   h['slides']['comment'])
                  else
                    nil
                  end
 
         Talk.new(h['title'], h['speaker'], h['date'], h['meeting_link'], slides,
-                 h['video'], h['code'])
+                 h['video'], h['code'], h['resources'])
       end
     end
   end

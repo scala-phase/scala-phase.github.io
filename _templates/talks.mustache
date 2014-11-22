@@ -41,8 +41,22 @@
           {{#video}}
             <a class="video-link" href="{{video}}">Video</a>
           {{/video}}
+          {{#resources}}
+            <a href="javascript:void(0)"
+               class="resources-link"
+               data-resources-id="resources-{{id}}">
+              Resources
+            </a>
+          {{/resources}}
+        </td>
+      </tr>
+      <tr id="resources-{{id}}" style="display: none">
+        <td colspan="7">
+          <iframe src="{{resources}}" width="100%" height="100%"></iframe>
         </td>
       </tr>
     {{/talks}}
   </tbody>
-</table
+</table>
+
+<div id="dialog"></div>
