@@ -15,6 +15,9 @@ talks:
     speaker:      Brad Miller
     date:         2014/07/24
     meeting_link: http://www.meetup.com/scala-phase/events/179613752/
+    slides:
+      link:       talks/brad-miller-scala-graph.pdf
+      comment:    PDF
 
   - title:        Haskell and React.js
     speaker:      Jason Feingold
