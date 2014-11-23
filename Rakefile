@@ -1,7 +1,6 @@
 #                                                                 -*- ruby -*-
 
 require 'rubygems'
-require 'rake/clean'
 require 'git'
 require 'tmpdir'
 require 'jekyll-helpers'
@@ -35,8 +34,6 @@ TEMPLATES_DIR       = '_templates'
 TALKS_YAML          = 'talks.yml'
 TALKS_TEMPLATE      = '_templates/talks.mustache'
 TALKS_HTML          = '_includes/talks.html'
-
-CLEAN << ['css', '_site']
 
 # ---------------------------------------------------------------------------
 # Main tasks
@@ -82,6 +79,12 @@ task :deploy do
   sh 'wwwpush', 'phase'
 end
 
+task :clean do
+  rm_rf "_site"
+  rm_f "_includes/talks.html"
+  rm_rf "stylesheets"
+end
+
 #############################################################################
 # Functions used within tasks
 #############################################################################
@@ -92,8 +95,8 @@ end
 
 require 'mustache'
 class Talk
-  attr_reader :title, :speaker, :date, :meeting_link, :slides, :video, :code,
-              :meeting_id, :resources, :id
+  attr_reader :title, :speaker, :date, :meeting_link, :slides, :video,
+              :meeting_id, :resources, :id, :code_link, :code_label
 
   @@next_id = 0
 
@@ -105,10 +108,21 @@ class Talk
     @speaker      = speaker
     @date         = Date.parse(date_str)
     @meeting_link = meeting_link
-    @meeting_id   = meeting_link.sub(%r|^https?://.*events/|, "").gsub("/", "")
+
+    if meeting_link =~ %r|^http.*meetup.com/scala-phase/events/(\d+)/.*$|
+      @meeting_id   = "meetup.com/.../#{$1}"
+    else
+      @meeting_id = meeting_link.sub(%r|https?://|, "")
+    end
+
     @slides       = slides
     @video        = video
-    @code         = code
+    @code_label   = code
+    @code_link    = code
+    if code
+      @code_label = @code_label.sub(%r|^https?://|, "")
+    end
+
     @resources    = resources
   end
 end

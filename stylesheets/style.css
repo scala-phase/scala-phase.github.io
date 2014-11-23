@@ -1,4 +1,5 @@
 /* Main stylesheet */
+/* Simple gradient from one color (at the top) to another color (at the bottom). */
 .btn {
   border-radius: 5px 5px 5px 5px;
   padding: 10px;
@@ -106,7 +107,6 @@
 .btn.btn-borderless.save {
   color: green !important;
 }
-/* Simple gradient from one color (at the top) to another color (at the bottom). */
 body {
   background-color: #D9EBFC;
   font-family: Helvetica, Verdana, Arial, sans-serif;
@@ -162,6 +162,12 @@ a:visited:hover {
 .floating-footer {
   float: right;
   padding-bottom: 20px;
+}
+.resources-link {
+  white-space: nowrap;
+}
+.resources-link .pointer {
+  font-size: 16px;
 }
 .navbar {
   background-color: #4681bb;

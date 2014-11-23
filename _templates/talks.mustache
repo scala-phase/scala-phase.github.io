@@ -33,19 +33,20 @@
           {{/slides}}
         </td>
         <td class="code">
-          {{#code}}
-            <a class="code-link" href="{{code}}">{{code}}</a>
-          {{/code}}
+          {{#code_link}}
+            <a class="code-link" href="{{code_link}}">{{code_label}}</a>
+          {{/code_link}}
         </td>
         <td class="other">
           {{#video}}
             <a class="video-link" href="{{video}}">Video</a>
           {{/video}}
           {{#resources}}
-            <a href="javascript:void(0)"
-               class="resources-link"
-               data-resources-id="resources-{{id}}">
+            <a href="javascript:void(0)" class="resources-link"
+               data-state="closed" data-resources-id="resources-{{id}}">
               Resources
+              <span class="pointer pointer-closed fa fa-caret-right"></span>
+              <span class="pointer pointer-open fa fa-caret-down" style="display: none"></span>
             </a>
           {{/resources}}
         </td>

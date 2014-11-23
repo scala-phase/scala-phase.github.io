@@ -32,7 +32,20 @@
 
     $(".resources-link").click(function(e) {
       var id = $(this).data("resources-id")
-      $("#" + id).toggle();
+      var closed = ($(this).data("state") === "closed");
+      var elem = $("#" + id);
+      if (closed) {
+        $(this).find(".pointer-closed").hide();
+        $(this).find(".pointer-open").show();
+        $(this).data("state", "open");
+        elem.show();
+      }
+      else {
+        $(this).find(".pointer-open").hide();
+        $(this).find(".pointer-closed").show();
+        $(this).data("state", "closed");
+        elem.hide();
+      }
     });
 
   });
