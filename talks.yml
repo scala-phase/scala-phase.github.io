@@ -3,6 +3,9 @@ talks:
     speaker:      Helena Edelson
     date:         2014/10/21
     meeting_link: http://www.meetup.com/scala-phase/events/200903832/
+    slides:
+      link:       http://www.slideshare.net/HelenaEdelsonGram/escape-from-hadoop-with-apache-spark-and-cassandra
+      comment:    Slideshare
     resources:    talks/helena/resources.html
 
   - title:        Live coding a CRUD database in Scala
