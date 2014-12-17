@@ -96,7 +96,7 @@ end
 require 'mustache'
 class Talk
   attr_reader :title, :speaker, :date, :meeting_link, :slides, :video,
-              :meeting_id, :resources, :id, :code_link, :code_label
+              :meeting_id, :resources, :id, :code_link, :code_label, :css_class
 
   @@next_id = 0
 
@@ -104,6 +104,7 @@ class Talk
                  resources)
     @id           = @@next_id
     @@next_id    += 1
+    @css_class    = if (@id % 2) == 0 then "even" else "odd" end
     @title        = title
     @speaker      = speaker
     @date         = Date.parse(date_str)

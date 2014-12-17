@@ -19,7 +19,7 @@
   <tbody>
     {{! In the loop, you have access to each element's fields, implicitly.}}
     {{#talks}}
-      <tr>
+      <tr class="{{css_class}}">
         <td class="date">{{date}}</td>
         <td class="speaker">{{speaker}}</td>
         <td class="title">{{title}}</td>
@@ -51,11 +51,13 @@
           {{/resources}}
         </td>
       </tr>
+      {{#resources}}
       <tr id="resources-{{id}}" style="display: none">
         <td colspan="7">
           <iframe src="{{resources}}" width="100%" height="100%"></iframe>
         </td>
       </tr>
+      {{/resources}}
     {{/talks}}
   </tbody>
 </table>

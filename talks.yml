@@ -1,4 +1,9 @@
 talks: 
+  - title:        "Reactive applications with Scala and AngularJS"
+    speaker:      Michael Pigg and Ken Rimple
+    date:         2014/12/09
+    meeting_link: http://www.meetup.com/scala-phase/events/218821822/
+
   - title:        "Escape From Hadoop: Spark Streaming, Cassandra, Scala & Akka"
     speaker:      Helena Edelson
     date:         2014/10/21
@@ -70,7 +75,7 @@ talks:
     date:         2013/04/16
     meeting_link: http://www.meetup.com/scala-phase/events/112878592/
 
-  - title:        CQRS and Event Sourcing
+  - title:        "CQRS and Event Sourcing"
     speaker:      Duncan Devore
     date:         2012/12/04
     meeting_link: http://www.meetup.com/scala-phase/events/88673682/
@@ -116,13 +121,13 @@ talks:
       comment:    PDF
     code:         https://github.com/mads379/sbt-plugin-examples
 
-  - title:        Scala on the Android Platform
+  - title:        "Scala on the Android Platform"
     speaker:      Yuvi Masory
     date:         2011/11/15
     meeting_link: http://www.meetup.com/scala-phase/events/39391912/
     video:        http://vimeo.com/32516782
 
-  - title:        SBT 0.10 and 0.11 Overview
+  - title:        "SBT 0.10 and 0.11 Overview"
     speaker:      Brian Clapper
     date:         2011/10/18
     meeting_link: http://www.meetup.com/scala-phase/events/35297532/

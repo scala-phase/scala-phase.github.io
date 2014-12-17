@@ -1,5 +1,4 @@
 /* Main stylesheet */
-/* Simple gradient from one color (at the top) to another color (at the bottom). */
 .btn {
   border-radius: 5px 5px 5px 5px;
   padding: 10px;
@@ -107,6 +106,7 @@
 .btn.btn-borderless.save {
   color: green !important;
 }
+/* Simple gradient from one color (at the top) to another color (at the bottom). */
 body {
   background-color: #D9EBFC;
   font-family: Helvetica, Verdana, Arial, sans-serif;
@@ -263,10 +263,10 @@ table tbody tr {
   vertical-align: top;
   border-bottom: 1px solid #cccccc;
 }
-table tbody tr:nth-child(odd) {
+table tbody tr.odd {
   background: transparent;
 }
-table tbody tr:nth-child(even) {
+table tbody tr.even {
   background: rgba(255, 255, 255, 0.3);
 }
 table tbody td {
