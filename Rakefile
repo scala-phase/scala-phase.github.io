@@ -63,7 +63,10 @@ task :run => [:css, :talks, 'jekyll_helpers:watch_less'] do |t|
   sh "jekyll server --watch"
 end
 
-task :talks => TALKS_HTML
+task :talks => TALKS_HTML do
+  rm_rf 'talks/slick-2015-03-19'
+  git_clone 'https://github.com/bmc/slick-presentation-2015-03-19.git', 'talks', 'slick-2015-03-19'
+end
 
 file TALKS_HTML => [TALKS_YAML, TALKS_TEMPLATE, 'Rakefile'] do
   puts "Rebuilding #{TALKS_HTML}"

@@ -1,3 +1,4 @@
 _site
 .envrc
 node_modules
+/talks/slick-2015-03-19
