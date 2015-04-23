@@ -1,4 +1,12 @@
 talks: 
+  - title:        "An Introduction to Shapeless via Scodec"
+    speaker:      Michael Pilquist
+    date:         2015/04/22
+    meeting_link: http://www.meetup.com/scala-phase/events/221842395/
+    slides:
+      link:       talks/shapeless-2015-04-22.pdf
+      comment:    PDF
+    video:        https://www.youtube.com/watch?v=eNJ6ZbbrP2A
   - title:        "Messing Around with Typesafe Slick"
     speaker:      Brian Clapper
     date:         2015/03/19
