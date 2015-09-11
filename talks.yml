@@ -1,4 +1,11 @@
 talks: 
+  - title:        "An Introduction to Spark Streaming"
+    speaker:      Brian Clapper
+    date:         2015/09/10
+    meeting_link: http://www.meetup.com/scala-phase/events/224774883/index.html
+    slides:
+      link:       talks/spark-streaming-2015-09-10
+      comment:    HTML+JavaScript
   - title:        "An Introduction to Shapeless via Scodec"
     speaker:      Michael Pilquist
     date:         2015/04/22

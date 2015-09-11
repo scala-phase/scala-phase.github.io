@@ -1,0 +1,118 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300);
+body {
+  font-size: 40px;
+  font-family: "Open Sans", "Source Sans Pro", sans-serif;
+  font-weight: 300;
+}
+section {
+  line-height: 130% !important;
+}
+#footer {
+  position: absolute;
+  left: 100px;
+  bottom: 10px;
+  height: 75px;
+  width: 100%;
+  font-size: 25px;
+}
+#footer .ardentex-text {
+  position: absolute;
+  bottom: 0;
+  left: 45px;
+  color: green;
+  font-family: "Adobe Garamond", Times, serif;
+}
+#footer img.ardentex-logo {
+  height: 75px !important;
+  width: 68px;
+}
+#footer img.databricks-logo {
+  position: absolute;
+  bottom: 0px;
+  right: 200px;
+}
+.slide-number {
+  font-size: 25px !important;
+}
+.logo {
+  width: 100px;
+}
+img {
+  border: none !important;
+  background-color: transparent !important;
+  vertical-align: text-bottom;
+}
+p {
+  text-align: left;
+}
+.title-slide h1,
+.title-slide h2,
+.title-slide h3 {
+  color: black !important;
+  text-shadow: 0px 0px 8px white;
+  vertical-align: bottom;
+}
+.title-slide p {
+  color: yellow !important;
+  text-shadow: 0px 0px 8px black;
+  text-align: center;
+}
+p.centered {
+  text-align: center;
+}
+.logo {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+.logo img {
+  height: 60px !important;
+  border: 0;
+}
+h1,
+h2,
+h3 {
+  font-family: 'Open Sans', sans-serif !important;
+  text-transform: none !important;
+}
+ul ul li {
+  font-size: smaller !important;
+}
+.right {
+  position: absolute;
+  top: 250px;
+  right: 0;
+}
+.left {
+  position: absolute;
+  top: 100px;
+  left: 100px;
+}
+.sidebar {
+  font-size: 14px !important;
+}
+pre {
+  border: 1px solid transparent !important;
+  padding: 0;
+  margin: 0 !important;
+  width: 100% !important;
+  box-shadow: 0 0 0 0 !important;
+}
+pre code {
+  padding: 15px !important;
+  font-family: Mensch, Consolas, Courier, monospace !important;
+  font-size: 16px;
+  max-height: 700px !important;
+  height: 100% !important;
+}
+pre code.small {
+  font-size: 14px;
+  line-height: 1.2;
+}
+img {
+  border-right-color: white !important;
+  border-left-color: white !important;
+  border-top-color: white !important;
+  border-bottom-color: white !important;
+  box-shadow: none !important;
+}
