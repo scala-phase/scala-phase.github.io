@@ -6,6 +6,7 @@ talks:
     slides:
       link:       talks/spark-streaming-2015-09-10
       comment:    HTML+JavaScript
+    video:        https://www.youtube.com/watch?v=2STfulBcorA
   - title:        "An Introduction to Shapeless via Scodec"
     speaker:      Michael Pilquist
     date:         2015/04/22
