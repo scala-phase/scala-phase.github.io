@@ -1,0 +1,838 @@
+<!doctype html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <title>RDDs, DataFrames and Datasets in Apache Spark</title>
+    <script type="text/javascript" src="js/reveal.js/js/reveal.js"></script>
+    <link href="js/reveal.js/css/reveal.css" rel="stylesheet"/>
+    <link href="js/reveal.js/css/theme/white.css" rel="stylesheet"/>
+    <script type="text/javascript" src="js/reveal.js/lib/js/head.min.js"></script>
+    <script type="text/javascript" src="js/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="js/lodash/lodash.js"></script>
+    <link rel="stylesheet" href="js/highlightjs/styles/tomorrow-night.css"/>
+
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,600italic,700,400italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+
+    <!-- If the query includes 'print-pdf', include the PDF print sheet -->
+    <script>
+      if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'js/reveal.js/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+      }
+    </script>
+    <!--[if lt IE 9]>
+    <script src="js/reveal.js/lib/js/html5shiv.js"></script>
+    <![endif]-->
+    <link href="css/presentation.css" rel="stylesheet"/>
+  </head>
+
+  <body>
+    <div class="reveal">
+
+      <div class="slides">
+
+<section data-state="title-slide" data-background="images/databricks-background.jpg">
+  <div class="title">
+    <h1>
+      RDDs, DataFrames and Datasets in<br/>
+      <img src="images/spark-logo-white.png" alt="Apache Spark"/>
+    </h1>
+    <p class="centered">Brian Clapper, <i>@brianclapper</i></p>
+    <p class="centered"><img src="images/databricks-logo-large-white.png"/></p>
+  </div>
+</section>
+<section data-markdown>
+  <script type="text/template">
+    # What we'll be discussing
+
+    ## Three Spark APIs
+
+    * Resilient Distributed Datasets (RDDs)
+    * DataFrames
+    * Datasets
+
+  </script>
+
+</section>
+<section>
+
+  <h1>RDDs are...</h1>
+
+  <p class="fragment">
+    ... compile-time type-safe
+  </p>
+
+  <p class="fragment">
+    ... lazy.
+  </p>
+
+  <p class="fragment">
+    ... based on the Scala collections API, so the operations are familiar
+    to Scala programmers.
+  </p>
+
+  <div class="fragment">
+    <p>
+      <i>So much so, in fact, that it can be confusing to new users:</i>
+    </p>
+
+    <div class="scaladoc">
+      <div class="scaladoc-chunk">
+        <div class="function">
+          def <span class="name">collect</span>[U](f: PartialFunction[T, U])(<i>implicit</i> arg0: ClassTag[U]): RDD[U]
+        </div>
+        <p class="description">
+          Return a new RDD that contains all matching values by applying <code>f</code>.
+        </p>
+      </div>
+      <hr/>
+      <div class="scaladoc-chunk">
+        <div class="function">
+          def <span class="name">collect</span>(): Array[T]
+        </div>
+        <p class="description">
+          Return an array that contains all of the elements in this RDD.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <aside class="notes">
+    <ul>
+      <li>
+        RDDs are essentially the Spark building block. Higher-level APIs, like
+        DataFrames, GraphX and Streaming, end up doing their work via RDDs,
+        even if they don't present RDDs directly to you.
+      </li>
+      <li>
+        The first <code>collect()</code> is the Scala collections version, a
+        <i>transformation</i> in Spark terms. The second <code>collect()</code>
+        is the Spark action.
+      </li>
+    </ul>
+  </aside>
+</section>
+<section>
+  <h1>RDDs: Some code</h1>
+
+  <p>
+    This blob of code creates an RDD from a file on a distributed file system.
+  </p>
+
+  <div class="code">
+    <pre>
+      <code class="scala" data-trim>
+val rdd = sc.textFile("hdfs:/user/bmc/wikipedia-pagecounts.gz")
+val parsedRDD = rdd.flatMap { line =>
+  line.split("""\s+""") match {
+    case Array(project, page, numRequests, _) => Some((project, page, numRequests))
+    case _ => None
+  }
+}
+
+parsedRDD.filter { case (project, page, numRequests) => project == "en" }.
+          map { case (_, page, numRequests) => (page, numRequests) }.
+          reduceByKey(_ + _).
+          take(100).
+          foreach { case (page, requests) => println(s"$page: $requests") }
+      </code>
+    </pre>
+  </div>
+
+</section>
+<section>
+  <h1>RDDs</h1>
+
+  <p>
+    RDDs are type-safe. However, they're also low-level, and they suffer from
+    some problems, including:
+  </p>
+
+  <ul>
+    <li class="fragment" data-fragment-index="1">
+      They express the <i>how</i> of a solution better than the <i>what</i>.
+    </li>
+    <li class="fragment" data-fragment-index="2">
+      They cannot be optimized by Spark.
+    </li>
+    <li class="fragment" data-fragment-index="3">
+      They're <i>slow</i> on non-JVM languages like Python.
+    </li>
+    <li class="fragment" data-fragment-index="4">
+      It's too easy to build an inefficient RDD transformation chain.
+    </li>
+  </ul>
+
+  <pre class="fragment" data-fragment-index="4">
+    <code class="scala">
+parsedRDD.filter { case (project, page, numRequests) => project == "en" }.
+          map { case (_, page, numRequests) => (page, numRequests) }.
+          reduceByKey(_ + _).                                 <span class="emphasis">&lt;--- INEFFICIENT </span>
+          filter { case (page, _) => ! isSpecialPage(page) }. <span class="emphasis">&lt;--- ORDERING</span>
+          take(100).
+          foreach { case (project, requests) => println(s"project: $requests") }
+    </code>
+  </pre>
+
+  <aside class="notes">
+    Put the `take()` after the sort, for instance, and you will really
+    slow things down.
+  </aside>
+
+</section>
+ <section>
+  <h1>The DataFrame API</h1>
+
+  <p>
+    The DataFrame API provides a higher-level abstraction (a DSL, really),
+    allowing you to use a query language to manipulate data. In fact, you
+    can use SQL, as well.
+  </p>
+
+  <div class="fragment">
+    <p>
+      This code does essentially the same thing the previous RDD code does.
+      Look how much easier it is to read.
+    </p>
+
+    <div class="code">
+      <pre>
+        <code class="scala" data-trim>
+val df = parsedRDD.toDF("project", "page", "numRequests")
+
+df.filter($"project" === "en").
+   groupBy($"page").
+   agg(sum($"numRequests").as("count")).
+   limit(100).
+   show(100)
+        </code>
+      </pre>
+    </div>
+  </div>
+</section>
+<section>
+  <h1>The DataFrame API</h1>
+  <h2>SQL code</h2>
+
+  <p>
+    Here's the same thing in SQL.
+  </p>
+
+  <div class="code">
+    <pre>
+      <code class="scala">
+df.registerTempTable("edits")
+sqlContext.sql("""|SELECT page, sum(numRequests) AS count FROM edits
+                  |WHERE project = 'en'
+                  |GROUP BY page LIMIT 100""".stripMargin)
+          .show(100)
+      </code>
+    </pre>
+  </div>
+</section>
+<section>
+  <h1>DataFrame queries are optimized</h1>
+
+  <div class="svg-image">
+<svg version="1.1" viewBox="0, 0, 1500, 612">
+  <g id="Diagram">
+    <path d="M67.171,45 L183.906,45 C195.995,45 205.794,58.464 205.794,75.073 L205.794,165.293 C205.794,181.902 195.995,195.366 183.906,195.366 L67.171,195.366 C55.082,195.366 45.283,181.902 45.283,165.293 L45.283,75.073 C45.283,58.464 55.082,45 67.171,45 z" fill="#ABE8FF"/>
+    <path d="M67.171,265.537 L183.906,265.537 C195.995,265.537 205.794,279.001 205.794,295.61 L205.794,385.829 C205.794,402.438 195.995,415.902 183.906,415.902 L67.171,415.902 C55.082,415.902 45.283,402.438 45.283,385.829 L45.283,295.61 C45.283,279.001 55.082,265.537 67.171,265.537 z" fill="#ABE8FF"/>
+    <path d="M260.514,155.268 L377.25,155.268 C389.338,155.268 399.138,168.733 399.138,185.341 L399.138,275.561 C399.138,292.17 389.338,305.634 377.25,305.634 L260.514,305.634 C248.426,305.634 238.626,292.17 238.626,275.561 L238.626,185.341 C238.626,168.733 248.426,155.268 260.514,155.268 z" fill="#ABE8FF"/>
+    <path d="M453.858,155.268 L570.594,155.268 C582.682,155.268 592.482,168.733 592.482,185.341 L592.482,275.561 C592.482,292.17 582.682,305.634 570.594,305.634 L453.858,305.634 C441.77,305.634 431.97,292.17 431.97,275.561 L431.97,185.341 C431.97,168.733 441.77,155.268 453.858,155.268 z" fill="#ABE8FF"/>
+    <path d="M645.378,155.268 L762.113,155.268 C774.202,155.268 784.001,168.733 784.001,185.341 L784.001,275.561 C784.001,292.17 774.202,305.634 762.113,305.634 L645.378,305.634 C633.289,305.634 623.49,292.17 623.49,275.561 L623.49,185.341 C623.49,168.733 633.289,155.268 645.378,155.268 z" fill="#ABE8FF"/>
+    <path d="M1136.033,155.268 L1252.768,155.268 C1264.857,155.268 1274.656,168.733 1274.656,185.341 L1274.656,275.561 C1274.656,292.17 1264.857,305.634 1252.768,305.634 L1136.033,305.634 C1123.944,305.634 1114.145,292.17 1114.145,275.561 L1114.145,185.341 C1114.145,168.733 1123.944,155.268 1136.033,155.268 z" fill="#ABE8FF"/>
+    <g>
+      <path d="M831.425,121.436 L948.161,121.436 C960.249,121.436 970.049,134.9 970.049,151.509 L970.049,241.729 C970.049,258.338 960.249,271.802 948.161,271.802 L831.425,271.802 C819.337,271.802 809.537,258.338 809.537,241.729 L809.537,151.509 C809.537,134.9 819.337,121.436 831.425,121.436 z" fill="#2CC5FF"/>
+      <path d="M840.545,141.485 L957.281,141.485 C969.369,141.485 979.169,154.949 979.169,171.558 L979.169,261.777 C979.169,278.386 969.369,291.851 957.281,291.851 L840.545,291.851 C828.457,291.851 818.657,278.386 818.657,261.777 L818.657,171.558 C818.657,154.949 828.457,141.485 840.545,141.485 z" fill="#74D8FE"/>
+      <path d="M851.489,155.268 L968.225,155.268 C980.313,155.268 990.113,168.733 990.113,185.341 L990.113,275.561 C990.113,292.17 980.313,305.634 968.225,305.634 L851.489,305.634 C839.401,305.634 829.601,292.17 829.601,275.561 L829.601,185.341 C829.601,168.733 839.401,155.268 851.489,155.268 z" fill="#ABE8FF"/>
+    </g>
+    <path d="M1329.376,155.268 L1446.112,155.268 C1458.201,155.268 1468,168.733 1468,185.341 L1468,275.561 C1468,292.17 1458.201,305.634 1446.112,305.634 L1329.376,305.634 C1317.288,305.634 1307.488,292.17 1307.488,275.561 L1307.488,185.341 C1307.488,168.733 1317.288,155.268 1329.376,155.268 z" fill="#ABE8FF"/>
+    <path d="M1024.769,45 L1081.313,45 L1081.313,415.902 L1024.769,415.902 L1024.769,45 z" fill="#ABE8FF"/>
+    <path d="M333.474,380.817 L497.634,380.817 L497.634,456 L333.474,456 L333.474,380.817 z" fill="#ABE8FF"/>
+    <text transform="matrix(1, 0, 0, 1, 125.538, 120.183)">
+      <tspan x="-57.568" y="8.933" font-family="HelveticaNeue" font-size="28" fill="#000000">SQL AST</tspan>
+    </text>
+    <text transform="matrix(1, 0, 0, 1, 125.538, 336.22)">
+      <tspan x="-68.978" y="9.692" font-family="HelveticaNeue" font-size="28" fill="#000000">DataFrame</tspan>
+    </text>
+    <text transform="matrix(1, 0, 0, 1, 318.882, 237.951)">
+      <tspan x="-70.784" y="-26.55" font-family="HelveticaNeue" font-size="28" fill="#000000">Unresolved</tspan>
+      <tspan x="-45.108" y="7.45" font-family="HelveticaNeue" font-size="28" fill="#000000">Logical</tspan>
+      <tspan x="-27.482" y="41.45" font-family="HelveticaNeue" font-size="28" fill="#000000">Plan</tspan>
+    </text>
+    <text transform="matrix(1, 0, 0, 1, 413.73, 418.409)">
+      <tspan x="-48.734" y="5.698" font-family="HelveticaNeue" font-size="28" fill="#000000">Catalog</tspan>
+    </text>
+    <text transform="matrix(1, 0, 0, 1, 512.226, 242.451)">
+      <tspan x="-45.108" y="-16.326" font-family="HelveticaNeue" font-size="28" fill="#000000">Logical</tspan>
+      <tspan x="-27.482" y="17.674" font-family="HelveticaNeue" font-size="28" fill="#000000">Plan</tspan>
+    </text>
+    <text transform="matrix(1, 0, 0, 1, 704.657, 238.951)">
+      <tspan x="-64.05" y="-29.742" font-family="HelveticaNeue" font-size="28" fill="#000000">Optimized</tspan>
+      <tspan x="-45.108" y="4.258" font-family="HelveticaNeue" font-size="28" fill="#000000">Logical</tspan>
+      <tspan x="-27.482" y="38.258" font-family="HelveticaNeue" font-size="28" fill="#000000">Plan</tspan>
+    </text>
+    <text transform="matrix(1, 0, 0, 1, 910.208, 230.451)">
+      <tspan x="-52.108" y="-11.851" font-family="HelveticaNeue" font-size="28" fill="#000000">Physical</tspan>
+      <tspan x="-34.482" y="22.149" font-family="HelveticaNeue" font-size="28" fill="#000000">Plans</tspan>
+    </text>
+    <text transform="matrix(1, 0, 0, 1, 1194.401, 240.123)">
+      <tspan x="-54.964" y="-28.571" font-family="HelveticaNeue" font-size="28" fill="#000000">Selected</tspan>
+      <tspan x="-52.108" y="5.429" font-family="HelveticaNeue" font-size="28" fill="#000000">Physical</tspan>
+      <tspan x="-27.482" y="39.429" font-family="HelveticaNeue" font-size="28" fill="#000000">Plan</tspan>
+    </text>
+    <g>
+      <path d="M206.294,121.936 L235.013,177.836" fill-opacity="0" stroke="#000000" stroke-width="1"/>
+      <path d="M232.345,179.207 L238.669,184.952 L237.682,176.465 z" fill="#000000" fill-opacity="1" stroke="#000000" stroke-width="1" stroke-opacity="1"/>
+    </g>
+    <g>
+      <path d="M206.294,341.22 L235.524,274.284" fill-opacity="0" stroke="#000000" stroke-width="1"/>
+      <path d="M238.274,275.485 L238.726,266.953 L232.775,273.084 z" fill="#000000" fill-opacity="1" stroke="#000000" stroke-width="1" stroke-opacity="1"/>
+    </g>
+    <g>
+      <path d="M399.638,230.951 L423.47,230.951" fill-opacity="0" stroke="#000000" stroke-width="1"/>
+      <path d="M423.47,233.951 L431.47,230.951 L423.47,227.951 z" fill="#000000" fill-opacity="1" stroke="#000000" stroke-width="1" stroke-opacity="1"/>
+    </g>
+    <g>
+      <path d="M592.982,230.951 L616.814,230.951" fill-opacity="0" stroke="#000000" stroke-width="1"/>
+      <path d="M616.814,233.951 L624.814,230.951 L616.814,227.951 z" fill="#000000" fill-opacity="1" stroke="#000000" stroke-width="1" stroke-opacity="1"/>
+    </g>
+    <g>
+      <path d="M784.501,230.951 L808.333,230.951" fill-opacity="0" stroke="#000000" stroke-width="1"/>
+      <path d="M808.333,233.951 L816.333,230.951 L808.333,227.951 z" fill="#000000" fill-opacity="1" stroke="#000000" stroke-width="1" stroke-opacity="1"/>
+    </g>
+    <g>
+      <path d="M992.437,230.951 L1016.269,230.951" fill-opacity="0" stroke="#000000" stroke-width="1"/>
+      <path d="M1016.269,233.951 L1024.269,230.951 L1016.269,227.951 z" fill="#000000" fill-opacity="1" stroke="#000000" stroke-width="1" stroke-opacity="1"/>
+    </g>
+    <g>
+      <path d="M1081.813,230.951 L1105.645,230.951" fill-opacity="0" stroke="#000000" stroke-width="1"/>
+      <path d="M1105.645,233.951 L1113.645,230.951 L1105.645,227.951 z" fill="#000000" fill-opacity="1" stroke="#000000" stroke-width="1" stroke-opacity="1"/>
+    </g>
+    <g>
+      <path d="M1275.156,230.951 L1298.988,230.951" fill-opacity="0" stroke="#000000" stroke-width="1"/>
+      <path d="M1298.988,233.951 L1306.988,230.951 L1298.988,227.951 z" fill="#000000" fill-opacity="1" stroke="#000000" stroke-width="1" stroke-opacity="1"/>
+    </g>
+    <g>
+      <path d="M414.23,381.317 L414.23,261.253" fill-opacity="0" stroke="#000000" stroke-width="1"/>
+      <path d="M417.23,261.253 L414.23,253.253 L411.23,261.253 z" fill="#000000" fill-opacity="1" stroke="#000000" stroke-width="1" stroke-opacity="1"/>
+    </g>
+    <text transform="matrix(0.001, -1, 1, 0.001, 1053.041, 223.075)">
+      <tspan x="-72.604" y="10" font-family="HelveticaNeue" font-size="28" fill="#000000">Cost Model</tspan>
+    </text>
+    <text transform="matrix(1, 0, 0, 1, 1387.744, 230.451)">
+      <tspan x="-36.302" y="10" font-family="HelveticaNeue" font-size="28" fill="#000000">RDDs</tspan>
+    </text>
+    <text transform="matrix(1, 0, 0, 1, 1366.828, 429.902)">
+      <tspan x="-96.021" y="3" font-family="HelveticaNeue-LightItalic" font-size="18" fill="#000000">Diagram from Databricks</tspan>
+    </text>
+  </g>
+  <g id="UDFs" class="fragment">
+    <g>
+      <path d="M512.784,388.965 C528.238,381.834 566.388,388.127 607.313,405.722" fill-opacity="0" stroke="#000000" stroke-width="1"/>
+      <path d="M510.737,386.772 L506.935,394.424 L514.831,391.158 z" fill="#000000" fill-opacity="1" stroke="#000000" stroke-width="1" stroke-opacity="1"/>
+    </g>
+    <text transform="matrix(1, 0, 0, 1, 642.832, 418.409)">
+      <tspan x="-30" y="6" font-family="HelveticaNeue" font-size="24" fill="#000000">UDFs</tspan>
+    </text>
+  </g>
+</svg>  </div>
+
+
+</section>
+<section>
+  <h1>Example Optimization</h1>
+
+  <pre>
+    <code>
+      users.join(events, users("id") === events("uid"))
+           .filter(events("date") > "2015-01-01")
+    </code>
+  </pre>
+
+  <div class="fragment">
+<svg version="1.1" viewBox="0, 0, 1400, 500">
+  <g id="logical-plan">
+    <path d="M125.5,116.5 L238.5,116.5 C245.127,116.5 250.5,121.873 250.5,128.5 L250.5,190.5 C250.5,197.127 245.127,202.5 238.5,202.5 L125.5,202.5 C118.873,202.5 113.5,197.127 113.5,190.5 L113.5,128.5 C113.5,121.873 118.873,116.5 125.5,116.5 z" fill-opacity="0" stroke="#000000" stroke-width="1"/>
+    <path d="M40.5,382.5 L153.5,382.5 C160.127,382.5 165.5,387.873 165.5,394.5 L165.5,456.5 C165.5,463.127 160.127,468.5 153.5,468.5 L40.5,468.5 C33.873,468.5 28.5,463.127 28.5,456.5 L28.5,394.5 C28.5,387.873 33.873,382.5 40.5,382.5 z" fill-opacity="0" stroke="#000000" stroke-width="1"/>
+    <path d="M203.5,382.5 L316.5,382.5 C323.127,382.5 328.5,387.873 328.5,394.5 L328.5,456.5 C328.5,463.127 323.127,468.5 316.5,468.5 L203.5,468.5 C196.873,468.5 191.5,463.127 191.5,456.5 L191.5,394.5 C191.5,387.873 196.873,382.5 203.5,382.5 z" fill-opacity="0" stroke="#000000" stroke-width="1"/>
+    <path d="M125.5,244.5 L238.5,244.5 C245.127,244.5 250.5,249.873 250.5,256.5 L250.5,318.5 C250.5,325.127 245.127,330.5 238.5,330.5 L125.5,330.5 C118.873,330.5 113.5,325.127 113.5,318.5 L113.5,256.5 C113.5,249.873 118.873,244.5 125.5,244.5 z" fill-opacity="0" stroke="#000000" stroke-width="1"/>
+    <text transform="matrix(1, 0, 0, 1, 181.5, 159)">
+      <tspan x="-26.95" y="10" font-family="HelveticaNeue" font-size="28" fill="#000000">filter</tspan>
+    </text>
+    <text transform="matrix(1, 0, 0, 1, 181.5, 287)">
+      <tspan x="-22.036" y="10" font-family="HelveticaNeue" font-size="28" fill="#000000">join</tspan>
+    </text>
+    <text transform="matrix(1, 0, 0, 1, 96.367, 429)">
+      <tspan x="-29.82" y="-7" font-family="HelveticaNeue" font-size="28" fill="#000000">scan</tspan>
+      <tspan x="-41.216" y="27" font-family="HelveticaNeue" font-size="28" fill="#000000">(users)</tspan>
+    </text>
+    <text transform="matrix(1, 0, 0, 1, 259.367, 429)">
+      <tspan x="-29.82" y="-7" font-family="HelveticaNeue" font-size="28" fill="#000000">scan</tspan>
+      <tspan x="-48.482" y="27" font-family="HelveticaNeue" font-size="28" fill="#000000">(events)</tspan>
+    </text>
+    <g>
+      <path d="M178.5,244.5 L177.714,211.497" fill-opacity="0" stroke="#000000" stroke-width="1"/>
+      <path d="M180.713,211.426 L177.524,203.5 L174.715,211.569 z" fill="#000000" fill-opacity="1" stroke="#000000" stroke-width="1" stroke-opacity="1"/>
+    </g>
+    <g>
+      <path d="M93.5,382.5 L169.848,335.237" fill-opacity="0" stroke="#000000" stroke-width="1"/>
+      <path d="M171.427,337.788 L176.65,331.026 L168.269,332.686 z" fill="#000000" fill-opacity="1" stroke="#000000" stroke-width="1" stroke-opacity="1"/>
+    </g>
+    <g>
+      <path d="M256.5,382.5 L185.018,335.448" fill-opacity="0" stroke="#000000" stroke-width="1"/>
+      <path d="M186.667,332.942 L178.335,331.05 L183.368,337.954 z" fill="#000000" fill-opacity="1" stroke="#000000" stroke-width="1" stroke-opacity="1"/>
+    </g>
+    <text transform="matrix(1, 0, 0, 1, 177.5, 69.5)">
+      <tspan x="-71.036" y="10" font-family="HelveticaNeue" font-size="28" fill="#000000">logical plan</tspan>
+    </text>
+  </g>
+  <g id="inefficient-one-time" class="fragment current-visible">
+    <g>
+      <path d="M302.5,197.5 L215.862,269.737" fill-opacity="0" stroke="#FC0404" stroke-width="1"/>
+      <path d="M213.941,267.432 L209.718,274.86 L217.784,272.041 z" fill="#FC0404" fill-opacity="1" stroke="#FC0404" stroke-width="1" stroke-opacity="1"/>
+    </g>
+    <text transform="matrix(1, 0, 0, 1, 351.448, 192)">
+      <tspan x="-47.04" y="-10" font-family="HelveticaNeue" font-size="20" fill="#FF0000">This join is</tspan>
+      <tspan x="-42.81" y="14" font-family="HelveticaNeue" font-size="20" fill="#FF0000">inefficient</tspan>
+    </text>
+  </g>
+  <g id="optimized-plan" class="fragment">
+    <path d="M602.5,111.5 L715.5,111.5 C722.127,111.5 727.5,116.873 727.5,123.5 L727.5,185.5 C727.5,192.127 722.127,197.5 715.5,197.5 L602.5,197.5 C595.873,197.5 590.5,192.127 590.5,185.5 L590.5,123.5 C590.5,116.873 595.873,111.5 602.5,111.5 z" fill-opacity="0" stroke="#000000" stroke-width="1"/>
+    <path d="M680.5,244.5 L793.5,244.5 C800.127,244.5 805.5,249.873 805.5,256.5 L805.5,318.5 C805.5,325.127 800.127,330.5 793.5,330.5 L680.5,330.5 C673.873,330.5 668.5,325.127 668.5,318.5 L668.5,256.5 C668.5,249.873 673.873,244.5 680.5,244.5 z" fill-opacity="0" stroke="#000000" stroke-width="1"/>
+    <path d="M680.5,377.5 L793.5,377.5 C800.127,377.5 805.5,382.873 805.5,389.5 L805.5,451.5 C805.5,458.127 800.127,463.5 793.5,463.5 L680.5,463.5 C673.873,463.5 668.5,458.127 668.5,451.5 L668.5,389.5 C668.5,382.873 673.873,377.5 680.5,377.5 z" fill-opacity="0" stroke="#000000" stroke-width="1"/>
+    <path d="M517.5,244.5 L630.5,244.5 C637.127,244.5 642.5,249.873 642.5,256.5 L642.5,318.5 C642.5,325.127 637.127,330.5 630.5,330.5 L517.5,330.5 C510.873,330.5 505.5,325.127 505.5,318.5 L505.5,256.5 C505.5,249.873 510.873,244.5 517.5,244.5 z" fill-opacity="0" stroke="#000000" stroke-width="1"/>
+    <text transform="matrix(1, 0, 0, 1, 736.5, 292)">
+      <tspan x="-26.95" y="10" font-family="HelveticaNeue" font-size="28" fill="#000000">filter</tspan>
+    </text>
+    <text transform="matrix(1, 0, 0, 1, 573.5, 287)">
+      <tspan x="-29.82" y="-7" font-family="HelveticaNeue" font-size="28" fill="#000000">scan</tspan>
+      <tspan x="-41.216" y="27" font-family="HelveticaNeue" font-size="28" fill="#000000">(users)</tspan>
+    </text>
+    <text transform="matrix(1, 0, 0, 1, 740.518, 420)">
+      <tspan x="-29.82" y="-7" font-family="HelveticaNeue" font-size="28" fill="#000000">scan</tspan>
+      <tspan x="-48.482" y="27" font-family="HelveticaNeue" font-size="28" fill="#000000">(events)</tspan>
+    </text>
+    <text transform="matrix(1, 0, 0, 1, 658.5, 154)">
+      <tspan x="-22.036" y="10" font-family="HelveticaNeue" font-size="28" fill="#000000">join</tspan>
+    </text>
+    <g>
+      <path d="M735.5,377.5 L734.691,339.498" fill-opacity="0" stroke="#000000" stroke-width="1"/>
+      <path d="M737.691,339.434 L734.521,331.5 L731.692,339.562 z" fill="#000000" fill-opacity="1" stroke="#000000" stroke-width="1" stroke-opacity="1"/>
+    </g>
+    <g>
+      <path d="M572.5,244.5 L651.582,201.778" fill-opacity="0" stroke="#000000" stroke-width="1"/>
+      <path d="M653.008,204.417 L658.62,197.975 L650.156,199.138 z" fill="#000000" fill-opacity="1" stroke="#000000" stroke-width="1" stroke-opacity="1"/>
+    </g>
+    <g>
+      <path d="M734.5,244.5 L667.126,202.279" fill-opacity="0" stroke="#000000" stroke-width="1"/>
+      <path d="M668.719,199.737 L660.347,198.031 L665.533,204.821 z" fill="#000000" fill-opacity="1" stroke="#000000" stroke-width="1" stroke-opacity="1"/>
+    </g>
+    <text transform="matrix(1, 0, 0, 1, 658.5, 69.5)">
+      <tspan x="-92.05" y="10" font-family="HelveticaNeue" font-size="28" fill="#000000">optimized plan</tspan>
+    </text>
+  </g>
+  <g id="filter-pushdown-one-time" class="fragment current-visible">
+    <path d="M777.5,142.5 L777.5,142.5" fill-opacity="0" stroke="#000000" stroke-width="1"/>
+    <path d="M818.5,171.5 L818.5,171.5" fill-opacity="0" stroke="#000000" stroke-width="1"/>
+    <g>
+      <path d="M692.536,92.5 C772.262,94.377 787.743,175.499 789.349,223.5" fill-opacity="0" stroke="#FF0000" stroke-width="1" stroke-dasharray="6,5"/>
+      <path d="M786.349,223.551 L789.483,231.499 L792.349,223.45 z" fill="#FF0000" fill-opacity="1" stroke="#FF0000" stroke-width="1" stroke-opacity="1"/>
+    </g>
+    <text transform="matrix(1, 0, 0, 1, 855.136, 177.5)">
+      <tspan x="-59.136" y="-24.5" font-family="HelveticaNeue" font-size="20" fill="#FF0000">Catalyst</tspan>
+      <tspan x="-59.136" y="-0.5" font-family="HelveticaNeue" font-size="20" fill="#FF0000">pushes the</tspan>
+      <tspan x="-59.136" y="23.5" font-family="HelveticaNeue" font-size="20" fill="#FF0000">filter down</tspan>
+    </text>
+  </g>
+  <g id="optimized-plan-2" class="fragment">
+    <path d="M1104.5,116.5 L1217.5,116.5 C1224.127,116.5 1229.5,121.873 1229.5,128.5 L1229.5,190.5 C1229.5,197.127 1224.127,202.5 1217.5,202.5 L1104.5,202.5 C1097.873,202.5 1092.5,197.127 1092.5,190.5 L1092.5,128.5 C1092.5,121.873 1097.873,116.5 1104.5,116.5 z" fill-opacity="0" stroke="#000000" stroke-width="1"/>
+    <path d="M1023,316.5 L1136,316.5 C1142.627,316.5 1148,321.873 1148,328.5 L1148,390.5 C1148,397.127 1142.627,402.5 1136,402.5 L1023,402.5 C1016.373,402.5 1011,397.127 1011,390.5 L1011,328.5 C1011,321.873 1016.373,316.5 1023,316.5 z" fill-opacity="0" stroke="#000000" stroke-width="1"/>
+    <path d="M1186,316.5 L1299,316.5 C1305.627,316.5 1311,321.873 1311,328.5 L1311,390.5 C1311,397.127 1305.627,402.5 1299,402.5 L1186,402.5 C1179.373,402.5 1174,397.127 1174,390.5 L1174,328.5 C1174,321.873 1179.373,316.5 1186,316.5 z" fill-opacity="0" stroke="#000000" stroke-width="1"/>
+    <text transform="matrix(1, 0, 0, 1, 1084.284, 363)">
+      <tspan x="-29.82" y="-7" font-family="HelveticaNeue" font-size="28" fill="#000000">scan</tspan>
+      <tspan x="-41.216" y="27" font-family="HelveticaNeue" font-size="28" fill="#000000">(users)</tspan>
+    </text>
+    <text transform="matrix(1, 0, 0, 1, 1160.5, 154)">
+      <tspan x="-22.036" y="10" font-family="HelveticaNeue" font-size="28" fill="#000000">join</tspan>
+    </text>
+    <text transform="matrix(1, 0, 0, 1, 1242, 363)">
+      <tspan x="-60.662" y="-7" font-family="HelveticaNeue" font-size="28" fill="#000000">filter scan</tspan>
+      <tspan x="-48.482" y="27" font-family="HelveticaNeue" font-size="28" fill="#000000">(events)</tspan>
+    </text>
+    <g>
+      <path d="M1108.5,316.5 L1153.946,210.769" fill-opacity="0" stroke="#000000" stroke-width="1"/>
+      <path d="M1156.702,211.953 L1157.105,203.419 L1151.19,209.584 z" fill="#000000" fill-opacity="1" stroke="#000000" stroke-width="1" stroke-opacity="1"/>
+    </g>
+    <g>
+      <path d="M1209.5,316.5 L1166.868,210.846" fill-opacity="0" stroke="#000000" stroke-width="1"/>
+      <path d="M1169.65,209.724 L1163.874,203.427 L1164.086,211.969 z" fill="#000000" fill-opacity="1" stroke="#000000" stroke-width="1" stroke-opacity="1"/>
+    </g>
+    <text transform="matrix(1, 0, 0, 1, 1160.5, 69.5)">
+      <tspan x="-92.05" y="-11" font-family="HelveticaNeue" font-size="28" fill="#000000">optimized plan</tspan>
+      <tspan x="-174.496" y="23" font-family="HelveticaNeue" font-size="28" fill="#000000">with intelligent data sources</tspan>
+    </text>
+  </g>
+  <g id="intelligent" class="fragment">
+    <text transform="matrix(1, 0, 0, 1, 1176.138, 485.5)">
+      <tspan x="-275.688" y="4.5" font-family="HelveticaNeue" font-size="20" fill="#FF0000">e.g.: SELECT * FROM events WHERE user_id = ___</tspan>
+    </text>
+    <path d="M1311,471.5 L1311,471.5" fill-opacity="0" stroke="#000000" stroke-width="1"/>
+    <g>
+      <path d="M1326.974,396.993 C1351.224,410.482 1376.186,463.604 1339.5,481.5" fill-opacity="0" stroke="#FF0000" stroke-width="1"/>
+      <path d="M1327.978,394.166 L1319.436,394.315 L1325.97,399.82 z" fill="#FF0000" fill-opacity="1" stroke="#FF0000" stroke-width="1" stroke-opacity="1"/>
+    </g>
+    <text transform="matrix(1, 0, 0, 1, 1108.05, 451)">
+      <tspan x="-202.45" y="7" font-family="HelveticaNeue" font-size="20" fill="#FF0000">Catalyst pushes the filter into the data source</tspan>
+    </text>
+  </g>
+</svg>  </div>
+
+</section>
+<section>
+  <h1>DataFrames are faster</h1>
+
+  <p class="centered">Because of the optimization, they tend to outperform RDDs.</p>
+
+  <img class="stretch" src="images/dataframe-performance.png"/>
+</section>
+<section>
+  <h1>But we've lost type safety</h1>
+
+  <p>
+    What happens if we call the <code>collect()</code> action?
+  </p>
+
+  <div class="code">
+    <pre>
+      <code class="scala">
+scala> :type df.collect()
+Array[org.apache.spark.sql.Row]
+      </code>
+    </pre>
+  </div>
+
+  <p>
+    Unfortunately, <code>Row</code> isn't typesafe. It's defined as<br/>
+    <code class="scala indented">trait Row extends Serializable</code>
+  </p>
+  <p>
+    Mapping it back to something useful is ugly and error-prone:
+  </p>
+
+  <div class="code">
+    <pre>
+      <code class="scala" data-trim>
+df.collect().map { row =>
+  val project = row(0).asInstanceOf[String]   // Yuck.
+  val numRequests = row(1).asInstanceOf[Long] // Yuck.
+}</code>
+    </pre>
+  </div>
+</section>
+<section>
+  <h1>What do we want?</h1>
+  <div>
+    We'd like to get back our compile-time type safety, <i>without</i>
+    giving up the optimizations Catalyst can provide us.
+  </div>
+</section>
+<section>
+  <h1>Enter Datasets</h1>
+
+  <p>Datasets are:</p>
+
+  <ul>
+    <li class="fragment">
+      Part of the DataFrame API
+    </li>
+    <li class="fragment">
+      Conceptually similar to RDDs<span class="fragment">.
+      <span class="emphasis">(You can use lambdas and types again.)</span>
+      </span>
+    </li>
+    <li class="fragment">
+      Use Tungsten's fast in-memory encoding (as opposed to JVM objects or
+      serialized objects on the heap)
+    </li>
+    <li class="fragment">
+      Expose expressions and fields to the DataFrame query planner, where
+      the optimizer can use them to make decisions<span class="fragment">.
+      (This can't happen with RDDs.)</span>
+    </li>
+    <li class="fragment">
+      Interoperate more easily with the DataFrame API
+    </li>
+    <li class="fragment">
+      Available in Spark 1.6 as an <strong>experimental</strong> API
+      preview<span class="fragment">. (They're a development focus for the
+      next several Spark versions.)</span>
+    </li>
+  </ul>
+
+</section>
+<section>
+  <h1>Enter Datasets</h1>
+
+  <p>Like an RDD, a Dataset has a <i>type</i>.</p>
+
+  <pre class="fragment">
+    <code class="scala">
+// Read a DataFrame from a JSON file
+val df = sqlContext.read.json("people.json")
+// Convert the data to a domain object.
+case class Person(name: String, age: Long)
+val ds: Dataset[Person] = df.as[Person]
+//                          |----------|
+    </code>
+  </pre>
+
+  <p class="fragment">
+    In Spark 2.0, a DataFrame is just a <code>Dataset[Row]</code>.
+  </p>
+</section>
+<section>
+  <h1>Datasets: A bit of both</h1>
+
+  <p>
+    With Datasets, you can still access a DataFrame-like query API.
+    (You can also go back and forth between DataFrames and Datasets.)
+  </p>
+
+  <p>RDDs:</p>
+
+  <div class="code">
+    <pre>
+      <code class="scala">
+val lines = sc.textFile("hdfs://path/to/some/ebook.txt")
+val words = lines.flatMap(_.split("""\s+""")).filter(_.nonEmpty)
+val counts = words.groupBy(_.toLowerCase).map { case (w, all) => (w, all.size) }
+      </code>
+    </pre>
+  </div>
+
+  <p>Datasets:</p>
+
+  <div class="code">
+    <pre>
+      <code class="scala">
+val lines = sqlContext.read.text("hdfs://path/to/some/ebook.txt").as[String]
+val words = lines.flatMap(_.split("""\s+""")).filter(_.nonEmpty)
+val counts = words.groupByKey(_.toLowerCase).count()
+      </code>
+    </pre>
+  </div>
+</section>
+<section>
+  <h1>Datasets: A bit of both</h1>
+
+  <div class="code">
+    <pre>
+      <code class="scala">
+// RDD
+val counts = words.groupBy(_.toLowerCase).map { case (w, all) => (w, all.size) }
+// Dataset
+val counts = words.groupByKey(_.toLowerCase).count()
+      </code>
+    </pre>
+  </div>
+
+  <p>
+    The Dataset version can use the built-in DataFrame-like
+    <code>count()</code> aggregator function.
+  </p>
+
+  <p class="fragment">
+    The Dataset code is slightly more visually compact (less typing! yay!)
+    <i>and</i> will tend to execute faster than the RDD counterpart
+    (with caveats...)
+  </p>
+</section>
+<section>
+  <h1>Datasets and Memory</h1>
+
+  <p>Datasets tend to use less memory.</p>
+
+  <ul>
+    <li class="fragment">
+      Spark understands the structure of data in Datasets, because they're
+      <i>typed</i>.
+    </li>
+    <li class="fragment">
+      Spark uses <i>encoders</i> to translate between these types ("domain
+      objects") and Spark's compact internal Tungsten data format.
+    </li>
+    <li class="fragment">
+      It generates these encoders via runtime code-generation. The
+      generated code can operate <i>directly</i> on the Tungsten compact
+      format.
+    </li>
+    <li class="fragment">
+      Memory is conserved, because of the compact format. Speed is improved by
+      custom code-generation.
+    </li>
+  </ul>
+</section>
+<section>
+  <h1>Space Efficiency</h1>
+
+  <img src="images/datasets-caching.png"/>
+</section>
+<section>
+  <h1>Datasets and Serialization</h1>
+
+  <p>
+    Spark has to serialize data <span class="fragment">... a <i>lot</i>.</span>
+  </p>
+
+  <ul>
+    <li class="fragment">
+      Because of the efficiency of the code-generated encoders,
+      serialization can be significantly faster than either
+      native Java or Kryo serialization.
+    </li>
+
+    <li class="fragment">
+      The resulting serialized data will often be up to 2x smaller, as well,
+      which reduces disk use and network use.
+    </li>
+  </ul>
+</section>
+<section>
+  <h1>Datasets and Serialization</h1>
+
+  <img class="stretch" src="images/datasets-serde-perf-chart.png"/>
+
+</section>
+<section>
+  <h1>Some Dataset Limitations</h1>
+
+  <ul>
+    <li class="fragment">
+      They're not especially useful for Python.
+    </li>
+    <li class="fragment">
+      They can still be slower than DataFrames (because of the lambdas).
+    </li>
+    <li class="fragment">
+      In some cases, RDD lambdas may still be faster than the equivalent
+      Dataset lambda.
+      <ul>
+        <li class="fragment">
+          If the JVM isn't garbage-collecting, then RDDs might be faster,
+          because they operate directly on JVM objects. Once the JVM starts GC,
+          though, Dataset lambdas will tend to be faster (because the data
+          lives outside the heap).
+        </li>
+        <li class="fragment">
+          (The Spark developers think they can fix this problem.)
+        </li>
+      </ul>
+    </li>
+    <li class="fragment">
+      The term "Datasets" is kind of hard to Google...
+    </li>
+  </ul>
+</section>
+<section>
+  <h1>Enough, already...</h1>
+
+  <p class="centered big-vertical-separation">
+    Let's look at some code.
+  </p>
+</section>
+<section>
+  <h1>More resources (1)</h1>
+
+  <ul>
+    <li>
+      This presentation will be posted on the PHASE web site,
+      <a href="http://scala-phase.org">scala-phase.org</a>.
+    </li>
+
+    <li>
+      The code is at
+      <a href="https://github.com/bmc/rdds-dataframes-datasets-presentation-2016">
+        https://github.com/bmc/rdds-dataframes-datasets-presentation-2016
+      </a>
+    </li>
+
+    <li>
+      In the <code>demo</code> directory of the GitHub repo, there's a
+      <a href="https://github.com/bmc/rdds-dataframes-datasets-presentation-2016/raw/master/demo/notebooks.dbc">
+        <code>notebooks.dbc</code>
+      </a>
+      file you can load into Databricks Community Edition. You'll then get the
+      two notebooks in the demo, and you can try them yourself.
+    </li>
+  </ul>
+</section>
+<section>
+  <h1>More resources (2)</h1>
+
+  <ul>
+    <li>
+      Watch Michael Armbrust's talk <i>Structured Spark: DataFrames,
+      Datasets, and Streaming</i>, from Spark Summit West 2016.
+      Video is here: <a href="https://youtu.be/1a4pgYzeFwE">https://youtu.be/1a4pgYzeFwE</a>
+    </li>
+
+    <li>
+      Watch Michael Armbrust's fun living coding demo, analyzing tweets related
+      to the 2016 election, from Spark Summit West 2016.
+      Video: <a href="https://youtu.be/fn3WeMZZcCk?t=1067">https://youtu.be/fn3WeMZZcCk?t=1067</a>
+    </li>
+
+    <li>
+      Read
+      <i>Introducing Spark Datasets</i> (Databricks blog post):
+      <a href="https://databricks.com/blog/2016/01/04/introducing-spark-datasets.html">
+        <code>https://databricks.com/blog/2016/01/04/introducing-spark-datasets.html</code>
+      </a>
+    </li>
+
+    <li>
+      Dig into the
+      <i>Spark SQL, DataFrames and Datasets Guide</i>:
+      <a href="http://spark.apache.org/docs/latest/sql-programming-guide.html">
+        <code>http://spark.apache.org/docs/latest/sql-programming-guide.html</code>
+      </a>
+    </li>
+  </ul>
+</section>
+<section>
+  <h1>
+    Try Apache Spark with Databricks
+    <img src="images/databricks-bricks.jpg"/>
+  </h1>
+
+  <p>
+    Try the latest version of Apache Spark and the preview of 2.0.
+    <a href="http://databricks.com/try">http://databricks.com/try</a>
+  </p>
+</section>
+<section data-state="title-slide" data-background="images/databricks-background.jpg">
+  <div class="title">
+    <h1>Thank you.</h1>
+  </div>
+</section>
+
+      </div>
+    </div>
+
+    <div id="footer">
+      <span class="databricks">
+        <img src="images/databricks-logo.png" alt="Databricks"/>
+      </span>
+    </div>
+  </body>
+
+  <script type="text/javascript" src="js/presentation.js"></script>
+
+</html>

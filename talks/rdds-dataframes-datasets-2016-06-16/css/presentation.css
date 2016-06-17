@@ -1,0 +1,233 @@
+.no-footer #footer {
+  display: none;
+}
+.no-slide-number .slide-number {
+  display: none !important;
+}
+html.title-slide #footer {
+  display: none;
+}
+html.title-slide .slide-number {
+  display: none !important;
+}
+html.title-slide section .title {
+  background-color: rbga(255, 255, 255, 60%) !important;
+  padding: 30px;
+  text-align: center;
+}
+html.title-slide section .title h1,
+html.title-slide section .title h2,
+html.title-slide section .title h3 {
+  color: white !important;
+  vertical-align: bottom;
+  text-align: center !important;
+  font-weight: normal !important;
+}
+html.title-slide section .title p {
+  color: white !important;
+  padding-top: 50px;
+  text-align: center;
+}
+body {
+  font-size: 78px !important;
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 300;
+}
+.svg-image {
+  position: relative;
+  height: 1520px !important;
+  width: 2432px !important;
+  padding: 0;
+  padding-bottom: 100%;
+  margin-top: 0 !important;
+}
+.svg-image svg {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+}
+.speaker-controls-notes .value {
+  font-size: 19.5px !important;
+}
+.scaladoc {
+  margin-top: 100px !important;
+  background-color: #fbffe4 !important;
+  border: 1px solid #999 !important;
+  border-radius: 10px 10px 10px 10px !important;
+  padding: 40px !important;
+}
+.scaladoc .scaladoc-chunk .function {
+  font-size: 58.5px !important;
+  font-family: Consolas, Menlo, monospace;
+  text-align: left !important;
+  width: 100% !important;
+}
+.scaladoc .scaladoc-chunk .function .name {
+  color: blue;
+}
+.scaladoc .scaladoc-chunk .description {
+  font-size: 58.5px !important;
+  margin-left: 100px !important;
+  text-align: left !important;
+  width: 100% !important;
+}
+.header-common {
+  font-family: "Newslab", serif !important;
+  text-transform: none !important;
+  margin-bottom: 50px !important;
+}
+h1 {
+  font-family: "Newslab", serif !important;
+  text-transform: none !important;
+  margin-bottom: 50px !important;
+  font-size: 118px !important;
+}
+h2 {
+  font-family: "Newslab", serif !important;
+  text-transform: none !important;
+  margin-bottom: 50px !important;
+  font-size: 93px !important;
+}
+.h3 {
+  font-family: "Newslab", serif !important;
+  text-transform: none !important;
+  margin-bottom: 50px !important;
+  font-size: 83px !important;
+}
+section {
+  line-height: 130% !important;
+  font-size: 78px !important;
+}
+#footer {
+  position: absolute;
+  left: 0px;
+  bottom: 10px;
+  height: 75px;
+  width: 100%;
+  font-size: 20px;
+}
+#footer .databricks {
+  font-family: "Newslab", serif;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+}
+#footer .nescala-logo {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+}
+.slide-number {
+  font-size: 20px !important;
+}
+.logo {
+  width: 100px;
+}
+img {
+  border: none !important;
+  background-color: transparent !important;
+  vertical-align: text-bottom;
+}
+p {
+  text-align: left;
+  font-size: 78px !important;
+}
+p.attribution {
+  font-size: 39px !important;
+  position: absolute;
+  bottom: 300px;
+  right: 0;
+  font-style: italic;
+}
+p code.indented {
+  padding-left: 2em !important;
+}
+ul {
+  margin-left: 20px !important;
+}
+ul li {
+  font-size: 78px !important;
+  line-height: 130% !important;
+}
+ul li ul li {
+  margin-left: 40px !important;
+}
+p.centered {
+  text-align: center;
+}
+.logo {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+.logo img {
+  height: 60px !important;
+  border: 0;
+}
+ul ul li {
+  font-size: smaller !important;
+}
+.right {
+  position: absolute;
+  top: 250px;
+  right: 0;
+}
+.left {
+  position: absolute;
+  top: 100px;
+  left: 100px;
+}
+.sidebar {
+  font-size: 14px !important;
+}
+.big-vertical-separation {
+  margin-top: 300px !important;
+}
+blockquote {
+  border-left: 20px solid #ccc !important;
+  padding-left: 30px !important;
+  color: #555;
+  text-align: left;
+  font-style: normal !important;
+  font-size: 63px !important;
+  line-height: 120% !important;
+  margin-top: 30px !important;
+}
+.emphasis {
+  color: red !important;
+}
+div.code {
+  margin-top: 60px !important;
+  margin-bottom: 60px !important;
+}
+.reveal pre {
+  border: 1px solid transparent !important;
+  width: 100% !important;
+  height: auto !important;
+  box-shadow: 0 0 0 0 !important;
+  background-color: #1d1f21;
+}
+.reveal pre code {
+  padding-left: 30px !important;
+  padding-right: 30px !important;
+  padding-bottom: 0 !important;
+  padding-top: 0 !important;
+  font-family: Consolas, Menlo, monospace !important;
+  font-size: 54px !important;
+  max-height: 700px !important;
+  height: 100% !important;
+  line-height: 120% !important;
+}
+.reveal pre code.small {
+  font-size: 14px;
+  line-height: 1.2;
+}
+img {
+  border-right-color: white !important;
+  border-left-color: white !important;
+  border-top-color: white !important;
+  border-bottom-color: white !important;
+  box-shadow: none !important;
+}
