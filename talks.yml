@@ -1,4 +1,10 @@
 talks: 
+  - title:        "Scalatron!"
+    speaker:      Matthew Butt
+    date:         2016/09/07
+    meeting_link: http://www.meetup.com/scala-phase/events/231545055/
+    code:         https://github.com/grandivory/scaltron-bot/
+
   - title:        "RDDs, DataFrames and Datasets in Apache Spark"
     speaker:      Brian Clapper
     date:         2016/06/16
