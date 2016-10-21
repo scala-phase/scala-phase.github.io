@@ -82,7 +82,8 @@ println(s"counter2=${counter2.current()}")
 
 // COMMAND ----------
 
-// MAGIC %md You can call parameterless methods, like `current()`, with or without parentheses. The following two calls are equivalent:
+// MAGIC %md
+// MAGIC You can call parameterless methods, like `current()`, with or without parentheses. The following two calls are equivalent:
 
 // COMMAND ----------
 
@@ -106,7 +107,8 @@ counter1.current     // Accesses value without changing state.
 
 // COMMAND ----------
 
-// MAGIC %md You can enforce the accessor style by declaring `current` without `()`:
+// MAGIC %md
+// MAGIC You can enforce the accessor style by declaring `current` without `()`:
 
 // COMMAND ----------
 
@@ -122,7 +124,8 @@ class Counter {
 
 // COMMAND ----------
 
-// MAGIC %md Now, any attempt to use `()` on `current` will fail. The following cell will not compile.
+// MAGIC %md
+// MAGIC Now, any attempt to use `()` on `current` will fail. The following cell will not compile.
 
 // COMMAND ----------
 
@@ -246,7 +249,8 @@ println(s"${person.name} is ${person.age} years old.")
 
 // COMMAND ----------
 
-// MAGIC %md Note that assignment to `name` is just _syntactic sugar_ for calling the `name_=` method:
+// MAGIC %md
+// MAGIC Note that assignment to `name` is just _syntactic sugar_ for calling the `name_=` method:
 
 // COMMAND ----------
 
@@ -255,7 +259,7 @@ println(s"${person.name} is ${person.age} years old.")
 
 // COMMAND ----------
 
-// MAGIC %md 
+// MAGIC %md
 // MAGIC If we want to add a check to ensure that a caller can't make a person younger, we can do that by defining our own setter.
 // MAGIC Doing so prevents Scala from defining a default one.
 
@@ -934,7 +938,8 @@ println(s"${p1.firstName} is ${p1.age}")
 
 // COMMAND ----------
 
-// MAGIC %md In that case, `fullName` is only referenced in the constructor logic, so it's only a constructor parameter. Its value isn't saved anywhere.
+// MAGIC %md
+// MAGIC In that case, `fullName` is only referenced in the constructor logic, so it's only a constructor parameter. Its value isn't saved anywhere.
 // MAGIC 
 // MAGIC Here's a different case:
 
@@ -958,7 +963,8 @@ println(s"${p2.firstName} is ${p2.age}")
 
 // COMMAND ----------
 
-// MAGIC %md In this second case, the `fullName` parameter is referenced by the overridden `toString` method, so it must be captured somewhere. The Scala compiler stores it in a `private[this]` field.
+// MAGIC %md
+// MAGIC In this second case, the `fullName` parameter is referenced by the overridden `toString` method, so it must be captured somewhere. The Scala compiler stores it in a `private[this]` field.
 
 // COMMAND ----------
 
@@ -1099,7 +1105,8 @@ println(s"${customer.name}, ${customer.age}, ${customer.customerID}")
 
 // COMMAND ----------
 
-// MAGIC %md If you don't want anyone to be able to subclass your class, mark it `final`.
+// MAGIC %md
+// MAGIC If you don't want anyone to be able to subclass your class, mark it `final`.
 
 // COMMAND ----------
 
@@ -1176,7 +1183,8 @@ class RefinedDog(age: Int, val name: String) extends Pet(age) {
 
 // COMMAND ----------
 
-// MAGIC %md The rules for overriding are:
+// MAGIC %md
+// MAGIC The rules for overriding are:
 // MAGIC 
 // MAGIC * A `def` in a subclass can _only_ override a `def` in a superclass. (In other words, a `def` cannot override a `val` or a `var`.)
 // MAGIC * A `val` in a subclass can only override another `val` or a parameterless `def`.
@@ -1356,7 +1364,8 @@ trait ConsoleLogger {
 
 // COMMAND ----------
 
-// MAGIC %md We now have a trait with a method, and since it's a trait, it can be mixed into other classes.
+// MAGIC %md
+// MAGIC We now have a trait with a method, and since it's a trait, it can be mixed into other classes.
 
 // COMMAND ----------
 
@@ -1408,7 +1417,8 @@ trait ShortLogger extends CanLog {
 
 // COMMAND ----------
 
-// MAGIC %md Any class that mixes `ShortLogger` in acquires a `maxLength` field. The field is added _directly_ to the class; it's not inherited. 
+// MAGIC %md
+// MAGIC Any class that mixes `ShortLogger` in acquires a `maxLength` field. The field is added _directly_ to the class; it's not inherited. 
 
 // COMMAND ----------
 
@@ -1420,7 +1430,8 @@ log.log("This is a message that exceeds 15 characters. It should be truncated be
 
 // COMMAND ----------
 
-// MAGIC %md You can think of concrete trait fields as "assembly instructions" for the classes that use the trait. Any such fields become fields of the class.
+// MAGIC %md
+// MAGIC You can think of concrete trait fields as "assembly instructions" for the classes that use the trait. Any such fields become fields of the class.
 
 // COMMAND ----------
 
@@ -1455,7 +1466,8 @@ trait ShortLogger extends CanLog {
 
 // COMMAND ----------
 
-// MAGIC %md Now, any attempt to instantiate a class that mixes in `ShortLogger` will fail, unless we also provide a `maxLength` concrete field.
+// MAGIC %md
+// MAGIC Now, any attempt to instantiate a class that mixes in `ShortLogger` will fail, unless we also provide a `maxLength` concrete field.
 
 // COMMAND ----------
 
@@ -1513,7 +1525,8 @@ println("cat /tmp/phase.log"!!)
 
 // COMMAND ----------
 
-// MAGIC %md With traits mixed in, here's how object construction works:
+// MAGIC %md
+// MAGIC With traits mixed in, here's how object construction works:
 // MAGIC 
 // MAGIC 1. The superclass constructor is called first.
 // MAGIC 2. Trait constructors are executed next, _before_ the class constructor.
@@ -1547,7 +1560,8 @@ println("cat /tmp/phase.log"!!)
 
 // COMMAND ----------
 
-// MAGIC %md The `SavingsAccount` object is constructed in this order:
+// MAGIC %md
+// MAGIC The `SavingsAccount` object is constructed in this order:
 // MAGIC 
 // MAGIC 1. The `Account` constructor fires (initializing `accountNumber`).
 // MAGIC 2. The `CanLog` trait is constructed, as it's the parent of the first trait, `FileLogger`.
@@ -1557,7 +1571,8 @@ println("cat /tmp/phase.log"!!)
 
 // COMMAND ----------
 
-// MAGIC %md This approach lends itself nicely to using traits as an on-the-fly composition mechanism. Since we don't really have time to do another exercise, let's just look at a couple quick examples.
+// MAGIC %md
+// MAGIC This approach lends itself nicely to using traits as an on-the-fly composition mechanism. Since we don't really have time to do another exercise, let's just look at a couple quick examples.
 
 // COMMAND ----------
 
@@ -1581,7 +1596,8 @@ val log2 = new ConsoleLogger with TimestampLogger with ShortLogger {
 
 // COMMAND ----------
 
-// MAGIC %md Okay, watch carefully. I'll want someone to explain what's going on here.
+// MAGIC %md
+// MAGIC Okay, watch carefully. I'll want someone to explain what's going on here.
 
 // COMMAND ----------
 
@@ -1701,7 +1717,8 @@ object Account {
 
 // COMMAND ----------
 
-// MAGIC %md Now, I can create an `Account` object two ways:
+// MAGIC %md
+// MAGIC Now, I can create an `Account` object two ways:
 
 // COMMAND ----------
 
@@ -1710,7 +1727,8 @@ val a2 = Account.create("87654233")
 
 // COMMAND ----------
 
-// MAGIC %md But there's more to it than that. Companion objects share a special relationship: They can (you'll pardon the expression) _see each other's privates_.
+// MAGIC %md
+// MAGIC But there's more to it than that. Companion objects share a special relationship: They can (you'll pardon the expression) _see each other's privates_.
 // MAGIC 
 // MAGIC Let's make the `Account` constructor private, and try again.
 
@@ -1724,7 +1742,8 @@ object Account {
 
 // COMMAND ----------
 
-// MAGIC %md Now, I can't call the constructor:
+// MAGIC %md
+// MAGIC Now, I can't call the constructor:
 
 // COMMAND ----------
 
@@ -1732,7 +1751,8 @@ val a1 = new Account("0927834")
 
 // COMMAND ----------
 
-// MAGIC %md I have to use the factory method:
+// MAGIC %md
+// MAGIC I have to use the factory method:
 
 // COMMAND ----------
 
@@ -1755,7 +1775,8 @@ object Account {
 
 // COMMAND ----------
 
-// MAGIC %md Naturally, I can now create an account by calling `Account.apply()`. But, Scala has a shorter syntax: If I try to invoke the object as if it were a function, like this:
+// MAGIC %md
+// MAGIC Naturally, I can now create an account by calling `Account.apply()`. But, Scala has a shorter syntax: If I try to invoke the object as if it were a function, like this:
 // MAGIC 
 // MAGIC ```
 // MAGIC Account()
@@ -1838,7 +1859,8 @@ object MyProgram1 {
 
 // COMMAND ----------
 
-// MAGIC %md I've pre-built a fat jar containing this program and the Scala libraries. Let's download it and run it on the server.
+// MAGIC %md
+// MAGIC I've pre-built a fat jar containing this program and the Scala libraries. Let's download it and run it on the server.
 
 // COMMAND ----------
 
@@ -1858,7 +1880,8 @@ println("java -jar MyProgram1.jar foo bar baz"!!)
 
 // COMMAND ----------
 
-// MAGIC %md Another way to create a main program in Scala is to use the special `App` trait. Then, everything in the `object` constructor becomes the main program, and the arguments are available as `args`:
+// MAGIC %md
+// MAGIC Another way to create a main program in Scala is to use the special `App` trait. Then, everything in the `object` constructor becomes the main program, and the arguments are available as `args`:
 
 // COMMAND ----------
 
@@ -1869,7 +1892,8 @@ object MyProgram2 extends App {
 
 // COMMAND ----------
 
-// MAGIC %md Let's try that one on the server, too.
+// MAGIC %md
+// MAGIC Let's try that one on the server, too.
 
 // COMMAND ----------
 

@@ -1,4 +1,4 @@
-// Databricks notebook source exported at Fri, 21 Oct 2016 18:48:53 UTC
+// Databricks notebook source exported at Fri, 21 Oct 2016 19:48:12 UTC
 // MAGIC %md
 // MAGIC <img src="http://www.scala-lang.org/resources/img/smooth-spiral.png" style="float: right; height: 100px; margin-right: 50px; margin-top: 20px"/>
 // MAGIC # Scala Fundamentals: Basic Types and Expressions
@@ -256,10 +256,8 @@ println("Hello Philadelphia".length)
 // MAGIC ## Triple Quoted Strings
 // MAGIC * You can define multi-line strings
 // MAGIC * There's no need to escape special characters (backslashes, etc.)
-
-// COMMAND ----------
-
-
+// MAGIC 
+// MAGIC ### Multi-line strings
 
 // COMMAND ----------
 
@@ -270,6 +268,11 @@ println("Hello Philadelphia".length)
 
 // COMMAND ----------
 
+// MAGIC %md
+// MAGIC ### Margin stripping
+
+// COMMAND ----------
+
 """
   |Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo   
   |consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
@@ -277,7 +280,17 @@ println("Hello Philadelphia".length)
 
 // COMMAND ----------
 
+// MAGIC %md
+// MAGIC ### Escaping required
+
+// COMMAND ----------
+
 println("You have exceeded the number of login attempts.\nYour account has been locked.\nPlease contact your administrator.")
+
+// COMMAND ----------
+
+// MAGIC %md
+// MAGIC ### Escaping not required
 
 // COMMAND ----------
 
@@ -485,6 +498,11 @@ val substitutedInventoryMessage = "There are currently " + (updatedQuantity) + "
 
 // COMMAND ----------
 
+// MAGIC %md
+// MAGIC ### Primitives: Double Equals ==
+
+// COMMAND ----------
+
 val personAge1 = 36
 val personAge2 = 45
 val personAge3 = 36
@@ -494,6 +512,11 @@ println(personAge1 == personAge2)
 println(personAge2 == personAge1)
 println(personAge1 == personAge3)
 println(personAge3 == personAge1)
+
+// COMMAND ----------
+
+// MAGIC %md
+// MAGIC ## Primitives: Equals
 
 // COMMAND ----------
 
@@ -512,12 +535,22 @@ println(personAge1.equals(personAge2))
 
 // COMMAND ----------
 
+// MAGIC %md
+// MAGIC ### Gotchas: Number primitives == does not call equals
+
+// COMMAND ----------
+
 println(1 == 1L)
 println(1L == 1)
 println(1.equals(1L))
 println(1L.equals(1))
 println(Double.NaN == Double.NaN)
 println(Double.NaN.equals(Double.NaN))
+
+// COMMAND ----------
+
+// MAGIC %md
+// MAGIC ### Objects: Double Equals ==
 
 // COMMAND ----------
 
@@ -539,6 +572,8 @@ println(null == s1)
 // MAGIC * Null denotes that an object reference has NOT been assigned.  
 // MAGIC * If you attempt to dereference (perform an operation on) a null object reference, the runtime will throw a **java.lang.NullPointerException**
 // MAGIC * The *==* method is **_null safe_**, meaning that it can handle a null reference on either side.  The **equals** method is not null safe in both directions.
+// MAGIC 
+// MAGIC ### Objects: equals methods
 
 // COMMAND ----------
 
@@ -554,6 +589,11 @@ println(null.equals(s1)) // The operation is being invoked on null
 
 // COMMAND ----------
 
+// MAGIC %md
+// MAGIC ### Primitives cannot be assigned null
+
+// COMMAND ----------
+
 val x: Int = null
 
 // COMMAND ----------
@@ -563,6 +603,8 @@ val x: Int = null
 // MAGIC * Objects are stored in memory (JVM allocated and managed "heap").  
 // MAGIC * To test whether two references point to the same object in the heap (same memory location), Scala provides a **eq** method.
 // MAGIC * WARNING:  In Java, reference equality is tested with **==**.
+// MAGIC 
+// MAGIC ### Objects: Reference equality via eq
 
 // COMMAND ----------
 
@@ -583,8 +625,18 @@ println(personName3Str eq personName1Str)
 
 // COMMAND ----------
 
+// MAGIC %md
+// MAGIC ### Both are java.lang.String
+
+// COMMAND ----------
+
 println(personName1.getClass)
 println(personName1Str.getClass)
+
+// COMMAND ----------
+
+// MAGIC %md
+// MAGIC ### java.lang.Integer objects
 
 // COMMAND ----------
 
@@ -597,8 +649,18 @@ println(xInt.equals(yInt))
 
 // COMMAND ----------
 
+// MAGIC %md
+// MAGIC ### No eq method for primitives
+
+// COMMAND ----------
+
 val x: Int = 1
 x eq x
+
+// COMMAND ----------
+
+// MAGIC %md
+// MAGIC ### Primitives should not be compared with null
 
 // COMMAND ----------
 
@@ -645,6 +707,8 @@ val message = s"On Mars $personName weighs ${(personWeightOnEarth * MarsGravity 
 // MAGIC * A conditional expression _conditionally_ evaluates to a value based on one or more logical expressions.
 // MAGIC * A logical expression is one that one that evaluates to **true** or **false**, in other words of type **Boolean**
 // MAGIC * We've already seen one - equality checks.
+// MAGIC 
+// MAGIC ### Logical Expressions
 
 // COMMAND ----------
 
@@ -772,6 +836,8 @@ else {
 // MAGIC * The entire block itself is an expression.
 // MAGIC * The value and type of the block is the **_value and type of the final expression in the block_**.
 // MAGIC * You'd like to express a computation that takes multiple steps, but resolves to a value.
+// MAGIC 
+// MAGIC ### No side effects!
 
 // COMMAND ----------
 
@@ -780,6 +846,11 @@ val result = {
   val answerToLifeIgnored = 42
   "I'm just a block!"
 }
+
+// COMMAND ----------
+
+// MAGIC %md 
+// MAGIC ### Side effects!
 
 // COMMAND ----------
 
@@ -799,6 +870,8 @@ println(outerVar)
 // MAGIC ### Generally speaking, side effects and _exposing_ mutable data / state are NOT recommended!
 // MAGIC * We should strive to segregate (and minimize) side-effecting code from side-effect free code.  
 // MAGIC * This can lead to easier testability, reasoning of behavior, and the possibility for distributing a workload across multiple cores (although this depends on other factors as well).
+// MAGIC 
+// MAGIC ### Scoping
 
 // COMMAND ----------
 
