@@ -3,6 +3,8 @@ layout: scala-fundamentals
 title: none
 ---
 
+<img src="http://www.scala-lang.org/resources/img/smooth-spiral.png" style="float: left; height: 100px; margin-right: 50px"/>
+
 # Scala Fundamentals Workshop
 
 ## October 22, 2016
