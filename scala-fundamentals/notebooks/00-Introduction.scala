@@ -1,11 +1,11 @@
-// Databricks notebook source exported at Sat, 22 Oct 2016 10:46:34 UTC
+// Databricks notebook source exported at Sat, 22 Oct 2016 10:51:50 UTC
 // MAGIC %md
 // MAGIC <img src="http://www.scala-lang.org/resources/img/smooth-spiral.png" style="float: right; height: 100px; margin-right: 50px; margin-top: 20px"/>
 // MAGIC # Scala Fundamentals
 // MAGIC 
 // MAGIC Presented by the [Philly Area Scala Enthusiasts (PHASE)](http://scala-phase.org).
 // MAGIC 
-// MAGIC **NOTE**: You can view this notebook online at <http://tinyurl.com/scala-fundamentals-intro>
+// MAGIC **NOTE**: You can view this notebook online at <http://scala-phase.org/scala-fundamentals/intro.html>
 // MAGIC 
 // MAGIC ## Acknowledgements
 // MAGIC 
