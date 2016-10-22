@@ -79,7 +79,7 @@ task :gen_deploy => [:generate, :deploy]
 
 desc "Deploy the site to the VPS."
 task :deploy do
-  sh 'wwwpush', 'phase'
+  sh 'rsync', '-avuz', '--delete', '.', 'yore.ardentex.com:/var/www/scala-phase.org/html'
 end
 
 task :clean do
