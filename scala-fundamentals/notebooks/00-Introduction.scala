@@ -1,4 +1,4 @@
-// Databricks notebook source exported at Sat, 22 Oct 2016 10:37:45 UTC
+// Databricks notebook source exported at Sat, 22 Oct 2016 10:46:34 UTC
 // MAGIC %md
 // MAGIC <img src="http://www.scala-lang.org/resources/img/smooth-spiral.png" style="float: right; height: 100px; margin-right: 50px; margin-top: 20px"/>
 // MAGIC # Scala Fundamentals
@@ -31,6 +31,12 @@
 // MAGIC * Brad Miller
 // MAGIC * Martin Snyder
 // MAGIC * Brian Clapper
+// MAGIC 
+// MAGIC ## Questions During the Workshop
+// MAGIC 
+// MAGIC You're bound to have questions during the workshop. However, we have a _lot_ of material to cover, and too many questions can distract from the material an instructor is presenting. So, each instructor reserves the right to call a halt to questions. If an instructor cannot answer a question you have during his presentation, please add that question to the following Google Doc. We will commit to answering any such offline questions within the next week.
+// MAGIC 
+// MAGIC <http://tinyurl.com/scala-fundamentals-q-a>
 // MAGIC 
 // MAGIC ## Databricks Community Edition
 // MAGIC 
@@ -65,3 +71,7 @@
 // MAGIC 
 // MAGIC <br/><img src="https://openclipart.org/download/58669/tooltip.svg" alt="Tip" style="height: 90px"/>
 // MAGIC > You can later download your lab solutions and share them with others by choosing the "Export" option instead of the import option.  This will download a .dbc archive (databricks cloud archive, a variation of a zip file) that you can then import into any other Databricks account.  Alternatively you can download a folder as a zip of HTML files.  You can even download individual notebooks as source code to run them Scala.
+
+// COMMAND ----------
+
+
