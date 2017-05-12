@@ -1,4 +1,12 @@
 talks: 
+  - title:        "Contextual"
+    speaker:      Brian Clapper
+    date:         2017/05/11
+    meeting_link: https://www.meetup.com/scala-phase/events/238772095/
+    code:         https://github.com/bmc/contextual-presentation-2017
+    slides:
+      link:       talks/contextual-2017-05-11
+
   - title:        "Scalatron!"
     speaker:      Matthew Butt
     date:         2016/09/07
