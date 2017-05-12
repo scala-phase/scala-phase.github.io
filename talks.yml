@@ -3,9 +3,17 @@ talks:
     speaker:      Brian Clapper
     date:         2017/05/11
     meeting_link: https://www.meetup.com/scala-phase/events/238772095/
-    code:         https://github.com/bmc/contextual-presentation-2017
+    code:         https://github.com/bmc/contextual-presentation-2017/tree/master/demo
     slides:
       link:       talks/contextual-2017-05-11
+
+  - title:        "Monadic Logging and You"
+    speaker:      Martin Snyder
+    meeting_link: https://www.meetup.com/scala-phase/events/234569159/
+    date:         2016/12/08
+    slides:
+      link:       https://rawgit.com/MartinSnyder/monadic-logging/master/presentation/index.html
+    video:        https://www.youtube.com/watch?v=t-YX55ZF4g0
 
   - title:        "Scalatron!"
     speaker:      Matthew Butt
