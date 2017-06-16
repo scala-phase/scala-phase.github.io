@@ -1,4 +1,11 @@
 talks: 
+  - title:        "Introductory TyDD in Scala"
+    speaker:      Marcus Henry
+    date:         2017/06/15
+    meeting_link: https://www.meetup.com/scala-phase/events/239959892/
+    code:         https://github.com/dreadedsoftware/talks/tree/master/TyDD_in_Scala
+    slides:
+      link:       http://www.dreadedsoftware.com/s/PhaseTyDD.pdf
   - title:        "Contextual"
     speaker:      Brian Clapper
     date:         2017/05/11
