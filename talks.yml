@@ -1,4 +1,11 @@
 talks: 
+  - title:        "Dependent Types in Scala"
+    speaker:      Yao Li
+    date:         2017/08/17
+    meeting_link: https://www.meetup.com/scala-phase/events/242031802/
+    code:         https://github.com/lastland/DTScala
+    slides:
+      link:       talks/dependent-types-2017-08-17.pdf
   - title:        "Introductory TyDD in Scala"
     speaker:      Marcus Henry
     date:         2017/06/15
