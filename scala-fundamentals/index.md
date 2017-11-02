@@ -12,7 +12,7 @@ title: none
 Here you'll find everything you need, if you're attending the Scala
 Fundamentals Workshop.
 
-* [Information Sheet](ScalaFundamentals.pdf): **Read this!** This document
+* [Information Sheet](Scala-Fundamentals.pdf): **Read this!** This document
   has _everything_ you need to prepare.
 
 * [Intro notebook][]: This Databricks notebook contains some
