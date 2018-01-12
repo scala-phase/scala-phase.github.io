@@ -1,4 +1,10 @@
 talks: 
+  - title:        "Exploring Word2vec in Scala"
+    speaker:      Gary Seiling
+    date:         2018/01/11
+    meeting_link: https://www.meetup.com/scala-phase/events/245651753/
+    slides:
+      link:       talks/exploring-word2vec.pdf
   - title:        "Dependent Types in Scala"
     speaker:      Yao Li
     date:         2017/08/17
