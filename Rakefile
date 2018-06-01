@@ -54,13 +54,14 @@ task :jekyll => [:css, :talks] do |t|
   sh 'jekyll build'
 end
 
+task :gen => :generate
 task :preview => :run
 task :server => :run
 
 desc "Format the blog, then fire up a local HTTP server."
 task :run => [:css, :talks, 'jekyll_helpers:watch_less'] do |t|
   watch_talks
-  sh "jekyll server --watch"
+  sh "jekyll server --watch --host 0.0.0.0"
 end
 
 task :talks => TALKS_HTML do
@@ -73,7 +74,13 @@ file TALKS_HTML => [TALKS_YAML, TALKS_TEMPLATE, 'Rakefile'] do
   convert_talks
 end
 
-task :css => 'jekyll_helpers:css'
+task :css_clean do
+  rm_rf 'stylesheets'
+end
+
+task :css => :css_clean do
+  sh 'lessc less/style.less stylesheets/style.css'
+end
 
 task :gen_deploy => [:generate, :deploy]
 
