@@ -272,7 +272,11 @@ table tbody tr.even {
 }
 table tbody td {
   border-width: 0;
-  padding: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-right: 15px;
+  margin-right: 15px;
+  padding-left: 0;
   border-style: none;
 }
 table.talks-table .date {
@@ -293,5 +297,5 @@ table.talks-table .slides .slides-comment {
 table.talks-table .talk .details ul {
   margin-top: 0;
   margin-bottom: 0;
-  padding-left: 0;
+  padding-left: 25px;
 }
