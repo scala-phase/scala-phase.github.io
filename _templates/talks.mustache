@@ -23,10 +23,10 @@
         <td class="date">{{date}}</td>
         <td class="speaker">{{speaker}}</td>
         <td class="title">{{title}}</td>
-        <td class="meetup-link"><a href="{{meeting_link}}">{{meeting_id}}</a></td>
+        <td class="meetup-link"><a target="_blank" href="{{meeting_link}}">{{meeting_id}}</a></td>
         <td class="slides">
           {{#slides}}
-            <a class="slides-link" href="{{slides.link}}">Slides</a>
+            <a target="_blank" class="slides-link" href="{{slides.link}}">Slides</a>
             {{#slides.comment}}
               <span class="slides-comment">({{slides.comment}})</span>
             {{/slides.comment}}
@@ -34,12 +34,12 @@
         </td>
         <td class="code">
           {{#code_link}}
-            <a class="code-link" href="{{code_link}}">{{code_label}}</a>
+            <a target="_blank" class="code-link" href="{{code_link}}">{{code_label}}</a>
           {{/code_link}}
         </td>
         <td class="other">
           {{#video}}
-            <a class="video-link" href="{{video}}">Video</a>
+            <a target="_blank" class="video-link" href="{{video}}">Video</a>
           {{/video}}
           {{#resources}}
             <a href="javascript:void(0)" class="resources-link"
