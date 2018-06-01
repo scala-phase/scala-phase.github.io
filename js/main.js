@@ -21,6 +21,7 @@
       e.preventDefault();
       var href = $(this).attr('href');
       scrollTo(href);
+      window.location.hash = href.replace('#', '');
     });
 
     function resizeSections() {

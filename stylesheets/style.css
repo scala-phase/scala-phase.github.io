@@ -61,31 +61,31 @@
 .btn.btn-tiny {
   min-width: 20px;
   min-height: 15px;
-  font-size: 15px;
+  font-size: 11px;
   padding: 1px;
   border-radius: 2px 2px 2px 2px;
 }
 @media (only screen and (min-width: 241px) and (max-width: 719px)) or (only screen and (min-width: 720px) and (max-width: 959px)) {
   .btn.btn-tiny {
-    font-size: 17px;
+    font-size: 13px;
     min-height: 17px;
   }
 }
 .btn.btn-small {
   min-width: 40px;
   min-height: 30px;
-  font-size: 17px;
+  font-size: 13px;
   padding: 5px;
 }
 .btn.btn-large {
   min-width: 70px;
   min-height: 50px;
-  font-size: 23px;
+  font-size: 19px;
 }
 .btn.btn-xlarge {
   min-width: 100px;
   min-height: 80px;
-  font-size: 25px;
+  font-size: 21px;
 }
 .btn.btn-borderless {
   margin-left: 10px;
@@ -110,26 +110,26 @@
 body {
   background-color: #D9EBFC;
   font-family: Helvetica, Verdana, Arial, sans-serif;
-  font-size: 20px;
+  font-size: 16px;
 }
 @media only screen and (min-width: 241px) and (max-width: 719px) {
   body {
-    font-size: 19px;
+    font-size: 15px;
   }
 }
 @media only screen and (min-width: 720px) and (max-width: 959px) {
   body {
-    font-size: 18px;
+    font-size: 14px;
   }
 }
 @media only screen and (min-width: 960px) and (max-width: 1199px) {
   body {
-    font-size: 20px;
+    font-size: 16px;
   }
 }
 @media only screen and (min-width: 1200px) {
   body {
-    font-size: 20px;
+    font-size: 16px;
   }
 }
 .section {
@@ -141,18 +141,18 @@ a {
   color: blue;
 }
 a:hover {
-  background: #4681bb;
+  background: #4681BB;
   color: white;
 }
 a:visited {
   color: blue;
 }
 a:visited:hover {
-  background: #4681bb;
+  background: #4681BB;
   color: white;
 }
 .back-to-top {
-  font-size: 20px;
+  font-size: 16px;
   margin-left: 20px;
   white-space: nowrap;
 }
@@ -167,10 +167,10 @@ a:visited:hover {
   white-space: nowrap;
 }
 .resources-link .pointer {
-  font-size: 16px;
+  font-size: 12px;
 }
 .navbar {
-  background-color: #4681bb;
+  background-color: #4681BB;
   height: 200px;
 }
 .navbar .banner span {
@@ -191,22 +191,22 @@ a:visited:hover {
 }
 @media only screen and (min-width: 241px) and (max-width: 719px) {
   .navbar .title {
-    font-size: 22.8px;
+    font-size: 18px;
   }
 }
 @media only screen and (min-width: 720px) and (max-width: 959px) {
   .navbar .title {
-    font-size: 27px;
+    font-size: 21px;
   }
 }
 @media only screen and (min-width: 960px) and (max-width: 1199px) {
   .navbar .title {
-    font-size: 40px;
+    font-size: 32px;
   }
 }
 @media only screen and (min-width: 1200px) {
   .navbar .title {
-    font-size: 40px;
+    font-size: 32px;
   }
 }
 .navlinks {
@@ -214,11 +214,11 @@ a:visited:hover {
 }
 .navlinks a {
   color: black;
-  font-size: 25px;
+  font-size: 21px;
   vertical-align: bottom;
 }
 .navlinks a:hover {
-  background-color: #4681bb;
+  background-color: #4681BB;
   color: white;
 }
 .navlinks a:active {
@@ -238,6 +238,7 @@ a:visited:hover {
 }
 */
 table {
+  font-size: 16px;
   width: 100%;
   margin-top: 20px;
   border-width: 0;
@@ -261,7 +262,7 @@ table thead th {
 }
 table tbody tr {
   vertical-align: top;
-  border-bottom: 1px solid #cccccc;
+  border-bottom: 1px solid #ccc;
 }
 table tbody tr.odd {
   background: transparent;
@@ -288,4 +289,9 @@ table.talks-table .code-link {
 table.talks-table .slides .slides-comment {
   font-style: italic;
   display: block;
+}
+table.talks-table .talk .details ul {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-left: 0;
 }

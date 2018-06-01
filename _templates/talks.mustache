@@ -9,55 +9,43 @@
       <th>Date</th>
       <th>Speaker</th>
       <th>Title</th>
-      <th>Meeting Page</th>
-      <th>Slides</th>
-      <th>Code</th>
-      <th>Other</th>
+      <th>Details</th>
     </tr>
   </thead>
 
   <tbody>
     {{! In the loop, you have access to each element's fields, implicitly.}}
     {{#talks}}
-      <tr class="{{css_class}}">
+      <tr class="talk {{css_class}}">
         <td class="date">{{date}}</td>
         <td class="speaker">{{speaker}}</td>
         <td class="title">{{title}}</td>
-        <td class="meetup-link"><a target="_blank" href="{{meeting_link}}">{{meeting_id}}</a></td>
-        <td class="slides">
-          {{#slides}}
-            <a target="_blank" class="slides-link" href="{{slides.link}}">Slides</a>
-            {{#slides.comment}}
-              <span class="slides-comment">({{slides.comment}})</span>
-            {{/slides.comment}}
-          {{/slides}}
-        </td>
-        <td class="code">
-          {{#code_link}}
-            <a target="_blank" class="code-link" href="{{code_link}}">{{code_label}}</a>
-          {{/code_link}}
-        </td>
-        <td class="other">
-          {{#video}}
-            <a target="_blank" class="video-link" href="{{video}}">Video</a>
-          {{/video}}
-          {{#resources}}
-            <a href="javascript:void(0)" class="resources-link"
-               data-state="closed" data-resources-id="resources-{{id}}">
-              Resources
-              <span class="pointer pointer-closed fa fa-caret-right"></span>
-              <span class="pointer pointer-open fa fa-caret-down" style="display: none"></span>
-            </a>
-          {{/resources}}
+        <td class="details">
+          <ul>
+            <li class="meetup-link">
+              Meetup page: <a target="_blank" href="{{meeting_link}}">{{meeting_id}}</a>
+            </li>
+            {{#slides}}
+            <li class="slides">
+              <a target="_blank" class="slides-link" href="{{slides.link}}">Slides</a>
+              {{#slides.comment}}
+                <span class="slides-comment">({{slides.comment}})</span>
+              {{/slides.comment}}
+            </li>
+            {{/slides}}
+            {{#code_link}}
+            <li class="code">
+              Code: <a target="_blank" class="code-link" href="{{code_link}}">{{code_label}}</a>
+            </li>
+            {{/code_link}}
+            {{#video}}
+            <li>
+              <a target="_blank" class="video-link" href="{{video}}">Video</a>
+            </li>
+            {{/video}}
+          </ul>
         </td>
       </tr>
-      {{#resources}}
-      <tr id="resources-{{id}}" style="display: none">
-        <td colspan="7">
-          <iframe src="{{resources}}" width="100%" height="100%"></iframe>
-        </td>
-      </tr>
-      {{/resources}}
     {{/talks}}
   </tbody>
 </table>

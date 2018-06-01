@@ -79,7 +79,17 @@ task :gen_deploy => [:generate, :deploy]
 
 desc "Deploy the site to the VPS."
 task :deploy do
-  sh 'rsync', '-avuz', '--delete', '.', 'yore.ardentex.com:/var/www/scala-phase.org/html'
+  RSYNC_ARGS = [
+    'rsync',
+    '-avuz',
+    '--delete',
+    '--exclude', '/.git',
+    '--exclude', '/tmp',
+    '--exclude', '*.iml',
+    '--exclude', '/.idea',
+    '.', 'yore.ardentex.com:/var/www/scala-phase.org/html'
+  ]
+  sh *RSYNC_ARGS
 end
 
 task :clean do
@@ -99,12 +109,11 @@ end
 require 'mustache'
 class Talk
   attr_reader :title, :speaker, :date, :meeting_link, :slides, :video,
-              :meeting_id, :resources, :id, :code_link, :code_label, :css_class
+              :meeting_id, :id, :code_link, :code_label, :css_class
 
   @@next_id = 0
 
-  def initialize(title, speaker, date_str, meeting_link, slides, video, code,
-                 resources)
+  def initialize(title, speaker, date_str, meeting_link, slides, video, code)
     @id           = @@next_id
     @@next_id    += 1
     @css_class    = if (@id % 2) == 0 then "even" else "odd" end
@@ -126,8 +135,6 @@ class Talk
     if code
       @code_label = @code_label.sub(%r|^https?://|, "")
     end
-
-    @resources    = resources
   end
 end
 
@@ -176,7 +183,7 @@ class TalkRenderer
                  end
 
         Talk.new(h['title'], h['speaker'], h['date'], h['meeting_link'], slides,
-                 h['video'], h['code'], h['resources'])
+                 h['video'], h['code'])
       end
     end
   end
