@@ -1,4 +1,5 @@
 .idea
+*.iml
 _site
 .envrc
 node_modules
