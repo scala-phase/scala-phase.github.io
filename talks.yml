@@ -3,7 +3,8 @@ talks:
     speaker:      Marcus Henry
     date:         2018/05/31
     meeting_link: https://www.meetup.com/scala-phase/events/250916486/
-    video:        https://youtu.be/x0BnmwXM4Lo
+    video:        https://youtu.be/x8Cs-tC_ZSs
+    code:         https://github.com/dreadedsoftware/2018_ScalaDays_TyDD
   - title:        "Exploring Word2vec in Scala"
     speaker:      Gary Seiling
     date:         2018/01/11
