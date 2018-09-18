@@ -1,4 +1,9 @@
 talks: 
+  - title:        "Flexible DSLs with Tagless Final"
+    speaker:      Dan Hunt
+    date:         2018/07/13
+    meeting_link: https://www.meetup.com/scala-phase/events/252599833/
+    code:         https://github.com/dfjhunt/tagless-talk
   - title:        "Type-driven Development"
     speaker:      Marcus Henry
     date:         2018/05/31
