@@ -5,6 +5,7 @@ require 'git'
 require 'tmpdir'
 require 'jekyll-helpers'
 require 'fssm'
+require 'date'
 
 # ---------------------------------------------------------------------------
 # Functions used outside tasks
@@ -126,7 +127,7 @@ class Talk
     @css_class    = if (@id % 2) == 0 then "even" else "odd" end
     @title        = title
     @speaker      = speaker
-    @date         = Date.parse(date_str)
+    @date         = ::Date.parse(date_str)
     @meeting_link = meeting_link
 
     if meeting_link =~ %r|^http.*meetup.com/scala-phase/events/(\d+)/.*$|
