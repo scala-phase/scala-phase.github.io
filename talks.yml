@@ -4,7 +4,7 @@ talks:
     date:         2018/12/06
     meeting_link: https://www.meetup.com/scala-phase/events/256236416/
     code:         https://github.com/bmc/spark-frameless-talk-2018
-    video:        https://www.youtube.com/watch?v=zXipqCcVmQM
+    video:        https://www.youtube.com/watch?v=rzlKpv9A_5c
   - title:        "Flexible DSLs with Tagless Final"
     speaker:      Dan Hunt
     date:         2018/07/13
