@@ -1,8 +1,3 @@
-<h1>
-  Selected Previous PHASE Talks
-  {% include back-to-top.html %}
-</h1>
-
 <table class="talks-table">
   <thead>
     <tr>
@@ -40,7 +35,9 @@
             {{/code_link}}
             {{#video}}
             <li>
-              <a target="_blank" class="video-link" href="{{video}}">Video</a>
+              <a target="_blank" class="video-link" href="{{video}}">
+                <i class="fas fa-video"></i> Video
+              </a>
             </li>
             {{/video}}
           </ul>
@@ -49,5 +46,3 @@
     {{/talks}}
   </tbody>
 </table>
-
-<div id="dialog"></div>

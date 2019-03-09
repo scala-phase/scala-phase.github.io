@@ -1,21 +1,11 @@
 source "http://rubygems.org"
 
-gem 'jekyll'
-gem 'kramdown'
-gem 'rdiscount'
-gem 'uglifier'
-gem 'rake'
-gem 'bourbon'
-gem 'mustache'
+#gem 'rake'
 gem 'git'
-gem 'yui-compressor', '>=0.9.6'
-gem 'grizzled-rake', github: 'bmc/grizzled-rake'
-gem 'fssm'
+gem 'mustache'
 gem 'jekyll-helpers', github: 'bmc/jekyll-helpers'
-
-group :development do
-  gem 'pry'
-end
+#gem 'jekyll'
+#gem 'kramdown'
 
 # Force UTF-8 encoding. Works on Linux and, probably, on Mac OS X.
 ENV['LC_CTYPE'] = 'en_US.UTF-8'

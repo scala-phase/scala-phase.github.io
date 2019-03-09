@@ -1,3 +1,4 @@
+/dist
 .idea
 *.iml
 _site
@@ -5,3 +6,6 @@ _site
 node_modules
 /talks/slick-2015-03-19
 /tmp
+/.gems
+.DS_Store
+/talks.html

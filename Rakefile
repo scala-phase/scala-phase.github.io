@@ -3,8 +3,6 @@
 require 'rubygems'
 require 'git'
 require 'tmpdir'
-require 'jekyll-helpers'
-require 'fssm'
 require 'date'
 
 # ---------------------------------------------------------------------------
@@ -23,47 +21,55 @@ end
 # Constants
 # ---------------------------------------------------------------------------
 
-FONT_AWESOME_MASTER = 'https://github.com/FortAwesome/Font-Awesome'
-FONT_AWESOME_URL    = ENV['FONT_AWESOME_URL'] || FONT_AWESOME_MASTER
-FONT_AWESOME_SUBDIR = 'font-awesome'
-
 LESS_DIR            = 'less'
 LESS_FILES          = FileList["#{LESS_DIR}/*.less"].select do |f|
                         f !~ %r|^less/_|
                       end
-TEMPLATES_DIR       = '_templates'
 TALKS_YAML          = 'talks.yml'
 TALKS_TEMPLATE      = '_templates/talks.mustache'
-TALKS_HTML          = '_includes/talks.html'
+TALKS_HTML          = 'talks.html'
 
 # ---------------------------------------------------------------------------
 # Main tasks
 # ---------------------------------------------------------------------------
 
-JekyllHelpers::Tasks.new.install do |config|
-  config.less_dir      = LESS_DIR
-  config.css_dir       = 'stylesheets'
-  config.less_compress = true
-end
-
-task :default => :jekyll
-
-task :generate => :jekyll
+task :default => :generate
 
 desc "Format the site."
-task :jekyll => [:css, :talks] do |t|
-  sh 'jekyll build'
+task :generate => :dist
+
+desc "Generate and deploy the site."
+task :gen_deploy => :deploy
+
+task :index => [:talks, :css] do |t|
+  File.open("index.html", mode: "w") do |index|
+    File.open("index-template.html").each do |line|
+      if line.strip == '{{talks}}'
+        File.open("talks.html").each do |line|
+          index.puts(line)
+        end
+      else
+        index.puts(line)
+      end
+    end
+  end
+end
+
+task :dist => [:index] do |t|
+  rm_rf 'dist'
+  mkdir_p 'dist'
+  %w{assets images talks scala-fundamentals}.each do |dir|
+    cp_r dir, 'dist'
+  end
+  Dir.glob('goo*.html').each do |f|
+    cp f, 'dist'
+  end
+  %w{index.html keybase.txt}.each do |f|
+    cp f, 'dist'
+  end
 end
 
 task :gen => :generate
-task :preview => :run
-task :server => :run
-
-desc "Format the blog, then fire up a local HTTP server."
-task :run => [:css, :talks, 'jekyll_helpers:watch_less'] do |t|
-  watch_talks
-  sh "jekyll server --watch --host 0.0.0.0"
-end
 
 task :talks => TALKS_HTML do
   rm_rf 'talks/slick-2015-03-19'
@@ -76,28 +82,31 @@ file TALKS_HTML => [TALKS_YAML, TALKS_TEMPLATE, 'Rakefile'] do
 end
 
 task :css_clean do
-  rm_rf 'stylesheets'
+  rm_f 'assets/css/custom.css'
 end
 
+task :less => :css
 task :css => :css_clean do
-  sh 'lessc less/style.less stylesheets/style.css'
+  sh 'lessc less/custom.less assets/css/custom.css'
 end
 
 task :gen_deploy => [:generate, :deploy]
 
 desc "Deploy the site to the VPS."
-task :deploy do
-  RSYNC_ARGS = [
-    'rsync',
-    '-avuz',
-    '--delete',
-    '--exclude', '/.git',
-    '--exclude', '/tmp',
-    '--exclude', '*.iml',
-    '--exclude', '/.idea',
-    '.', 'yore.ardentex.com:/var/www/scala-phase.org/html'
-  ]
-  sh *RSYNC_ARGS
+task :deploy => :dist do
+  Dir.chdir 'dist' do
+    RSYNC_ARGS = [
+        'rsync',
+        '-avuz',
+        '--delete',
+        '--exclude', '/.git',
+        '--exclude', '/tmp',
+        '--exclude', '*.iml',
+        '--exclude', '/.idea',
+        '.', 'bmc@yore.ardentex.com:/var/www/scala-phase.org/html'
+    ]
+    sh *RSYNC_ARGS
+  end
 end
 
 task :clean do

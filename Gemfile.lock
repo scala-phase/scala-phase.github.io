@@ -1,10 +1,4 @@
 GIT
-  remote: git://github.com/bmc/grizzled-rake.git
-  revision: 49f08b228a113a3038681e664649e18ae2431985
-  specs:
-    grizzled-rake (0.1.2)
-
-GIT
   remote: git://github.com/bmc/jekyll-helpers.git
   revision: c07158998bb65bf5b689a4cc91e41522a17acf7c
   specs:
@@ -14,83 +8,17 @@ GIT
 GEM
   remote: http://rubygems.org/
   specs:
-    addressable (2.5.1)
-      public_suffix (~> 2.0, >= 2.0.2)
-    bourbon (4.3.4)
-      sass (~> 3.4)
-      thor (~> 0.19)
-    coderay (1.1.1)
-    colorator (1.1.0)
-    execjs (2.7.0)
-    ffi (1.9.18)
-    forwardable-extended (2.6.0)
     fssm (0.2.10)
-    git (1.3.0)
-    jekyll (3.5.2)
-      addressable (~> 2.4)
-      colorator (~> 1.0)
-      jekyll-sass-converter (~> 1.0)
-      jekyll-watch (~> 1.1)
-      kramdown (~> 1.3)
-      liquid (~> 4.0)
-      mercenary (~> 0.3.3)
-      pathutil (~> 0.9)
-      rouge (~> 1.7)
-      safe_yaml (~> 1.0)
-    jekyll-sass-converter (1.5.0)
-      sass (~> 3.4)
-    jekyll-watch (1.5.0)
-      listen (~> 3.0, < 3.1)
-    kramdown (1.14.0)
-    liquid (4.0.0)
-    listen (3.0.8)
-      rb-fsevent (~> 0.9, >= 0.9.4)
-      rb-inotify (~> 0.9, >= 0.9.7)
-    mercenary (0.3.6)
-    method_source (0.8.2)
-    mustache (1.0.5)
-    pathutil (0.14.0)
-      forwardable-extended (~> 2.6)
-    pry (0.10.4)
-      coderay (~> 1.1.0)
-      method_source (~> 0.8.1)
-      slop (~> 3.4)
-    public_suffix (2.0.5)
-    rake (12.0.0)
-    rb-fsevent (0.10.2)
-    rb-inotify (0.9.10)
-      ffi (>= 0.5.0, < 2)
-    rdiscount (2.2.0.1)
-    rouge (1.11.1)
-    safe_yaml (1.0.4)
-    sass (3.5.1)
-      sass-listen (~> 4.0.0)
-    sass-listen (4.0.0)
-      rb-fsevent (~> 0.9, >= 0.9.4)
-      rb-inotify (~> 0.9, >= 0.9.7)
-    slop (3.6.0)
-    thor (0.20.0)
-    uglifier (3.2.0)
-      execjs (>= 0.3.0, < 3)
-    yui-compressor (0.12.0)
+    git (1.5.0)
+    mustache (1.1.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  bourbon
-  fssm
   git
-  grizzled-rake!
-  jekyll
   jekyll-helpers!
-  kramdown
   mustache
-  pry
-  rake
-  rdiscount
-  uglifier
-  yui-compressor (>= 0.9.6)
 
 BUNDLED WITH
-   1.15.1
+   1.17.2
