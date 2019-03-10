@@ -1,0 +1,1 @@
+exclude: [Rakefile, Gemfile, Gemfile.lock, less, dist, talks.yml, talks.mustache, tmp, README.md]
