@@ -22,9 +22,9 @@ end
 # ---------------------------------------------------------------------------
 
 LESS_DIR            = 'less'
-LESS_FILES          = FileList["#{LESS_DIR}/*.less"].select do |f|
-                        f !~ %r|^less/_|
-                      end
+CUSTOM_LESS         = "#{LESS_DIR}/custom.less"
+CUSTOM_CSS_DIR      = "css"
+CUSTOM_CSS          = "#{CUSTOM_CSS_DIR}/custom.css"
 TALKS_YAML          = 'talks.yml'
 TALKS_TEMPLATE      = 'talks.mustache'
 TALKS_HTML          = 'talks.html'
@@ -41,7 +41,8 @@ task :generate => :dist
 desc "Generate and deploy the site."
 task :gen_deploy => :deploy
 
-task :index => [:talks, :css] do |t|
+task :index => [:talkshtml, :css] do |t|
+  puts "Creating index.html"
   File.open("index.html", mode: "w") do |index|
     File.open("index-template.html").each do |line|
       if line.strip == '{{talks}}'
@@ -73,10 +74,12 @@ end
 
 task :gen => :generate
 
-task :talks => TALKS_HTML do
+task :talks => :talkshtml do
   rm_rf 'talks/slick-2015-03-19'
   git_clone 'https://github.com/bmc/slick-presentation-2015-03-19.git', 'talks', 'slick-2015-03-19'
 end
+
+task :talkshtml => TALKS_HTML
 
 file TALKS_HTML => [TALKS_YAML, TALKS_TEMPLATE, 'Rakefile'] do
   puts "Rebuilding #{TALKS_HTML}"
@@ -84,12 +87,15 @@ file TALKS_HTML => [TALKS_YAML, TALKS_TEMPLATE, 'Rakefile'] do
 end
 
 task :css_clean do
-  rm_f 'assets/css/custom.css'
+  rm_f CUSTOM_CSS_DIR
 end
 
 task :less => :css
-task :css => :css_clean do
-  sh 'lessc less/custom.less assets/css/custom.css'
+task :css => CUSTOM_CSS
+
+file CUSTOM_CSS => [CUSTOM_LESS] do
+  mkdir_p CUSTOM_CSS_DIR
+  sh "lessc #{CUSTOM_LESS} #{CUSTOM_CSS}"
 end
 
 task :gen_deploy => [:generate, :deploy]
