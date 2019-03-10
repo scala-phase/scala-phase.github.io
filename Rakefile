@@ -70,7 +70,11 @@ end
 task :dist => [:index] do |t|
   rm_rf 'dist'
   mkdir_p 'dist'
-  %w{assets css images talks scala-fundamentals}.each do |dir|
+  mkdir 'dist/images'
+  Dir.glob('images/*.{png,jpg,gif}').each do |f|
+    cp f, 'dist/images'
+  end
+  %w{assets css talks scala-fundamentals}.each do |dir|
     cp_r dir, 'dist'
   end
   Dir.glob('goo*.html').each do |f|
