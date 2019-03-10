@@ -26,7 +26,7 @@ LESS_FILES          = FileList["#{LESS_DIR}/*.less"].select do |f|
                         f !~ %r|^less/_|
                       end
 TALKS_YAML          = 'talks.yml'
-TALKS_TEMPLATE      = '_templates/talks.mustache'
+TALKS_TEMPLATE      = 'talks.mustache'
 TALKS_HTML          = 'talks.html'
 
 # ---------------------------------------------------------------------------
@@ -45,14 +45,16 @@ task :index => [:talks, :css] do |t|
   File.open("index.html", mode: "w") do |index|
     File.open("index-template.html").each do |line|
       if line.strip == '{{talks}}'
-        File.open("talks.html").each do |line|
-          index.puts(line)
+        File.open(TALKS_HTML).each do |t|
+          index.puts(t)
         end
       else
         index.puts(line)
       end
     end
   end
+
+  rm_f TALKS_HTML
 end
 
 task :dist => [:index] do |t|
@@ -208,33 +210,6 @@ end
 
 def convert_talks
   TalkRenderer.new(TALKS_YAML, TALKS_TEMPLATE, TALKS_HTML).render
-end
-
-def watch_talks
-  def watch_templates
-    fork do
-      FSSM.monitor(TEMPLATES_DIR) do
-        glob '*.mustache'
-
-        update { |base, relative| convert_talks }
-        create { |base, relative| convert_talks }
-        delete { |base, relative| convert_talks }
-      end
-    end
-  end
-
-  def watch_yaml
-    fork do
-      FSSM.monitor(".", TALKS_YAML) do
-        update { |base, relative| convert_talks }
-        create { |base, relative| convert_talks }
-        delete { |base, relative| convert_talks }
-      end
-    end
-  end
-
-  watch_templates
-  watch_yaml
 end
 
 # ---------------------------------------------------------------------------
