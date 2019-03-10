@@ -1,5 +1,5 @@
 ---
-layout: partial
+layout: default
 title: "Resources: Escape from Hadoop, etc."
 ---
 

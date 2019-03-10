@@ -3,10 +3,9 @@ Scala Enthusiasts (PHASE).
 
 ## Main content
 
-The main content is in `index-template.html`. Do _not_ edit `index.html`.
-It's generated.
-
-If you change `index-template.html`, you _must_ [rebuild](#building).
+The main content is in `index.html`. **BUT:** Do _not_ edit the section
+between `<!-- @start talks@ -->` and `<!-- @end talks@ -->`. That section
+is updated by the [build](#building) process.
 
 ## Adding talks
 
@@ -30,15 +29,20 @@ Once you've updated `talks.yml`, you _must_ [rebuild](#building).
 ## Building
 
 To build, you need `ruby` (2.6), `rake`, and `bundle`. Run `bundle install`,
-to get the required gems. Then, run:
+to get the rest of the required gems. Then, run:
 
 ```
-rake deploy
+rake build
 ```
 
-to build and push the site.
+to build the site with Jekyll. You _cannot_ just run `jekyll build`, because
+the `Rakefile` contains some preprocessing tasks that must run before `jekyll`
+is invoked.
 
-If you don't want to install the prequisites locally, you can use
-[this Docker image](https://github.com/bmc/docker/tree/master/staticsite),
-which handles it all for you.
+## Publishing
+
+To push to the site, run `rake deploy`. 
+
+Currently, only @bmc can do this, but when the site moves to GitHub Pages
+(which is underway), simply pushing to the master repo will suffice.
 
