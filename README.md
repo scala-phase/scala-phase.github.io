@@ -47,7 +47,16 @@ is invoked.
 
 ## Publishing
 
-To push to the site, run `rake deploy`. 
+Before publishing, verify that everything looks good. Run
+
+```
+rake serve
+```
+
+to build the site and run `jekyll` in server mode. Then, connect your browser
+to `http://localhost:4000` and give the site the once-over.
+
+To publish, run `rake deploy`. 
 
 Currently, only @bmc can do this, but when the site moves to GitHub Pages
 (which is underway), simply pushing to the master repo will suffice.
