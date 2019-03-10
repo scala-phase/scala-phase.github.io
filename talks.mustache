@@ -1,48 +1,43 @@
-<table class="talks-table">
-  <thead>
-    <tr>
-      <th>Date</th>
-      <th>Speaker</th>
-      <th>Title</th>
-      <th>Details</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    {{! In the loop, you have access to each element's fields, implicitly.}}
-    {{#talks}}
-      <tr class="talk {{css_class}}">
-        <td class="date">{{date}}</td>
-        <td class="speaker">{{speaker}}</td>
-        <td class="title">{{title}}</td>
-        <td class="details">
-          <ul>
-            <li class="meetup-link">
-              Meetup page: <a target="_blank" href="{{meeting_link}}">{{meeting_id}}</a>
-            </li>
-            {{#slides}}
-            <li class="slides">
-              <a target="_blank" class="slides-link" href="{{slides.link}}">Slides</a>
-              {{#slides.comment}}
-                <span class="slides-comment">({{slides.comment}})</span>
-              {{/slides.comment}}
-            </li>
-            {{/slides}}
-            {{#code_link}}
-            <li class="code">
-              Code: <a target="_blank" class="code-link" href="{{code_link}}">{{code_label}}</a>
-            </li>
-            {{/code_link}}
-            {{#video}}
-            <li>
-              <a target="_blank" class="video-link" href="{{video}}">
-                <i class="fas fa-video"></i> Video
-              </a>
-            </li>
-            {{/video}}
-          </ul>
-        </td>
-      </tr>
-    {{/talks}}
-  </tbody>
-</table>
+<div>
+  {{! In the loop, you have access to each element's fields, implicitly.}}
+  {{#talks}}
+    <div class="talk">
+      <div class="title">{{title}}</div>
+      <div class="speaker">{{speaker}}</div>
+      <div class="date">{{date}}</div>
+      <div class="details">
+        <ul>
+          <li class="meetup-link">
+            <a target="_blank" href="{{meeting_link}}">
+              <i class="fab fa-meetup"></i> Meetup page
+            </a>
+          </li>
+          {{#slides}}
+          <li class="slides">
+            <a target="_blank" class="slides-link" href="{{slides.link}}">
+              <i class="fas fa-desktop"></i> Slides
+            </a>
+            {{#slides.comment}}
+              <span class="slides-comment">({{slides.comment}})</span>
+            {{/slides.comment}}
+          </li>
+          {{/slides}}
+          {{#code_link}}
+          <li class="code">
+            <a target="_blank" class="code-link" href="{{code_link}}">
+              <i class="fas fa-code"></i> Code
+            </a>
+          </li>
+          {{/code_link}}
+          {{#video}}
+          <li>
+            <a target="_blank" class="video-link" href="{{video}}">
+              <i class="fas fa-video"></i> Video
+            </a>
+          </li>
+          {{/video}}
+        </ul>
+      </div>
+    </div>
+  {{/talks}}
+</div>
