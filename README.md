@@ -45,6 +45,8 @@ to build the site with Jekyll. You _cannot_ just run `jekyll build`, because
 the `Rakefile` contains some preprocessing tasks that must run before `jekyll`
 is invoked.
 
+After building, check in any changed files (such as the `index.html` file). 
+
 ## Publishing
 
 Before publishing, verify that everything looks good. Run
@@ -56,8 +58,9 @@ rake serve
 to build the site and run `jekyll` in server mode. Then, connect your browser
 to `http://localhost:4000` and give the site the once-over.
 
-To publish, run `rake deploy`. 
+The site is hosted on [GitHub Pages](https://pages.github.com/). To publish, 
+just push your changes to the GitHub repo (or issue a PR from your fork, and 
+one of the maintainers will do it.)
 
-Currently, only @bmc can do this, but when the site moves to GitHub Pages
-(which is underway), simply pushing to the master repo will suffice.
+
 
