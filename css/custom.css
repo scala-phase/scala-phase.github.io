@@ -1,68 +1,88 @@
+/*
+   These styles override styles in assets/css/main.css. Putting them here
+   makes upgrading the theme a little easier.
+ */
 #header h1 {
   display: inline-block;
   vertical-align: middle;
 }
+
 #header h1 img.phase-logo {
   height: 40px;
   vertical-align: middle;
 }
+
 #main header p {
   text-transform: none !important;
 }
+
 #banner .inner h2 {
   display: inline-block;
   vertical-align: middle;
 }
+
 #banner .inner h2 img.phase-logo {
   height: 150px;
   vertical-align: middle;
 }
+
 #banner .inner p {
   text-transform: none !important;
 }
+
 #banner .inner p .full-name {
   color: #ffff00 !important;
 }
+
 #talks {
   text-align: left;
 }
+
 #talks .title {
   font-style: italic;
 }
+
 #talks .details {
   margin-left: 3em;
 }
+
 #talks .details ul {
   margin-left: 0;
   padding: 0;
 }
+
 #talks .details ul li {
   list-style-type: none;
   padding-left: 0;
   margin-left: 0;
 }
+
 .banner-wide-text-margins #banner .inner p {
   margin-left: 20px !important;
   margin-right: 20px !important;
 }
+
 @media screen and (max-width: 980px) {
   #banner .inner p {
     margin-left: 20px !important;
     margin-right: 20px !important;
   }
 }
+
 @media screen and (max-width: 1280px) {
   #banner .inner p {
     margin-left: 20px !important;
     margin-right: 20px !important;
   }
 }
+
 @media screen and (max-width: 1680px) {
   #banner .inner p {
     margin-left: 20px !important;
     margin-right: 20px !important;
   }
 }
+
 @media screen and (min-width: 1681px) {
   #banner .inner p {
     margin-left: 20px !important;

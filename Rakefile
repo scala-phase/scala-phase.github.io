@@ -21,10 +21,6 @@ end
 # Constants
 # ---------------------------------------------------------------------------
 
-LESS_DIR            = 'less'
-CUSTOM_LESS         = "#{LESS_DIR}/custom.less"
-CUSTOM_CSS_DIR      = "css"
-CUSTOM_CSS          = "#{CUSTOM_CSS_DIR}/custom.css"
 TALKS_YAML          = 'talks.yml'
 TALKS_TEMPLATE      = 'talks.mustache'
 TALKS_HTML          = 'talks.html'
@@ -52,7 +48,7 @@ task :serve => [:index] do
 end
 
 desc "Rebuild the index, talks and CSS"
-task :index => [:talkshtml, :css] do |t|
+task :index => [:talkshtml] do |t|
   puts "Editing index.html"
   skip = false
   File.open("index-new.html", mode: "w") do |index|
@@ -91,18 +87,6 @@ file TALKS_HTML => [TALKS_YAML, TALKS_TEMPLATE, 'Rakefile'] do
   convert_talks
 end
 
-task :css_clean do
-  rm_f CUSTOM_CSS_DIR
-end
-
-task :less => :css
-task :css => CUSTOM_CSS
-
-file CUSTOM_CSS => [CUSTOM_LESS] do
-  mkdir_p CUSTOM_CSS_DIR
-  sh "lessc #{CUSTOM_LESS} #{CUSTOM_CSS}"
-end
-
 task :gen_deploy => [:generate, :deploy]
 
 desc "Deploy the site to the VPS."
@@ -124,10 +108,8 @@ task :deploy => :generate do
 end
 
 task :clean do
-  rm_rf "dist"
-  rm_rf "css"
+  rm_rf "_site"
   rm_rf "talks.html"
-  rm_rf "index.html"
 end
 
 #############################################################################

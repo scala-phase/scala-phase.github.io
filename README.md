@@ -26,6 +26,12 @@ of objects with the following fields:
 
 Once you've updated `talks.yml`, you _must_ [rebuild](#building).
 
+## Tweaking CSS
+
+**Don't** edit the `assets/css/main.css` that was unpacked with the
+[Pixelarity](https://pixelarity.com) theme. Instead, override styles by
+editing the `css/custom.css` file.
+
 ## Building
 
 To build, you need `ruby` (2.6), `rake`, and `bundle`. Run `bundle install`,
