@@ -67,7 +67,7 @@ task :dist => [:index] do |t|
   Dir.glob('goo*.html').each do |f|
     cp f, 'dist'
   end
-  %w{index.html keybase.txt}.each do |f|
+  %w{index.html keybase.txt favicon.png}.each do |f|
     cp f, 'dist'
   end
 end
