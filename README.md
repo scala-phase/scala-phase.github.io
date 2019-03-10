@@ -15,7 +15,7 @@ of objects with the following fields:
 - `title` (required): The talk title
 - `speaker` (required): The speaker
 - `date` (required): The date of the talk, in `yyyy-mm-dd` format.
-- `meeting_link` (required): The URL of the talk's Meetup page.
+- `meeting_link` (optional): The URL of the talk's meeting page.
 - `video` (optional): URL of the video, if there is one.
 - `slides` (optional): Contains two sub-fields:
     - `link`: URL of the presentation, if available.
