@@ -7,11 +7,13 @@
       <div class="date">{{date}}</div>
       <div class="details">
         <ul>
+          {{#meeting-link}}
           <li class="meetup-link">
             <a target="_blank" href="{{meeting_link}}">
-              <i class="fab fa-meetup"></i> Meetup page
+              <i class="fab fa-meetup"></i> Meeting link
             </a>
           </li>
+          {{/meeting-link}}
           {{#slides}}
           <li class="slides">
             <a target="_blank" class="slides-link" href="{{slides.link}}">

@@ -1,4 +1,4 @@
-talks: 
+talks:
   - title:        "Intro to Apache Spark with Frameless"
     speaker:      Brian Clapper
     date:         2018/12/06
@@ -21,7 +21,7 @@ talks:
     date:         2018/01/11
     meeting_link: https://www.meetup.com/scala-phase/events/245651753/
     slides:
-      link:       talks/exploring-word2vec.pdf
+      link:       /talks/exploring-word2vec.pdf
   - title:        "Dependent Types in Scala"
     speaker:      Yao Li
     date:         2017/08/17
@@ -42,8 +42,7 @@ talks:
     meeting_link: https://www.meetup.com/scala-phase/events/238772095/
     code:         https://github.com/bmc/contextual-presentation-2017/tree/master/demo
     slides:
-      link:       talks/contextual-2017-05-11
-
+      link:       /talks/contextual-2017-05-11
   - title:        "Monadic Logging and You"
     speaker:      Martin Snyder
     meeting_link: https://www.meetup.com/scala-phase/events/234569159/
@@ -51,206 +50,147 @@ talks:
     slides:
       link:       https://rawgit.com/MartinSnyder/monadic-logging/master/presentation/index.html
     video:        https://www.youtube.com/watch?v=t-YX55ZF4g0
-
   - title:        "Scalatron!"
     speaker:      Matthew Butt
     date:         2016/09/07
-    meeting_link: http://www.meetup.com/scala-phase/events/231545055/
+    meeting_link: https://www.meetup.com/scala-phase/events/231545055/
     code:         https://github.com/grandivory/scaltron-bot/
-
   - title:        "RDDs, DataFrames and Datasets in Apache Spark"
     speaker:      Brian Clapper
     date:         2016/06/16
-    meeting_link: http://www.meetup.com/scala-phase/events/229870987/
+    meeting_link: https://www.meetup.com/scala-phase/events/229870987/
     slides:
-      link:       talks/rdds-dataframes-datasets-2016-06-16
+      link:       /talks/rdds-dataframes-datasets-2016-06-16
       #comment:    HTML
     code:         https://github.com/bmc/rdds-dataframes-datasets-presentation-2016/tree/master/demo
-
+    video:        https://www.youtube.com/watch?v=pZQsDloGB4w
   - title:        "From Simulacrum to Typeclassic"
     speaker:      Michael Pilquist
     date:         2016/05/18
-    meeting_link: http://www.meetup.com/scala-phase/events/229719231/
+    meeting_link: https://www.meetup.com/scala-phase/events/229719231/
     slides:
       link:       https://speakerdeck.com/mpilquist/from-simulacrum-to-typeclassic
     video:        https://www.youtube.com/watch?v=Crc2RHWrcLI
-
   - title:        "An Introduction to Spark Streaming"
     speaker:      Brian Clapper
     date:         2015/09/10
     meeting_link: http://www.meetup.com/scala-phase/events/224774883/
     slides:
-      link:       talks/spark-streaming-2015-09-10
+      link:       /talks/spark-streaming-2015-09-10
       #comment:    HTML
     video:        https://www.youtube.com/watch?v=2STfulBcorA
-
   - title:        "An Introduction to Shapeless via Scodec"
     speaker:      Michael Pilquist
     date:         2015/04/22
     meeting_link: http://www.meetup.com/scala-phase/events/221842395/
     slides:
-      link:       talks/shapeless-2015-04-22.pdf
+      link:       /talks/shapeless-2015-04-22.pdf
       #comment:    PDF
     video:        https://www.youtube.com/watch?v=eNJ6ZbbrP2A
-
   - title:        "Messing Around with Typesafe Slick"
     speaker:      Brian Clapper
     date:         2015/03/19
     meeting_link: http://www.meetup.com/scala-phase/events/221076940/
     slides:
-      link:       talks/slick-2015-03-19/index.html
+      link:       /talks/slick-2015-03-19/index.html
       #comment:    HTML
     code:         https://github.com/bmc/slick-presentation-2015-03-19
-
   - title:        "Reactive applications with Scala and AngularJS"
     speaker:      Michael Pigg and Ken Rimple
     date:         2014/12/09
-    meeting_link: http://www.meetup.com/scala-phase/events/218821822/
-
+    meeting_link: https://www.meetup.com/scala-phase/events/218821822/
+    code:         https://github.com/chariotsolutions/reactive-quizzo-code-sample
   - title:        "Escape From Hadoop: Spark Streaming, Cassandra, Scala & Akka"
     speaker:      Helena Edelson
     date:         2014/10/21
-    meeting_link: http://www.meetup.com/scala-phase/events/200903832/
+    meeting_link: https://www.meetup.com/scala-phase/events/200903832/
     slides:
       link:       http://www.slideshare.net/HelenaEdelsonGram/escape-from-hadoop-with-apache-spark-and-cassandra
       #comment:    Slideshare
-    resources:    talks/helena/resources.html
-
+    resources:    /talks/helena/resources.html
   - title:        Live coding a CRUD database in Scala
     speaker:      Martin Snyder
     date:         2014/09/16
-    meeting_link: http://www.meetup.com/scala-phase/events/196933482/
+    meeting_link: https://www.meetup.com/scala-phase/events/196933482/
     code:         https://github.com/MartinSnyder/scala-transactional-datastore
-
   - title:        The Scala-Graph Library
     speaker:      Brad Miller
     date:         2014/07/24
-    meeting_link: http://www.meetup.com/scala-phase/events/179613752/
+    meeting_link: https://www.meetup.com/scala-phase/events/179613752/
     slides:
-      link:       talks/brad-miller-scala-graph.pdf
+      link:       /talks/brad-miller-scala-graph.pdf
       #comment:    PDF
-
   - title:        Haskell and React.js
     speaker:      Jason Feingold
     date:         2014/06/12
-    meeting_link: http://www.meetup.com/scala-phase/events/179229002/
+    meeting_link: https://www.meetup.com/scala-phase/events/179229002/
     code:         https://github.com/wafna/
-
-  - title:        React.js and functional JavaScript
-    speaker:      Dustin Getz & Daniel Miladinov
-    date:         2014/05/20
-    meeting_link: http://www.meetup.com/scala-phase/events/167318632/
-
-  - title:        "Roland Kuhn leads a Q&A and live coding session"
-    speaker:      Roland Kuhn
-    date:         2014/04/24
-    meeting_link: http://www.meetup.com/scala-phase/events/167166802/
-
   - title:        "Viridity's Scala Units of Measure and Quantities API"
     speaker:      Gary Keorkunian
     date:         2014/03/20
-    meeting_link: http://www.meetup.com/scala-phase/events/167166322/
-    code:         http://www.squants.com/
-    slides: 
-      link:       http://www.squants.com/squants-phase-mar2014.pdf
+    meeting_link: https://www.meetup.com/scala-phase/events/167166322/
+    code:         https://www.squants.com/
+    slides:
+      link:       https://www.squants.com/squants-phase-mar2014.pdf
       #comment:    PDF
-
   - title:        "Writing Functional Wrappers for Legacy APIs (joint meeting of PHASE and PhillyJUG)"
     speaker:      Martin Snyder
     date:         2013/09/25
-    meeting_link: http://phillyjug.com/2013/09/25/wrappers/
-    slides: 
+    slides:
       link:       https://rawgithub.com/MartinSnyder/scala-jdbc/master/presentation/index.html
       #comment:    HTML
     video:        http://vimeo.com/75591447
     code:         https://github.com/MartinSnyder/scala-jdbc
-
   - title:        Gradle and Scala
     speaker:      Jason Feingold
     date:         2013/07/09
-    meeting_link: http://www.meetup.com/scala-phase/events/125411192/
+    meeting_link: https://www.meetup.com/scala-phase/events/125411192/
     slides:
-      link:       http://scala-phase.org/talks/jason-feingold-gradle/
+      link:       /talks/jason-feingold-gradle/
       #comment:    HTML
-
   - title:        Pearls of Distributed Programming with Scala and GridGain
     speaker:      Dmitriy Setrakyan
     date:         2013/04/16
-    meeting_link: http://www.meetup.com/scala-phase/events/112878592/
-
+    meeting_link: https://www.meetup.com/scala-phase/events/112878592/
   - title:        "CQRS and Event Sourcing"
     speaker:      Duncan Devore
     date:         2012/12/04
-    meeting_link: http://www.meetup.com/scala-phase/events/88673682/
-    slides: 
-      link:       talks/duncan-devore-cqrs/
+    meeting_link: https://www.meetup.com/scala-phase/events/88673682/
+    slides:
+      link:       /talks/duncan-devore-cqrs/
       #comment:    HTML
-
   - title:        Typesafe Slick
     speaker:      Nick McAvoy
     date:         2012/10/23
-    meeting_link: http://www.meetup.com/scala-phase/events/85382662/
+    meeting_link: https://www.meetup.com/scala-phase/events/85382662/
     slides:
-      link:       http://ohbadiah.github.io/phase_slick/
+      link:       https://ohbadiah.github.io/phase_slick/
       #comment:    HTML
-
-  - title:        The Play! Framework
-    speaker:      Brian Clapper
-    date:         2012/10/02
-    meeting_link: http://www.meetup.com/scala-phase/events/82990972/
-    slides: 
-      link:       http://www.ardentex.com/publications/the-play-framework/slides.html
-      #comment:    HTML
-
-  - title:        "Scalaz, Monads, Functors and You"
-    speaker:      Yuvi Masory
-    date:         2012/06/12
-    meeting_link: http://www.meetup.com/scala-phase/events/63156772/
-    slides:
-      link:       talks/yuvi-masory-scalaz.pdf
-      #comment:    PDF
-
-  - title:        "Dispatch, Unfiltered, Blue Eyes and Play: A Comparison"
-    speaker:      Adam Hinz and George Adams
-    date:         2012/05/15
-    meeting_link: http://www.meetup.com/scala-phase/events/60768832/
-
   - title:        Building SBT Plugins
     speaker:      Mads Hartmann Jenson
     date:         2012/01/26
     meeting_link: http://www.meetup.com/scala-phase/events/47857352/
-    slides: 
-      link:       talks/mads-sbt-plugins.pdf
+    slides:
+      link:       /talks/mads-sbt-plugins.pdf
       #comment:    PDF
     code:         https://github.com/mads379/sbt-plugin-examples
-
   - title:        "Scala on the Android Platform"
     speaker:      Yuvi Masory
     date:         2011/11/15
     meeting_link: http://www.meetup.com/scala-phase/events/39391912/
     video:        http://vimeo.com/32516782
-
-  - title:        "SBT 0.10 and 0.11 Overview"
-    speaker:      Brian Clapper
-    date:         2011/10/18
-    meeting_link: http://www.meetup.com/scala-phase/events/35297532/
-    slides: 
-      link:       http://www.ardentex.com/publications/intro-sbt/slides.html
-      #comment:    HTML
-
   - title:        Scala Type Classes
     speaker:      Erik Osheim
     date:         2011/09/20
     meeting_link: http://www.meetup.com/scala-phase/events/31595792/
-    slides: 
+    slides:
       link:       http://plastic-idolatry.com/typcls/
       #comment:    HTML
-
   - title:        Disrupters
     speaker:      Jamie Allen
     date:         2011/08/10
-    meeting_link: http://www.meetup.com/scala-phase/events/26666971/
-    slides: 
-      link:       talks/jamie-allen-sdisruptor/index.html
+    meeting_link: https://www.meetup.com/scala-phase/events/26666971/
+    slides:
+      link:       /talks/jamie-allen-sdisruptor/index.html
       #comment:    HTML
     code:         https://github.com/jamie-allen/sdisruptor

@@ -139,10 +139,12 @@ class Talk
     @meeting_link = meeting_link
     @resources    = resources
 
-    if meeting_link =~ %r|^http.*meetup.com/scala-phase/events/(\d+)/.*$|
-      @meeting_id   = "meetup.com/.../#{$1}"
-    else
-      @meeting_id = meeting_link.sub(%r|https?://|, "")
+    unless meeting_link.nil?
+      if meeting_link =~ %r|^http.*meetup.com/scala-phase/events/(\d+)/.*$|
+        @meeting_id   = "meetup.com/.../#{$1}"
+      else
+        @meeting_id = meeting_link.sub(%r|https?://|, "")
+      end
     end
 
     @slides       = slides
