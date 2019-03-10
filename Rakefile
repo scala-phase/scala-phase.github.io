@@ -61,7 +61,7 @@ end
 task :dist => [:index] do |t|
   rm_rf 'dist'
   mkdir_p 'dist'
-  %w{assets images talks scala-fundamentals}.each do |dir|
+  %w{assets css images talks scala-fundamentals}.each do |dir|
     cp_r dir, 'dist'
   end
   Dir.glob('goo*.html').each do |f|
@@ -118,9 +118,10 @@ task :deploy => :dist do
 end
 
 task :clean do
-  rm_rf "_site"
-  rm_f "_includes/talks.html"
-  rm_rf "stylesheets"
+  rm_rf "dist"
+  rm_rf "css"
+  rm_rf "talks.html"
+  rm_rf "index.html"
 end
 
 #############################################################################
