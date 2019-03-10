@@ -38,6 +38,10 @@
   text-align: left;
 }
 
+#talks header {
+  padding-top: 3em;
+}
+
 #talks .title {
   font-style: italic;
 }
@@ -55,6 +59,10 @@
   list-style-type: none;
   padding-left: 0;
   margin-left: 0;
+}
+
+#talk-block {
+  padding-bottom: 3em !important;
 }
 
 .banner-wide-text-margins #banner .inner p {
