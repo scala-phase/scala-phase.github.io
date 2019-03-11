@@ -33,7 +33,7 @@ task :default => :generate
 
 desc "Format the site."
 task :build => [:index] do
-  sh 'jekyll build'
+  sh 'bundle exec jekyll build'
 end
 
 desc 'Alias for "build"'
@@ -44,7 +44,8 @@ task :generate => :build
 
 desc "Run Jekyll in server mode, for testing"
 task :serve => [:index] do
-  sh 'jekyll serve'
+  # Serve all on interfaces.
+  sh 'bundle exec jekyll serve --host 0.0.0.0'
 end
 
 desc "Rebuild the index, talks and CSS"

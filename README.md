@@ -34,7 +34,13 @@ editing the `css/custom.css` file.
 
 ## Building
 
-To build, you need `ruby` (2.6), `rake`, and `bundle`. Run `bundle install`,
+**NOTE**: If you'd rather not install all this stuff in your local environment,
+you can just install Docker, and then use
+[this Docker image](https://github.com/bmc/docker/tree/master/staticsite),
+which contains everything you need. Just install the `aliases.sh` file
+in that directory, and replace `rake` with `drake` in the instructions below.
+
+To build, you need `ruby` (2.6) and `bundle`. Run `bundle install`,
 to get the rest of the required gems. Then, run:
 
 ```
