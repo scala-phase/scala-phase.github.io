@@ -1,4 +1,9 @@
 talks:
+  - title:        "Unison"
+    speaker:      "Rúnar Bjarnason"
+    date:         2021/01/27
+    meeting_link: https://www.meetup.com/scala-phase/events/275889801/
+    video:        https://youtu.be/TZZlt6-bKW8
   - title:        "Intro to Apache Spark with Frameless"
     speaker:      Brian Clapper
     date:         2018/12/06
