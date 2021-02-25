@@ -1,4 +1,9 @@
 talks:
+  - title:        "The Future of Typelevel Concurrency"
+    speaker:      "Michael Pilquist"
+    date:         2021/02/24
+    meeting_link: https://www.meetup.com/scala-phase/events/275889960/
+    video:        https://youtu.be/J_9DjHMCPKM
   - title:        "Unison"
     speaker:      "Rúnar Bjarnason"
     date:         2021/01/27
