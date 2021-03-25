@@ -1,4 +1,9 @@
 talks:
+  - title:        "Introduction to Cats Effect"
+    speaker:      "Adam Rosien"
+    date:         2021/03/24
+    meeting_link: https://www.meetup.com/scala-phase/events/276052376/
+    video:        https://youtu.be/xDATcERgKgg
   - title:        "The Future of Typelevel Concurrency"
     speaker:      "Michael Pilquist"
     date:         2021/02/24
@@ -46,13 +51,6 @@ talks:
     code:         https://github.com/dreadedsoftware/talks/tree/master/TyDD_in_Scala
     slides:
       link:       http://www.dreadedsoftware.com/s/PhaseTyDD.pdf
-  - title:        "Contextual"
-    speaker:      Brian Clapper
-    date:         2017/05/11
-    meeting_link: https://www.meetup.com/scala-phase/events/238772095/
-    code:         https://github.com/bmc/contextual-presentation-2017/tree/master/demo
-    slides:
-      link:       /talks/contextual-2017-05-11
   - title:        "Monadic Logging and You"
     speaker:      Martin Snyder
     meeting_link: https://www.meetup.com/scala-phase/events/234569159/
