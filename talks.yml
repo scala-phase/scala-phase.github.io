@@ -1,4 +1,11 @@
 talks:
+  - title:        "What's New in Scala 3?"
+    speaker:      "Dean Wampler"
+    date:         2021/04/21
+    meeting_link: https://www.meetup.com/scala-phase/events/277164777/
+    video:        https://www.youtube.com/watch?v=-sGuwQs6lHE
+    slides:
+      link:       https://deanwampler.github.io/scala3-highlights.html
   - title:        "Introduction to Cats Effect"
     speaker:      "Adam Rosien"
     date:         2021/03/24
